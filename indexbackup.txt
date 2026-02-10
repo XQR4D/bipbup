@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="cST8lRCOzWysZFEr-9ycjjqnBDgQdz-GWMGUef8zHtE" />
+    <meta name="yandex-verification" content="6d28322ca114d8df" />
     <title>BIPBUP</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -12,180 +14,217 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.gstatic.com">
     <link rel="preconnect" href="https://mc.yandex.ru">
-
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-       ym(99936739, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-       });
-    </script>
-
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;900&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-storage-compat.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin defer></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin defer></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin defer></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+
     <style>
-    :root {
-        --accent: #00ff88;
-        --bg: #08090a;
-        --card-bg: rgba(255, 255, 255, 0.03);
-        --border: rgba(255, 255, 255, 0.08);
-    }
-    body {
-        background-color: var(--bg);
-        color: #e0e0e0;
-        font-family: 'Unbounded', sans-serif;
-        overflow-x: hidden;
-        margin: 0;
-    }
-    #background-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
-    .glass-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border);
-        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        will-change: transform, box-shadow;
-    }
-    .glass-card:hover {
-        border-color: var(--accent);
-        background: rgba(0, 255, 136, 0.04);
-        box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
-    }
-    .accent-text {
-        color: var(--accent);
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-    }
-    .nav-link {
-        position: relative;
-        padding: 8px 0;
-        transition: all 0.3s;
-        cursor: pointer;
-    }
-    .nav-link.btn-login {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 8px 20px;
-        border-radius: 9999px;
-        text-decoration: none !important;
-    }
-    .nav-link.btn-login:hover {
-        background: var(--accent);
-        color: #000;
-        border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-    }
-    .nav-link:not(.btn-login)::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: var(--accent);
-        transition: all 0.3s;
-        transform: translateX(-50%);
-        box-shadow: 0 0 10px var(--accent);
-    }
-    .nav-link:not(.btn-login):hover::after { width: 100%; }
-    .nav-link:not(.btn-login):hover { color: var(--accent); }
-    .btn-primary {
-        background: var(--accent);
-        color: #000;
-        font-weight: 700;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
-    }
-    .btn-primary:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
-    }
-    .pamyatka-img-container {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        border-radius: 12px;
-    }
-    .pamyatka-img-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    input {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        padding: 0 24px !important;
-        border-radius: 16px !important;
-        outline: none !important;
-        color: white !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        height: 60px !important;
-        width: 100%;
-        display: block;
-        transition: all 0.3s ease;
-    }
-    input:focus {
-        border-color: var(--accent) !important;
-        background: rgba(255, 255, 255, 0.08) !important;
-    }
-    input::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-    }
-    .error-page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 60vh;
-        text-align: center;
-    }
-    .mobile-nav {
-        background: rgba(8, 9, 10, 0.98);
-        backdrop-filter: blur(20px);
-        z-index: 1000;
-    }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        :root {
+            --accent: #00ff88;
+            --bg: #08090a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            background-color: var(--bg);
+            color: #e0e0e0;
+            font-family: 'Unbounded', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform, box-shadow;
+        }
+        .glass-card:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 136, 0.04);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+        }
+        .accent-text {
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        .nav-link {
+            position: relative;
+            padding: 8px 0;
+            cursor: pointer;
+        }
+        .nav-link.btn-login {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 9999px;
+        }
+        .nav-link.btn-login:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+        }
+        .pamyatka-img-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .pamyatka-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        input {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 0 24px !important;
+            border-radius: 16px !important;
+            outline: none !important;
+            color: white !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            height: 60px !important;
+            width: 100%;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            border-color: var(--accent) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .error-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+        .mobile-nav {
+            background: rgba(8, 9, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 16px 24px;
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+        }
+        #cookie-banner.show {
+            transform: translateY(0);
+        }
+        #cookie-banner p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0 0 12px;
+            color: #ccc;
+        }
+        #cookie-banner a {
+            color: var(--accent);
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .cookie-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .cookie-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .cookie-btn.accept {
+            background: var(--accent);
+            color: #000;
+            border: none;
+        }
+        .cookie-btn.reject,
+        .cookie-btn.settings {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #aaa;
+        }
+        .cookie-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+        @media (max-width: 640px) {
+            #cookie-banner {
+                padding: 16px;
+            }
+            .cookie-buttons {
+                flex-direction: column;
+            }
+            .cookie-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <canvas id="background-canvas"></canvas>
     <noscript><div><img src="https://mc.yandex.ru/watch/99936739" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="cookie-banner">
+        <p>
+            Мы используем файлы cookie и сервисы аналитики Яндекс.Метрика, чтобы улучшить работу сайта.
+            <br>
+            Продолжая использовать сайт, вы соглашаетесь с политикой конфиденциальности.
+        </p>
+        <div class="cookie-buttons">
+            <button class="cookie-btn accept" id="cookie-accept">Принять</button>
+            <button class="cookie-btn reject" id="cookie-reject">Отклонить</button>
+        </div>
+    </div>
     <div id="root"></div>
-
     <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
-        const LogoIcon = ({ className }) => (
-            <img 
-                src="favicon.ico"
-                alt="Logo" 
-                className={className} 
-                style={{ width: '32px', height: '32px', objectFit: 'contain'}} 
-            />
-        );
+        const { useState, useEffect, useRef } = React;
+
         const firebaseConfig = {
             apiKey: "AIzaSyBTwGTrPVPJQOGwOaFJwYUdZxQUpyAdGeo",
             authDomain: "bipbupweb.firebaseapp.com",
@@ -194,10 +233,13 @@
             messagingSenderId: "1059922568826",
             appId: "1:1059922568826:web:5bbf46006f29d96a273dc3"
         };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
         const ADMINS = ["ncVuGk6MDjMZv4hhRtIdM27w8iq2", "stat8qyHflOz44oVUDPTGfMsetV2"];
+
         const GTA5RP_SERVERS = [
             { n: 1, name: "Downtown", id: "803" }, { n: 2, name: "Strawberry", id: "102" },
             { n: 3, name: "Vinewood", id: "170" }, { n: 4, name: "Blackberry", id: "262" },
@@ -212,6 +254,7 @@
             { n: 21, name: "Vespucci", id: "1912" }, { n: 22, name: "Milton", id: "1984" },
             { n: 23, name: "La Puerta", id: "2071" }
         ];
+
         const MAJESTIC_SERVERS = [
             { n: 1, name: "New York", id: "84" },
             { n: 2, name: "Chicago", id: "255" },
@@ -239,38 +282,6 @@
                 <button onClick={() => navigate('home')} className="btn-primary px-10 py-4 rounded-xl text-xs uppercase tracking-widest">На главную</button>
             </div>
         );
-
-        const ToolsPage = () => {
-            const [activeTool, setActiveTool] = useState('gen');
-
-            const tools = [
-                { id: 'gen', name: 'RP Никнейм' },
-                { id: 'calc', name: 'Калькулятор' },
-                { id: 'game', name: 'Проверка реакции' },
-            ];
-
-            return (
-                <div className="max-w-4xl mx-auto py-8 md:py-16 space-y-8 animate-in fade-in duration-500">
-                    <div className="flex justify-center flex-wrap gap-4">
-                        {tools.map(t => (
-                            <button 
-                                key={t.id}
-                                onClick={() => setActiveTool(t.id)}
-                                className={`px-6 py-3 rounded-xl text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${activeTool === t.id ? 'btn-primary' : 'glass-card hover:border-[#00ff88]'}`}
-                            >
-                                {t.name}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="glass-card p-6 md:p-12 rounded-[2.5rem] relative overflow-hidden min-h-[400px]">
-                        {activeTool === 'gen' && <NicknameGenerator />}
-                        {activeTool === 'calc' && <GrindCalculator />}
-                        {activeTool === 'game' && <QueueKiller />}
-                    </div>
-                </div>
-            );
-        };
 
         const NicknameGenerator = () => {
             const [gender, setGender] = useState('male');
@@ -302,6 +313,21 @@
                     male: ['Mateo', 'Santiago', 'Sebastian', 'Leonardo', 'Matias', 'Emiliano', 'Diego', 'Daniel', 'Miguel', 'Jose', 'Carlos', 'Luis'],
                     female: ['Sofia', 'Maria', 'Valentina', 'Isabella', 'Camila', 'Valeria', 'Ximena', 'Luciana', 'Elena', 'Victoria', 'Martina', 'Lucia'],
                     last: ['Hernandez', 'Garcia', 'Martinez', 'Gonzalez', 'Lopez', 'Rodriguez', 'Perez', 'Sanchez', 'Ramirez', 'Flores', 'Gomez', 'Torres']
+                },
+                deu: {
+                    male: ['Alexander', 'Maximilian', 'Paul', 'Lukas', 'Felix', 'Leon', 'Louis', 'Noah', 'Elias', 'Luca'],
+                    female: ['Sophia', 'Emma', 'Mia', 'Sofia', 'Hannah', 'Emilia', 'Anna', 'Lea', 'Lina', 'Mila'],
+                    last: ['Müller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker', 'Schulz', 'Hoffmann']
+                },
+                fra: {
+                    male: ['Gabriel', 'Louis', 'Raphaël', 'Jules', 'Lucas', 'Adam', 'Arthur', 'Hugo', 'Maël', 'Liam'],
+                    female: ['Jade', 'Louise', 'Emma', 'Alice', 'Ambre', 'Lina', 'Rose', 'Anna', 'Mia', 'Inès'],
+                    last: ['Martin', 'Bernard', 'Dubois', 'Thomas', 'Robert', 'Richard', 'Petit', 'Durand', 'Leroy', 'Moreau']
+                },
+                chn: {
+                    male: ['Wei', 'Hao', 'Ming', 'Jie', 'Lei', 'Tao', 'Jun', 'Peng', 'Bin', 'Qiang'],
+                    female: ['Li', 'Wei', 'Jing', 'Yan', 'Min', 'Xia', 'Fang', 'Ling', 'Mei', 'Na'],
+                    last: ['Wang', 'Li', 'Zhang', 'Liu', 'Chen', 'Yang', 'Huang', 'Zhao', 'Wu', 'Zhou']
                 }
             };
 
@@ -331,10 +357,13 @@
                             {id: 'rus', t: 'RUS'},
                             {id: 'ita', t: 'ITA'},
                             {id: 'jap', t: 'JAP'},
-                            {id: 'mex', t: 'MEX'}
+                            {id: 'mex', t: 'MEX'},
+                            {id: 'deu', t: 'DEU'},
+                            {id: 'fra', t: 'FRA'},
+                            {id: 'chn', t: 'CHN'}
                         ].map(n => (
-                            <button 
-                                key={n.id} 
+                            <button
+                                key={n.id}
                                 onClick={() => setNation(n.id)}
                                 className={`text-[9px] uppercase font-bold py-3 rounded-lg transition-all ${nation === n.id ? 'bg-[#00ff88] text-black shadow-[0_0_15px_#00ff88]' : 'bg-white/5 hover:bg-white/10'}`}
                             >
@@ -406,7 +435,7 @@
         };
 
         const QueueKiller = () => {
-            const [state, setState] = useState('waiting'); // waiting, ready, now, result
+            const [state, setState] = useState('waiting');
             const [startTime, setStartTime] = useState(0);
             const [score, setScore] = useState(null);
             const timeoutRef = useRef(null);
@@ -440,8 +469,8 @@
                     <h3 className="text-2xl font-black italic uppercase tracking-tighter">Проверка реакции</h3>
                     <p className="text-xs opacity-40 max-w-sm">Жди зеленого экрана.</p>
                     <p className="text-xs opacity-40 max-w-sm">Как только цвет изменится — кликай как можно быстрее.</p>
-                    
-                    <div 
+                   
+                    <div
                         onClick={handleClick}
                         className={`w-full max-w-md aspect-video rounded-3xl flex items-center justify-center cursor-pointer transition-all duration-100 shadow-2xl select-none
                             ${state === 'waiting' || state === 'result' ? 'bg-white/5 hover:border-[#00ff88] border-2 border-transparent' : ''}
@@ -463,103 +492,106 @@
             );
         };
 
-        const App = () => {
-            const [page, setPage] = useState(() => {
-                return localStorage.getItem('bipbup_last_page') || 'home';
-            });
-            const [user, setUser] = useState(null);
-            const [loading, setLoading] = useState(true);
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-            
-            useEffect(() => {
-                const unsub = auth.onAuthStateChanged(u => {
-                    setUser(u);
-                    setLoading(false);
-                });
-                return () => unsub();
-            }, []);
-            
-            const navigate = (p) => { 
-                window.scrollTo({top: 0, behavior: 'smooth'}); 
-                setPage(p);
-                localStorage.setItem('bipbup_last_page', p);
-                setIsMenuOpen(false);
-                window.dispatchEvent(new Event('page-change'));
+        const PasswordGenerator = () => {
+            const [length, setLength] = useState(16);
+            const [upper, setUpper] = useState(true);
+            const [lower, setLower] = useState(true);
+            const [numbers, setNumbers] = useState(true);
+            const [symbols, setSymbols] = useState(true);
+            const [password, setPassword] = useState('');
+
+            const generate = () => {
+                let chars = '';
+                if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
+                if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                if (numbers) chars += '0123456789';
+                if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+                if (chars === '') {
+                    alert('Выберите хотя бы один тип символов');
+                    return;
+                }
+
+                let pw = '';
+                for (let i = 0; i < length; i++) {
+                    pw += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                setPassword(pw);
             };
-            
-            const renderPage = () => {
-                if (loading) return <div className="flex justify-center py-20 accent-text animate-pulse">Загрузка данных...</div>;
-                
-                switch(page) {
-                    case 'home': return <Home navigate={navigate} />;
-                    case 'knowledge': return <KnowledgeBase navigate={navigate} />;
-                    case 'social': return <SocialLinks navigate={navigate} />;
-                    case 'player': return <Player />;
-                    case 'tools': return <ToolsPage />;
-                    case 'login': return <Login navigate={navigate} />;
-                    case 'lk': return user ? <Profile user={user} navigate={navigate} /> : <Login navigate={navigate} />;
-                    default: return <ErrorPage code="404" text="Страница не найдена" navigate={navigate} />;
+
+            const copy = () => {
+                if (password) {
+                    navigator.clipboard.writeText(password);
+                    alert('Пароль скопирован!');
                 }
             };
+
             return (
-                <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
-                    <header className="flex justify-between items-center py-6 md:py-10">
-                        <div onClick={() => navigate('home')} className="z-[1100] text-xl md:text-2xl font-black tracking-tighter cursor-pointer flex items-center gap-3 group">
-                            BIPBUP
+                <div className="text-center space-y-8 animate-in fade-in duration-300">
+                    <h3 className="text-2xl font-black italic uppercase tracking-tighter">Генератор паролей</h3>
+                    <div className="space-y-6 max-w-md mx-auto">
+                        <div className="space-y-2">
+                            <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Длина пароля</label>
+                            <input type="number" min="8" max="64" value={length} onChange={e => setLength(Math.max(8, Math.min(64, parseInt(e.target.value) || 8)))} className="text-xl font-bold" />
                         </div>
-                        <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase tracking-[0.2em] items-center">
-                            <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>Главная</button>
-                            <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>База знаний</button>
-                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
-                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
-                            <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>Плееры</button>
-                            {user ? (
-                                <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>Аккаунт</button>
-                            ) : (
-                                <button onClick={() => navigate('login')} className="nav-link btn-login">Вход</button>
-                            )}
-                        </nav>
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-[1100] relative w-8 h-8">
-                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}></span>
-                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}></span>
-                        </button>
-                        {isMenuOpen && (
-                            <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300">
-                                <button onClick={() => navigate('home')} className={page === 'home' ? 'accent-text' : ''}>Главная</button>
-                                <button onClick={() => navigate('knowledge')} className={page === 'knowledge' ? 'accent-text' : ''}>База знаний</button>
-                                <button onClick={() => navigate('tools')} className={page === 'tools' ? 'accent-text' : ''}>Инструменты</button>
-                                <button onClick={() => navigate('social')} className={page === 'social' ? 'accent-text' : ''}>Ссылки</button>
-                                <button onClick={() => navigate('player')} className={page === 'player' ? 'accent-text' : ''}>Плееры</button>
-                                {user ? (
-                                    <button onClick={() => navigate('lk')} className="accent-text border border-[#00ff88] px-6 py-2 rounded-full">Аккаунт</button>
-                                ) : (
-                                    <button onClick={() => navigate('login')} className="accent-text">Вход</button>
-                                )}
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                            <label className="flex items-center gap-3"><input type="checkbox" checked={upper} onChange={e => setUpper(e.target.checked)} className="w-5 h-5" /> A-Z</label>
+                            <label className="flex items-center gap-3"><input type="checkbox" checked={lower} onChange={e => setLower(e.target.checked)} className="w-5 h-5" /> a-z</label>
+                            <label className="flex items-center gap-3"><input type="checkbox" checked={numbers} onChange={e => setNumbers(e.target.checked)} className="w-5 h-5" /> 0-9</label>
+                            <label className="flex items-center gap-3"><input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} className="w-5 h-5" /> !@#...</label>
+                        </div>
+                        <button onClick={generate} className="btn-primary w-full py-5 rounded-2xl text-xs uppercase tracking-[0.3em] font-black">Сгенерировать</button>
+                        <div onClick={copy} className="cursor-pointer group py-8">
+                            <div className="text-2xl md:text-3xl font-bold break-all text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00ff88] group-hover:scale-105 transition-transform">
+                                {password || '...'}
                             </div>
-                        )}
-                    </header>
-                    <main className="flex-grow">
-                        {renderPage()}
-                    </main>
-                    <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024-2026 xqr4d.github.io/bipbup</div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://policies.google.com/privacy?hl=en-US" className="hover:text-[#00ff88] transition">Privacy</a>
-                            <a href="https://policies.google.com/terms?hl=en-US" className="hover:text-[#00ff88] transition">Terms</a>
-                            <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#00ff88] transition">Developer</a>
-                            <a href="https://t.me/balenciaga_telegram" className="hover:text-[#00ff88] transition">BugHunt Feedback</a>
+                            {password && <p className="text-[8px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">Нажми чтобы скопировать</p>}
                         </div>
-                    </footer>
+                    </div>
                 </div>
             );
         };
+
+        const ToolsPage = () => {
+            const [activeTool, setActiveTool] = useState('gen');
+            const tools = [
+                { id: 'gen', name: 'RP Никнейм' },
+                { id: 'calc', name: 'Калькулятор' },
+                { id: 'game', name: 'Проверка реакции' },
+                { id: 'pass', name: 'Генератор паролей' }
+            ];
+
+            return (
+                <div className="max-w-4xl mx-auto py-8 md:py-16 space-y-8 animate-in fade-in duration-500">
+                    <div className="flex justify-center flex-wrap gap-4">
+                        {tools.map(t => (
+                            <button
+                                key={t.id}
+                                onClick={() => setActiveTool(t.id)}
+                                className={`px-6 py-3 rounded-xl text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${activeTool === t.id ? 'btn-primary' : 'glass-card hover:border-[#00ff88]'}`}
+                            >
+                                {t.name}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="glass-card p-6 md:p-12 rounded-[2.5rem] relative overflow-hidden min-h-[400px]">
+                        {activeTool === 'gen' && <NicknameGenerator />}
+                        {activeTool === 'calc' && <GrindCalculator />}
+                        {activeTool === 'game' && <QueueKiller />}
+                        {activeTool === 'pass' && <PasswordGenerator />}
+                    </div>
+                </div>
+            );
+        };
+
         const Home = ({ navigate }) => {
             const bannerConfig = {
                 enabled: true,
-                imageUrl: "images/qrcode_t.me.png",
-                linkUrl: "https://t.me/sellaccmarketbot",
+                imageUrl: "images/freeplace.png",
+                linkUrl: "https://t.me/bipbupmanager",
                 altText: "Рекламный баннер"
             };
+
             return (
                 <div className="space-y-12 md:space-y-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
                     <section className="relative py-10 md:py-20">
@@ -616,6 +648,7 @@
                 </div>
             );
         };
+
         const KnowledgeBase = () => {
             const [pamyatki, setPamyatki] = useState([]);
             const [project, setProject] = useState('gta5rp');
@@ -644,14 +677,14 @@
                             <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Выберите проект и кликните на нужный сервер</p>
                         </div>
                         <div className="flex justify-center gap-4 mb-8">
-                            <button 
-                                onClick={() => setProject('gta5rp')} 
+                            <button
+                                onClick={() => setProject('gta5rp')}
                                 className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'gta5rp' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
                             >
                                 GTA5RP
                             </button>
-                            <button 
-                                onClick={() => setProject('majestic')} 
+                            <button
+                                onClick={() => setProject('majestic')}
                                 className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'majestic' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
                             >
                                 Majestic RP
@@ -688,6 +721,7 @@
                 </div>
             );
         };
+
         const SocialLinks = ({ navigate }) => {
             return (
                 <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
@@ -725,16 +759,19 @@
                 </div>
             );
         };
+
         const Player = () => {
             const [activePlayer, setActivePlayer] = useState('nebula');
             const [vkUrl, setVkUrl] = useState(localStorage.getItem('cached_vk') || "");
             const [ytUrl, setYtUrl] = useState(localStorage.getItem('cached_yt') || "");
             const [nebulaUrl, setNebulaUrl] = useState(localStorage.getItem('cached_nebula') || "");
             const [isLoading, setIsLoading] = useState(false);
+
             useEffect(() => {
-                const videoUrl = "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239417&hash=cf587ef6befd4516&hd=4";
+                const videoUrl = "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239423&hash=346a8ef2bd769321&hd=4";
                 setVkUrl(videoUrl);
                 localStorage.setItem('cached_vk', videoUrl);
+
                 const fetchAutomated = async () => {
                     setIsLoading(true);
                     try {
@@ -746,6 +783,7 @@
                             setYtUrl(url);
                             localStorage.setItem('cached_yt', url);
                         }
+
                         const nebulaRes = await fetch('https://api.github.com/repos/XQR4D/Nebula/releases/latest');
                         const nebulaData = await nebulaRes.json();
                         const asset = nebulaData.assets?.find(a => a.name.endsWith('.mp4'));
@@ -757,19 +795,22 @@
                     } catch (e) {}
                     setIsLoading(false);
                 };
+
                 fetchAutomated();
             }, []);
+
             const players = { youtube: ytUrl, vk: vkUrl, nebula: nebulaUrl };
+
             return (
                 <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-in fade-in duration-700">
                     <div className="glass-card p-2 md:p-4 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#00ff88]/5 relative">
                         <div className="aspect-video bg-black rounded-[1rem] md:rounded-[1.8rem] overflow-hidden">
                             {players[activePlayer] ? (
-                                <iframe 
+                                <iframe
                                     key={activePlayer + players[activePlayer]}
-                                    className="w-full h-full" 
-                                    src={players[activePlayer]} 
-                                    allowFullScreen 
+                                    className="w-full h-full"
+                                    src={players[activePlayer]}
+                                    allowFullScreen
                                     allow="autoplay; encrypted-media; fullscreen"
                                     frameBorder="0"
                                 ></iframe>
@@ -781,15 +822,15 @@
                             )}
                         </div>
                     </div>
-                    
+                   
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                         <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
                             <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">Выбор плеера</h4>
                             <div className="flex flex-wrap gap-3 md:gap-4">
                                 {['youtube', 'vk', 'nebula'].map(p => (
-                                    <button 
-                                        key={p} 
-                                        onClick={() => setActivePlayer(p)} 
+                                    <button
+                                        key={p}
+                                        onClick={() => setActivePlayer(p)}
                                         className={`flex-grow md:flex-none px-4 md:px-6 py-3 rounded-xl text-[9px] md:text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${activePlayer === p ? 'bg-[#00ff88] text-black shadow-[0_0_20px_#00ff88]' : 'bg-white/5 opacity-40 hover:opacity-100'}`}
                                     >
                                         {p}
@@ -809,18 +850,21 @@
                 </div>
             );
         };
+
         const Login = ({ navigate }) => {
             const [mode, setMode] = useState('login');
             const [email, setEmail] = useState('');
             const [pass, setPass] = useState('');
             const [resetSent, setResetSent] = useState(false);
             const recaptchaRef = useRef(null);
+
             useEffect(() => {
                 window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                     'size': 'invisible',
                     'callback': (response) => { }
                 });
             }, []);
+
             const verifyCaptcha = async () => {
                 try {
                     return await window.recaptchaVerifier.verify();
@@ -832,27 +876,33 @@
                     return null;
                 }
             };
+
             const handleAuth = async (e) => {
                 e.preventDefault();
                 const token = await verifyCaptcha();
                 if (!token) return;
-                const promise = mode === 'login' 
-                    ? auth.signInWithEmailAndPassword(email, pass) 
+
+                const promise = mode === 'login'
+                    ? auth.signInWithEmailAndPassword(email, pass)
                     : auth.createUserWithEmailAndPassword(email, pass);
+
                 promise.then(() => navigate('lk')).catch(e => alert(e.message));
             };
+
             const handleGoogleLogin = async () => {
                 const token = await verifyCaptcha();
                 if (!token) return;
                 const provider = new firebase.auth.GoogleAuthProvider();
                 auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
             };
+
             const handleGithubLogin = async () => {
                 const token = await verifyCaptcha();
                 if (!token) return;
                 const provider = new firebase.auth.GithubAuthProvider();
                 auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
             };
+
             const handleReset = (e) => {
                 e.preventDefault();
                 auth.sendPasswordResetEmail(email).then(() => {
@@ -860,6 +910,7 @@
                     setTimeout(() => setMode('login'), 3000);
                 }).catch(e => alert(e.message));
             };
+
             return (
                 <div className="max-w-md mx-auto py-6 md:py-10">
                     <div id="recaptcha-container"></div>
@@ -868,7 +919,7 @@
                             <button onClick={() => setMode('login')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'login' ? 'text-[#00ff88]' : 'opacity-20'}`}>Логин</button>
                             <button onClick={() => setMode('reg')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'reg' ? 'text-[#00ff88]' : 'opacity-20'}`}>Регистрация</button>
                         </div>
-                        
+                       
                         {mode === 'reset' ? (
                             <form onSubmit={handleReset} className="space-y-4 animate-in fade-in duration-300">
                                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">Восстановление</h3>
@@ -888,18 +939,12 @@
                                 <div className="relative py-2">
                                     <div className="absolute inset-0 flex items-center"><div></div></div>
                                     <div className="relative flex justify-center">
-                                        <span className="bg-[#0b0c0d] px-4 text-[8px] uppercase tracking-[0.3em] opacity-40 font-bold">Войти с помощью</span>
+                                        <span className="px-4 text-[8px] uppercase tracking-[0.3em] opacity-40 font-bold">Войти с помощью</span>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <button onClick={handleGoogleLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300 hover:border-[#00ff88]/50">
                                         <svg className="w-6 h-6 mb-2 transition-all duration-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="google-g" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                    <stop offset="0%" stopColor="#4285F4" />
-                                                    <stop offset="100%" stopColor="#34A853" />
-                                                </linearGradient>
-                                            </defs>
                                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                                             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.07-3.71 1.07-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                                             <path d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
@@ -907,7 +952,7 @@
                                         </svg>
                                         <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100 group-hover:text-[#00ff88]">Google</span>
                                     </button>
-                                    
+                                   
                                     <button onClick={handleGithubLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300 hover:border-[#00ff88]/50">
                                         <svg className="w-5 h-5 mb-2 opacity-100" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
@@ -921,13 +966,15 @@
                 </div>
             );
         };
+
         const Profile = ({ user, navigate }) => {
             const [isUploading, setIsUploading] = useState(false);
-            const [avatar, setAvatar] = useState(user?.photoURL);
+            const [avatar, setAvatar] = useState(user?.photoURL || '');
             const [moderationCount, setModerationCount] = useState(0);
-            const [showModal, setShowModal] = useState(null); 
+            const [showModal, setShowModal] = useState(null);
             const [pendingPamyatki, setPendingPamyatki] = useState([]);
             const fileInput = useRef();
+
             useEffect(() => {
                 const unsub = db.collection("pamyatki")
                     .where("status", "==", "pending")
@@ -937,6 +984,7 @@
                     });
                 return () => unsub();
             }, []);
+
             const uploadAvatar = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -950,11 +998,16 @@
                     });
                     const data = await res.json();
                     const url = data.data.url;
-                    await auth.currentUser.updateProfile({ photoURL: url });
+                    await user.updateProfile({ photoURL: url });
                     setAvatar(url);
                     alert("Аватар обновлен!");
-                } catch (err) { alert("Ошибка загрузки"); } finally { setIsUploading(false); }
+                } catch (err) {
+                    alert("Ошибка загрузки");
+                } finally {
+                    setIsUploading(false);
+                }
             };
+
             const submitPamyatka = async (e) => {
                 e.preventDefault();
                 const title = e.target.p_title.value.trim();
@@ -965,14 +1018,19 @@
                         uid: user.uid,
                         displayName: user.displayName || user.email.split('@')[0],
                         email: user.email,
-                        title, imageUrl: url,
+                        title, 
+                        imageUrl: url,
                         status: "pending",
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     alert("Отправлено на модерацию!");
                     setShowModal(null);
-                } catch (err) { alert(err.message); }
+                    e.target.reset();
+                } catch (err) { 
+                    alert(err.message); 
+                }
             };
+
             const handleMod = async (id, status) => {
                 if(status === 'approved') {
                     await db.collection("pamyatki").doc(id).update({ status: "approved" });
@@ -984,16 +1042,20 @@
                     }
                 }
             };
+
             const changeNickname = async (e) => {
                 e.preventDefault();
                 const newName = e.target.new_nickname.value.trim();
                 if (!newName) return alert("Введите никнейм!");
                 try {
-                    await auth.currentUser.updateProfile({ displayName: newName });
+                    await user.updateProfile({ displayName: newName });
                     alert("Никнейм обновлён!");
                     window.location.reload();
-                } catch (e) { alert(e.message); }
+                } catch (e) { 
+                    alert(e.message); 
+                }
             };
+
             const changeEmail = async (e) => {
                 e.preventDefault();
                 const newEmail = e.target.new_email.value.trim().toLowerCase();
@@ -1001,11 +1063,14 @@
                 if (!newEmail || !password) return alert("Заполните все поля!");
                 try {
                     const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
-                    await auth.currentUser.reauthenticateWithCredential(credential);
-                    await auth.currentUser.verifyBeforeUpdateEmail(newEmail);
+                    await user.reauthenticateWithCredential(credential);
+                    await user.verifyBeforeUpdateEmail(newEmail);
                     alert("Проверьте новый email! Перейдите по ссылке в письме.");
-                } catch (e) { alert(e.message); }
+                } catch (e) { 
+                    alert(e.message); 
+                }
             };
+
             const changePassword = async (e) => {
                 e.preventDefault();
                 const cur = e.target.current_password.value;
@@ -1015,19 +1080,39 @@
                 if (np.length < 6) return alert("Пароль должен быть не менее 6 символов!");
                 try {
                     const cred = firebase.auth.EmailAuthProvider.credential(user.email, cur);
-                    await auth.currentUser.reauthenticateWithCredential(cred);
-                    await auth.currentUser.updatePassword(np);
+                    await user.reauthenticateWithCredential(cred);
+                    await user.updatePassword(np);
                     alert("Пароль изменён!");
                     e.target.reset();
-                } catch (e) { alert(e.message); }
+                } catch (e) { 
+                    alert(e.message); 
+                }
             };
+
+            const deleteAccount = async (e) => {
+                e.preventDefault();
+                const password = e.target.del_password.value;
+                if (!password) return alert("Введите текущий пароль для подтверждения");
+                if (!confirm("Вы уверены? Аккаунт будет удалён навсегда без возможности восстановления!")) return;
+
+                try {
+                    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+                    await user.reauthenticateWithCredential(credential);
+                    await user.delete();
+                    alert("Аккаунт успешно удалён");
+                    navigate('home');
+                } catch (err) {
+                    alert("Ошибка удаления: " + err.message);
+                }
+            };
+
             return (
                 <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in duration-700">
                     <div className="glass-card p-8 md:p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-10">
                         <div className="relative group cursor-pointer" onClick={() => fileInput.current.click()}>
                             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#00ff88]/20 group-hover:border-[#00ff88] transition-all duration-500 shadow-2xl">
                                 {avatar ? (
-                                    <img src={avatar} className="w-full h-full object-cover" />
+                                    <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl font-black accent-text">
                                         {(user.displayName || user.email)[0].toUpperCase()}
@@ -1040,7 +1125,7 @@
                             <input type="file" ref={fileInput} className="hidden" accept="image/*" onChange={uploadAvatar} />
                             {isUploading && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#00ff88] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">UP...</div>}
                         </div>
-                        
+                       
                         <div className="text-center md:text-left space-y-4">
                             <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
                             <p className="text-xs md:text-sm opacity-30 font-medium tracking-widest uppercase">{user.email}</p>
@@ -1055,15 +1140,17 @@
                             </div>
                         </div>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
                             <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Настройки профиля</h3>
-                            
+                           
                             <form onSubmit={changeNickname} className="space-y-4">
                                 <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Изменить никнейм</label>
-                                <input name="new_nickname" type="text" placeholder="Новый никнейм" defaultValue={user.displayName} />
+                                <input name="new_nickname" type="text" placeholder="Новый никнейм" defaultValue={user.displayName || ''} />
                                 <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить имя</button>
                             </form>
+
                             <form onSubmit={changeEmail} className="space-y-4 pt-4">
                                 <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Сменить Email</label>
                                 <input name="new_email" type="email" placeholder="Новый email" required />
@@ -1071,6 +1158,7 @@
                                 <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Сменить почту</button>
                             </form>
                         </div>
+
                         <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
                             <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Безопасность</h3>
                             <form onSubmit={changePassword} className="space-y-4">
@@ -1080,30 +1168,41 @@
                                 <input name="new_password_confirm" type="password" placeholder="Повторите пароль" required />
                                 <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить пароль</button>
                             </form>
+
+                            <div>
+                                <h3 className="text-lg font-black italic uppercase tracking-tighter text-red-500 mb-4">Удаление аккаунта</h3>
+                                <p className="text-xs opacity-50 mb-4">Все данные будут удалены навсегда.</p>
+                                <form onSubmit={deleteAccount} className="space-y-4">
+                                    <input name="del_password" type="password" placeholder="Текущий пароль" required className="border-red-500/30 focus:border-red-500" />
+                                    <button type="submit" className="w-full py-4 rounded-xl text-[9px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition">
+                                        Удалить аккаунт навсегда
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                     {showModal === 'add' && (
                         <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
                             <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100">✕</button>
+                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
                                 <h3 className="text-xl font-black italic uppercase tracking-tighter text-center">Новая памятка</h3>
                                 <form onSubmit={submitPamyatka} className="space-y-4">
                                     <input name="p_title" placeholder="Название (напр. Процессуальный кодекс)" required />
-                                    <input name="p_url" type="url" placeholder="Прямая ссылка на изображение" required />
-                                    <div className="p-4 bg-white/5 rounded-2xl text-[9px] opacity-40 leading-relaxed uppercase tracking-widest">
-                                        Используйте imgbb.com для загрузки. Копируйте "Direct Link".
-                                    </div>
-                                    <button className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]">Отправить</button>
+                                    <input name="p_url" type="url" placeholder="Прямая ссылка на изображение (imgbb.com → Direct Link)" required />
+                                    <button className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]">Отправить на модерацию</button>
                                 </form>
                             </div>
                         </div>
                     )}
-                    {showModal === 'mod' && (
+
+                    {showModal === 'mod' && ADMINS.includes(user.uid) && (
                         <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
                             <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100">✕</button>
-                                <h3 className="text-xl font-black italic uppercase tracking-tighter">На модерации</h3>
-                                {pendingPamyatki.length === 0 ? <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">Пусто</p> : (
+                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
+                                <h3 className="text-xl font-black italic uppercase tracking-tighter">Памятки на модерации ({moderationCount})</h3>
+                                {pendingPamyatki.length === 0 ? 
+                                    <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">Нет памяток на модерации</p> : 
                                     <div className="space-y-6">
                                         {pendingPamyatki.map(p => (
                                             <div key={p.id} className="p-6 bg-white/5 rounded-3xl space-y-4 border border-white/5">
@@ -1113,176 +1212,238 @@
                                                         <p className="text-[9px] opacity-30 mt-1 uppercase">От: {p.email}</p>
                                                     </div>
                                                     <div className="flex gap-2">
-                                                        <button onClick={() => handleMod(p.id, 'approved')} className="bg-[#00ff88] text-black p-2 rounded-lg hover:scale-110 transition">✓</button>
-                                                        <button onClick={() => handleMod(p.id, 'reject')} className="bg-red-500 text-white p-2 rounded-lg hover:scale-110 transition">✕</button>
+                                                        <button onClick={() => handleMod(p.id, 'approved')} className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Принять</button>
+                                                        <button onClick={() => handleMod(p.id, 'reject')} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Отклонить</button>
                                                     </div>
                                                 </div>
-                                                <img src={p.imageUrl} className="w-full rounded-xl border border-white/10" />
+                                                <img src={p.imageUrl} alt={p.title} className="w-full rounded-xl border border-white/10" />
                                             </div>
                                         ))}
                                     </div>
-                                )}
+                                }
                             </div>
                         </div>
                     )}
                 </div>
             );
         };
+
+        const App = () => {
+            const [page, setPage] = useState(() => localStorage.getItem('bipbup_last_page') || 'home');
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+           
+            useEffect(() => {
+                const unsub = auth.onAuthStateChanged(u => {
+                    setUser(u);
+                    setLoading(false);
+                });
+                return () => unsub();
+            }, []);
+           
+            const navigate = (p) => {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                setPage(p);
+                localStorage.setItem('bipbup_last_page', p);
+                setIsMenuOpen(false);
+                window.dispatchEvent(new Event('page-change'));
+            };
+           
+            const renderPage = () => {
+                if (loading) return <div className="flex justify-center py-20 accent-text animate-pulse text-2xl">Загрузка...</div>;
+               
+                switch(page) {
+                    case 'home': return <Home navigate={navigate} />;
+                    case 'knowledge': return <KnowledgeBase />;
+                    case 'social': return <SocialLinks navigate={navigate} />;
+                    case 'player': return <Player />;
+                    case 'tools': return <ToolsPage />;
+                    case 'login': return <Login navigate={navigate} />;
+                    case 'lk': return user ? <Profile user={user} navigate={navigate} /> : <Login navigate={navigate} />;
+                    default: return <ErrorPage code="404" text="Страница не найдена" navigate={navigate} />;
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
+                    <header className="flex justify-between items-center py-6 md:py-10">
+                        <div
+                            onClick={() => navigate('home')}
+                            className="z-[1100] cursor-pointer flex items-center">
+                            <img
+                                src="images/logobip.png"
+                                alt="BIPBUP Logo"
+                                className="h-10 md:h-14 lg:h-16 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] lg:max-w-[320px] object-contain transition-transform duration-300 hover:scale-105"
+                            />
+                        </div>
+                        <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase tracking-[0.2em] items-center">
+                            <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>Главная</button>
+                            <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>База знаний</button>
+                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
+                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
+                            <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>Плееры</button>
+                            {user ? (
+                                <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>Аккаунт</button>
+                            ) : (
+                                <button onClick={() => navigate('login')} className="nav-link btn-login">Вход</button>
+                            )}
+                        </nav>
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-[1100] relative w-8 h-8">
+                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}></span>
+                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}></span>
+                        </button>
+                        {isMenuOpen && (
+                            <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300">
+                                <button onClick={() => navigate('home')} className={page === 'home' ? 'accent-text' : ''}>Главная</button>
+                                <button onClick={() => navigate('knowledge')} className={page === 'knowledge' ? 'accent-text' : ''}>База знаний</button>
+                                <button onClick={() => navigate('tools')} className={page === 'tools' ? 'accent-text' : ''}>Инструменты</button>
+                                <button onClick={() => navigate('social')} className={page === 'social' ? 'accent-text' : ''}>Ссылки</button>
+                                <button onClick={() => navigate('player')} className={page === 'player' ? 'accent-text' : ''}>Плееры</button>
+                                {user ? (
+                                    <button onClick={() => navigate('lk')} className="accent-text border border-[#00ff88] px-6 py-2 rounded-full">Аккаунт</button>
+                                ) : (
+                                    <button onClick={() => navigate('login')} className="accent-text">Вход</button>
+                                )}
+                            </div>
+                        )}
+                    </header>
+                    <main className="flex-grow">
+                        {renderPage()}
+                    </main>
+                    <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024-2026 xqr4d.github.io/bipbup</div>
+                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
+                            <a href="https://policies.google.com/privacy?hl=en-US" className="hover:text-[#00ff88] transition">Privacy</a>
+                            <a href="https://policies.google.com/terms?hl=en-US" className="hover:text-[#00ff88] transition">Terms</a>
+                            <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#00ff88] transition">Developer</a>
+                            <a href="https://t.me/balenciaga_telegram" className="hover:text-[#00ff88] transition">BugHunt Feedback</a>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-
+    <script>
+        function hasCookieConsent() {
+            return localStorage.getItem('cookieConsent') === 'accepted';
+        }
+        function showCookieBanner() {
+            const banner = document.getElementById('cookie-banner');
+            if (banner && !hasCookieConsent()) {
+                setTimeout(() => {
+                    banner.classList.add('show');
+                }, 800);
+            }
+        }
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookie-banner').classList.remove('show');
+           
+            if (typeof ym === 'undefined' || !ym) {
+                const script = document.createElement('script');
+                script.src = 'https://mc.yandex.ru/metrika/tag.js';
+                script.async = true;
+                script.onload = function() {
+                    ym(99936739, 'init', {
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true,
+                        webvisor: true
+                    });
+                };
+                document.head.appendChild(script);
+            }
+        }
+        function rejectCookies() {
+            localStorage.setItem('cookieConsent', 'rejected');
+            document.getElementById('cookie-banner').classList.remove('show');
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            showCookieBanner();
+            document.getElementById('cookie-accept')?.addEventListener('click', acceptCookies);
+            document.getElementById('cookie-reject')?.addEventListener('click', rejectCookies);
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            
+           
             let width, height;
-            let particles = [];
-            const particleCount = 100;
-            const connectionDistance = 150;
-            const mouseDistance = 200;
-            let scrollSpeed = 0;
-            let targetScrollSpeed = 0;
-            let warpFactor = 0;
-            let mouse = { x: null, y: null };
-
+            let orbs = [];
+           
+            const colorPalette = [
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 }
+            ];
+            const orbCount = 5;
             function resize() {
                 width = window.innerWidth;
                 height = window.innerHeight;
                 canvas.width = width;
                 canvas.height = height;
-                initParticles();
+                initOrbs();
             }
-            window.addEventListener('resize', resize);
-
-            const style = getComputedStyle(document.body);
-            const accentHex = style.getPropertyValue('--accent').trim() || '#00ff88';
-            
-            function hexToRgb(hex) {
-                const bigint = parseInt(hex.replace('#', ''), 16);
-                return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-            }
-            const accentRgb = hexToRgb(accentHex);
-
-            class Particle {
+            class Orb {
                 constructor() {
+                    this.setRandomValues();
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.size = Math.random() * 2 + 1;
                 }
-
+                setRandomValues() {
+                    this.radius = Math.random() * 300 + 200;
+                    this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                    this.vx = (Math.random() - 0.5) * 0.8;
+                    this.vy = (Math.random() - 0.5) * 0.8;
+                    this.sinOffset = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.02;
+                }
                 update() {
-                    let speedMult = 1 + warpFactor * 50; 
-                    
-                    this.x += this.vx * (1 + warpFactor * 2);
-                    this.y += this.vy + (scrollSpeed * 0.5) + (warpFactor * 10); 
-
-                    if (mouse.x != null) {
-                        let dx = mouse.x - this.x;
-                        let dy = mouse.y - this.y;
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < mouseDistance) {
-                            const forceDirectionX = dx / distance;
-                            const forceDirectionY = dy / distance;
-                            const force = (mouseDistance - distance) / mouseDistance;
-                            const directionX = forceDirectionX * force * 2;
-                            const directionY = forceDirectionY * force * 2;
-                            this.x -= directionX;
-                            this.y -= directionY;
-                        }
-                    }
-
-                    if (this.x < 0) this.x = width;
-                    else if (this.x > width) this.x = 0;
-                    
-                    if (this.y < 0) this.y = height;
-                    else if (this.y > height) this.y = 0;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < -this.radius) this.vx *= -1;
+                    if (this.x > width + this.radius) this.vx *= -1;
+                    if (this.y < -this.radius) this.vy *= -1;
+                    if (this.y > height + this.radius) this.vy *= -1;
+                    this.sinOffset += this.pulseSpeed;
                 }
-
                 draw() {
-                    ctx.fillStyle = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, ${0.5 + warpFactor})`;
+                    const currentRadius = this.radius + Math.sin(this.sinOffset) * 50;
+                    const gradient = ctx.createRadialGradient(
+                        this.x, this.y, 0,
+                        this.x, this.y, currentRadius
+                    );
+                    gradient.addColorStop(0, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0.35)`);
+                    gradient.addColorStop(0.5, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0.1)`);
+                    gradient.addColorStop(1, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0)`);
+                    ctx.fillStyle = gradient;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
-
-            function initParticles() {
-                particles = [];
-                const count = (width * height) / 10000;
-                for (let i = 0; i < count; i++) {
-                    particles.push(new Particle());
+            function initOrbs() {
+                orbs = [];
+                for (let i = 0; i < orbCount; i++) {
+                    orbs.push(new Orb());
                 }
             }
-
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-
-                scrollSpeed += (targetScrollSpeed - scrollSpeed) * 0.1;
-                warpFactor *= 0.95;
-
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
+                ctx.globalCompositeOperation = 'screen';
+                for (let orb of orbs) {
+                    orb.update();
+                    orb.draw();
                 }
-
-                connectParticles();
-
+                ctx.globalCompositeOperation = 'source-over';
                 requestAnimationFrame(animate);
             }
-
-            function connectParticles() {
-                let opacity = 1;
-                for (let a = 0; a < particles.length; a++) {
-                    for (let b = a; b < particles.length; b++) {
-                        let dx = particles[a].x - particles[b].x;
-                        let dy = particles[a].y - particles[b].y;
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < connectionDistance + (warpFactor * 100)) {
-                            opacity = 1 - (distance / (connectionDistance + (warpFactor * 100)));
-                            ctx.strokeStyle = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, ${opacity * 0.4})`;
-                            ctx.lineWidth = 1;
-                            ctx.beginPath();
-                            ctx.moveTo(particles[a].x, particles[a].y);
-                            ctx.lineTo(particles[b].x, particles[b].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            window.addEventListener('mousemove', (e) => {
-                mouse.x = e.x;
-                mouse.y = e.y;
-            });
-            window.addEventListener('mouseout', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            let lastScrollY = window.scrollY;
-            window.addEventListener('scroll', () => {
-                const currentScrollY = window.scrollY;
-                const delta = currentScrollY - lastScrollY;
-                
-                targetScrollSpeed = delta * 0.2;
-                
-                clearTimeout(window.scrollTimeout);
-                window.scrollTimeout = setTimeout(() => {
-                    targetScrollSpeed = 0;
-                }, 100);
-
-                lastScrollY = currentScrollY;
-            });
-
-            window.addEventListener('page-change', () => {
-                warpFactor = 1.0;
-            });
-
+            window.addEventListener('resize', resize);
             resize();
             animate();
         });
