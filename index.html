@@ -252,7 +252,7 @@
             { n: 17, name: "Redwood", id: "1535" }, { n: 18, name: "Hawick", id: "1644" },
             { n: 19, name: "Grapeseed", id: "1732" }, { n: 20, name: "Murrieta", id: "1821" },
             { n: 21, name: "Vespucci", id: "1912" }, { n: 22, name: "Milton", id: "1984" },
-            { n: 23, name: "La Puerta", id: "2071" }
+            { n: 23, name: "La Puerta", id: "2071" }, { n: 24, name: "?", id: "" }
         ];
 
         const MAJESTIC_SERVERS = [
@@ -272,7 +272,8 @@
             { n: 14, name: "Seattle", id: "1163" },
             { n: 15, name: "Phoenix", id: "1213" },
             { n: 16, name: "Denver", id: "1276" },
-            { n: 17, name: "Portland", id: "1338" }
+            { n: 17, name: "Portland", id: "1338" },
+            { n: 18, name: "?", id: "" }
         ];
 
         const ErrorPage = ({ code, text, navigate }) => (
@@ -634,8 +635,8 @@
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                         {[
                             { t: 'База знаний', d: 'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.' },
-                            { t: 'Fast API плееры', d: 'Смотрите новые видео без задержки, зависаний в разных плеерах.' },
-                            { t: 'Простая регистрация', d: 'Обновленный вход и регистрация, теперь быстрее и с большими вариацими входа.' }
+                            { t: 'Плееры без замедлений', d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Nebula.' },
+                            { t: 'Быстрая и удобная регистрация', d: 'Входите по почте, Google и Github аккаунту.' }
                         ].map((c, i) => (
                             <div key={i} className="glass-card p-8 md:p-10 rounded-3xl">
                                 <div className="w-10 h-10 bg-[#00ff88]/10 rounded-lg flex items-center justify-center mb-6 text-[#00ff88] font-black">
@@ -1124,10 +1125,9 @@
 
                     <section className="space-y-4">
                         <h2 className="text-xl md:text-2xl font-bold">1. ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ</h2>
-                        <p>1.1. Администрация Сайта – Самозанятый 1, адрес: 1, являющаяся правообладателем Сайта.</p>
-                        <p>1.2. Пользователь – любое физическое лицо, достигшее возраста, допустимого для акцепта настоящего Соглашения, и использующее Сайт.</p>
-                        <p>1.3. Сайт – совокупность программ для электронных вычислительных машин и иной информации, содержащейся в информационной системе, доступ к которой обеспечивается посредством сети «Интернет» по доменному имени https://xqr4d.github.io/bipbup/.</p>
-                        <p>1.4. Акцепт оферты – полное и безоговорочное принятие Пользователем условий настоящего Соглашения, совершаемое путем использования Сайта (просмотр страниц, регистрация, отправка форм и т.д.).</p>
+                        <p>1.1. Пользователь – любое физическое лицо, достигшее возраста, допустимого для акцепта настоящего Соглашения, и использующее Сайт.</p>
+                        <p>1.2. Сайт – совокупность программ для электронных вычислительных машин и иной информации, содержащейся в информационной системе, доступ к которой обеспечивается посредством сети «Интернет» по доменному имени https://xqr4d.github.io/bipbup/.</p>
+                        <p>1.3. Акцепт оферты – полное и безоговорочное принятие Пользователем условий настоящего Соглашения, совершаемое путем использования Сайта (просмотр страниц, регистрация, отправка форм и т.д.).</p>
                     </section>
 
                     <section className="space-y-4">
@@ -1530,13 +1530,13 @@
                             <button onClick={() => navigate('terms')} className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">TERMS</button>
                         </div>
                         <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#00ff88] transition">Developer</a>
+                            <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">Developer</a>
                         </div>
                         <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://t.me/balenciaga_telegram" className="hover:text-[#00ff88] transition">BugHunt Feedback</a>
+                            <a href="https://t.me/balenciaga_telegram" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">BugHunt</a>
                         </div>
                         <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://xqr4d.github.io/shortlink/" className="hover:text-[#00ff88] transition">Supported by shortlink</a>
+                            <a href="https://xqr4d.github.io/shortlink/" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">Created with help shortlink</a>
                         </div>
                     </footer>
                 </div>
