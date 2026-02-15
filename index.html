@@ -787,15 +787,20 @@
                         }
 
                         const nebulaRes = await fetch('https://api.github.com/repos/XQR4D/Nebula/releases/latest');
-                        const nebulaData = await nebulaRes.json();
-                        const asset = nebulaData.assets?.find(a => a.name.endsWith('.mp4'));
-                        if (asset) {
-                            const url = `https://xqr4d.github.io/Nebula/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
-                            setNebulaUrl(url);
-                            localStorage.setItem('cached_nebula', url);
+                        if (nebulaRes.ok) {
+                            const nebulaData = await nebulaRes.json();
+                            const asset = nebulaData.assets?.find(a => a.name.endsWith('.mp4'));
+                            if (asset) {
+                                const url = `https://xqr4d.github.io/Nebula/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
+                                setNebulaUrl(url);
+                                localStorage.setItem('cached_nebula', url);
+                            }
                         }
-                    } catch (e) {}
-                    setIsLoading(false);
+                    } catch (err) {
+                        console.error('Не удалось автоматически загрузить последние видео:', err);
+                    } finally {
+                        setIsLoading(false);
+                    }
                 };
 
                 fetchAutomated();
@@ -846,6 +851,14 @@
                                 <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
                                 </a>
                                 <div className="text-[#00ff88] text-lg md:text-xl font-black italic uppercase tracking-tighter">Ролики оффлайн</div>
+                            </div>
+                        </div>
+                        <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
+                            <div>
+                                <a href="https://xqr4d.github.io/Nebula/" target="_blank" className="hover:scale-110 transition-transform">
+                                <img style={{height: "60px"}} src="images/play.png" alt="Telegram канал" />
+                                </a>
+                                <div className="text-[#00ff88] text-lg md:text-xl font-black italic uppercase tracking-tighter">Плеер Nebula</div>
                             </div>
                         </div>
                     </div>
