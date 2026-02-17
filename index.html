@@ -764,55 +764,94 @@
 
         const Player = () => {
             const [activePlayer, setActivePlayer] = useState('nebula');
-            const [vkUrl, setVkUrl] = useState(localStorage.getItem('cached_vk') || "");
-            const [ytUrl, setYtUrl] = useState(localStorage.getItem('cached_yt') || "");
-            const [nebulaUrl, setNebulaUrl] = useState(localStorage.getItem('cached_nebula') || "");
-            const [isLoading, setIsLoading] = useState(false);
+            const [vkUrl, setVkUrl] = useState('');
+            const [ytUrl, setYtUrl] = useState('');
+            const [nebulaUrl, setNebulaUrl] = useState('');
+            const [isLoading, setIsLoading] = useState(true);
 
             useEffect(() => {
-                const videoUrl = "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239424&hash=5c6f77d900591ee9&hd=4";
-                setVkUrl(videoUrl);
-                localStorage.setItem('cached_vk', videoUrl);
-
-                const fetchAutomated = async () => {
+                const loadVideos = async () => {
                     setIsLoading(true);
                     try {
-                        const ytRes = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/feeds/videos.xml?channel_id=UCjrmposCYp6sJsT2VybjH9A')}`);
-                        const ytData = await ytRes.json();
-                        const ytId = ytData.contents?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1];
-                        if (ytId) {
-                            const url = `https://www.youtube.com/embed/${ytId}?rel=0`;
-                            setYtUrl(url);
-                            localStorage.setItem('cached_yt', url);
-                        }
+                        const overridesSnap = await db.collection('settings').doc('video_overrides').get();
+                        const overrides = overridesSnap.exists ? overridesSnap.data() : {};
 
-                        const nebulaRes = await fetch('https://api.github.com/repos/XQR4D/Nebula/releases/latest');
-                        if (nebulaRes.ok) {
-                            const nebulaData = await nebulaRes.json();
-                            const asset = nebulaData.assets?.find(a => a.name.endsWith('.mp4'));
-                            if (asset) {
-                                const url = `https://xqr4d.github.io/Nebula/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
-                                setNebulaUrl(url);
-                                localStorage.setItem('cached_nebula', url);
+                        let finalVk = overrides.vk_override;
+                        if (!finalVk) {
+                            finalVk = localStorage.getItem('cached_vk') ||
+                                    "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239424&hash=5c6f77d900591ee9&hd=4";
+                            localStorage.setItem('cached_vk', finalVk);
+                        }
+                        setVkUrl(finalVk);
+
+                        let finalYt = overrides.yt_override;
+                        if (!finalYt) {
+                            finalYt = localStorage.getItem('cached_yt');
+                            if (!finalYt) {
+                                try {
+                                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(
+                                        'https://www.youtube.com/feeds/videos.xml?channel_id=UCjrmposCYp6sJsT2VybjH9A'
+                                    )}`);
+                                    const data = await res.json();
+                                    const idMatch = data.contents?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+                                    if (idMatch?.[1]) {
+                                        finalYt = `https://www.youtube.com/embed/${idMatch[1]}?rel=0`;
+                                        localStorage.setItem('cached_yt', finalYt);
+                                    }
+                                } catch (e) {
+                                    console.warn("YouTube fetch failed", e);
+                                }
                             }
                         }
+                        setYtUrl(finalYt || '');
+
+                        let finalNebula = overrides.nebula_override;
+                        if (!finalNebula) {
+                            finalNebula = localStorage.getItem('cached_nebula');
+                            if (!finalNebula) {
+                                try {
+                                    const res = await fetch('https://api.github.com/repos/XQR4D/Nebula/releases/latest');
+                                    if (res.ok) {
+                                        const json = await res.json();
+                                        const asset = json.assets?.find(a => a.name.endsWith('.mp4'));
+                                        if (asset?.browser_download_url) {
+                                            finalNebula = `https://xqr4d.github.io/Nebula/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
+                                            localStorage.setItem('cached_nebula', finalNebula);
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.warn("Nebula fetch failed", e);
+                                }
+                            }
+                        }
+                        setNebulaUrl(finalNebula || '');
+
                     } catch (err) {
-                        console.error('Не удалось автоматически загрузить последние видео:', err);
+                        console.error('Ошибка при загрузке видео:', err);
                     } finally {
                         setIsLoading(false);
                     }
                 };
 
-                fetchAutomated();
+                loadVideos();
             }, []);
 
-            const players = { youtube: ytUrl, vk: vkUrl, nebula: nebulaUrl };
+            const players = {
+                youtube: ytUrl,
+                vk: vkUrl,
+                nebula: nebulaUrl
+            };
 
             return (
                 <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-in fade-in duration-700">
                     <div className="glass-card p-2 md:p-4 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#00ff88]/5 relative">
                         <div className="aspect-video bg-black rounded-[1rem] md:rounded-[1.8rem] overflow-hidden">
-                            {players[activePlayer] ? (
+                            {isLoading ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center">
+                                    <div className="w-8 h-8 border-2 border-[#00ff88]/20 border-t-[#00ff88] rounded-full animate-spin mb-4"></div>
+                                    <div className="text-[10px] uppercase tracking-widest opacity-40">Загрузка...</div>
+                                </div>
+                            ) : players[activePlayer] ? (
                                 <iframe
                                     key={activePlayer + players[activePlayer]}
                                     className="w-full h-full"
@@ -822,14 +861,13 @@
                                     frameBorder="0"
                                 ></iframe>
                             ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-center">
-                                    <div className="w-8 h-8 border-2 border-[#00ff88]/20 border-t-[#00ff88] rounded-full animate-spin mb-4"></div>
-                                    <div className="text-[10px] uppercase tracking-widest opacity-40">Загрузка...</div>
+                                <div className="w-full h-full flex items-center justify-center text-sm opacity-60">
+                                    Видео недоступно
                                 </div>
                             )}
                         </div>
                     </div>
-                   
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                         <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
                             <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">Выбор плеера</h4>
@@ -838,25 +876,31 @@
                                     <button
                                         key={p}
                                         onClick={() => setActivePlayer(p)}
-                                        className={`flex-grow md:flex-none px-4 md:px-6 py-3 rounded-xl text-[9px] md:text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${activePlayer === p ? 'bg-[#00ff88] text-black shadow-[0_0_20px_#00ff88]' : 'bg-white/5 opacity-40 hover:opacity-100'}`}
+                                        className={`flex-grow md:flex-none px-4 md:px-6 py-3 rounded-xl text-[9px] md:text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${
+                                            activePlayer === p
+                                                ? 'bg-[#00ff88] text-black shadow-[0_0_20px_#00ff88]'
+                                                : 'bg-white/5 opacity-40 hover:opacity-100'
+                                        }`}
                                     >
-                                        {p}
+                                        {p.charAt(0).toUpperCase() + p.slice(1)}
                                     </button>
                                 ))}
                             </div>
                         </div>
+
                         <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
                             <div>
                                 <a href="https://t.me/bipbupvods" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
+                                    <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
                                 </a>
                                 <div className="text-[#00ff88] text-lg md:text-xl font-black italic uppercase tracking-tighter">Ролики оффлайн</div>
                             </div>
                         </div>
+
                         <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
                             <div>
                                 <a href="https://xqr4d.github.io/Nebula/" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/play.png" alt="Telegram канал" />
+                                    <img style={{height: "60px"}} src="images/play.png" alt="Nebula плеер" />
                                 </a>
                                 <div className="text-[#00ff88] text-lg md:text-xl font-black italic uppercase tracking-tighter">Плеер Nebula</div>
                             </div>
@@ -1022,32 +1066,32 @@
             <section className="space-y-4">
                 <h2 className="text-xl md:text-2xl font-bold">3. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ BIP BUP Media</h2>
                 <p>3.1. BIP BUP Media имеет право:
-— получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;
-— в случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, BIP BUP Media вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;
-— самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
-                <p>3.2. BIP BUP Media обязан:
-— предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;
-— организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;
-— отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;
-— сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;
-— публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;
-— принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;
-— прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;
-— исполнять иные обязанности, предусмотренные Законом о персональных данных.</p>
+                — получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;
+                — в случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, BIP BUP Media вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;
+                — самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
+                                <p>3.2. BIP BUP Media обязан:
+                — предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;
+                — организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;
+                — отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;
+                — сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;
+                — публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;
+                — принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;
+                — прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;
+                — исполнять иные обязанности, предусмотренные Законом о персональных данных.</p>
             </section>
 
             <section className="space-y-4">
                 <h2 className="text-xl md:text-2xl font-bold">4. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ СУБЪЕКТОВ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
                 <p>4.1. Субъекты персональных данных имеют право:
-— получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами. Сведения предоставляются субъекту персональных данных BIP BUP Media в доступной форме, и в них не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных. Перечень информации и порядок ее получения установлен Законом о персональных данных;
-— требовать от BIP BUP Media уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав;
-— выдвигать условие предварительного согласия при обработке персональных данных в целях продвижения на рынке товаров, работ и услуг;
-— на отзыв согласия на обработку персональных данных, а также, на направление требования о прекращении обработки персональных данных;
-— обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в судебном порядке неправомерные действия или бездействие BIP BUP Media при обработке его персональных данных;
-— на осуществление иных прав, предусмотренных законодательством РФ.</p>
-                <p>4.2. Субъекты персональных данных обязаны:
-— предоставлять BIP BUP Media достоверные данные о себе;
-— сообщать BIP BUP Media об уточнении (обновлении, изменении) своих персональных данных.</p>
+                — получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами. Сведения предоставляются субъекту персональных данных BIP BUP Media в доступной форме, и в них не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных. Перечень информации и порядок ее получения установлен Законом о персональных данных;
+                — требовать от BIP BUP Media уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав;
+                — выдвигать условие предварительного согласия при обработке персональных данных в целях продвижения на рынке товаров, работ и услуг;
+                — на отзыв согласия на обработку персональных данных, а также, на направление требования о прекращении обработки персональных данных;
+                — обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в судебном порядке неправомерные действия или бездействие BIP BUP Media при обработке его персональных данных;
+                — на осуществление иных прав, предусмотренных законодательством РФ.</p>
+                                <p>4.2. Субъекты персональных данных обязаны:
+                — предоставлять BIP BUP Media достоверные данные о себе;
+                — сообщать BIP BUP Media об уточнении (обновлении, изменении) своих персональных данных.</p>
                 <p>4.3. Лица, передавшие BIP BUP Media недостоверные сведения о себе, либо сведения о другом субъекте персональных данных без согласия последнего, несут ответственность в соответствии с законодательством РФ.</p>
             </section>
 
@@ -1189,265 +1233,348 @@
         );
 
         const Profile = ({ user, navigate }) => {
-            const [isUploading, setIsUploading] = useState(false);
-            const [avatar, setAvatar] = useState(user?.photoURL || '');
-            const [moderationCount, setModerationCount] = useState(0);
-            const [showModal, setShowModal] = useState(null);
-            const [pendingPamyatki, setPendingPamyatki] = useState([]);
-            const fileInput = useRef();
+    const [isUploading, setIsUploading] = useState(false);
+    const [avatar, setAvatar] = useState(user?.photoURL || '');
+    const [moderationCount, setModerationCount] = useState(0);
+    const [showModal, setShowModal] = useState(null);
+    const [pendingPamyatki, setPendingPamyatki] = useState([]);
 
-            useEffect(() => {
-                const unsub = db.collection("pamyatki")
-                    .where("status", "==", "pending")
-                    .onSnapshot(snap => {
-                        setModerationCount(snap.size);
-                        setPendingPamyatki(snap.docs.map(doc => ({id: doc.id, ...doc.data()})));
-                    });
-                return () => unsub();
-            }, []);
+    const [ytOverride, setYtOverride] = useState('');
+    const [vkOverride, setVkOverride] = useState('');
+    const [nebulaOverride, setNebulaOverride] = useState('');
 
-            const uploadAvatar = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                setIsUploading(true);
-                try {
-                    const formData = new FormData();
-                    formData.append('image', file);
-                    const res = await fetch(`https://api.imgbb.com/1/upload?key=fac7e04a7bdbc05013b7483b33eae743`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await res.json();
-                    const url = data.data.url;
-                    await user.updateProfile({ photoURL: url });
-                    setAvatar(url);
-                    alert("Аватар обновлен!");
-                } catch (err) {
-                    alert("Ошибка загрузки");
-                } finally {
-                    setIsUploading(false);
+    const fileInput = useRef();
+
+    useEffect(() => {
+        const unsub = db.collection("pamyatki")
+            .where("status", "==", "pending")
+            .onSnapshot(snap => {
+                setModerationCount(snap.size);
+                setPendingPamyatki(snap.docs.map(doc => ({id: doc.id, ...doc.data()})));
+            });
+        return () => unsub();
+    }, []);
+
+    useEffect(() => {
+        if (ADMINS.includes(user.uid)) {
+            db.collection('settings').doc('video_overrides').get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    setYtOverride(data.yt_override || '');
+                    setVkOverride(data.vk_override || '');
+                    setNebulaOverride(data.nebula_override || '');
                 }
-            };
+            }).catch(console.error);
+        }
+    }, [user.uid]);
 
-            const submitPamyatka = async (e) => {
-                e.preventDefault();
-                const title = e.target.p_title.value.trim();
-                const url = e.target.p_url.value.trim();
-                if(!title || !url) return alert("Заполните поля");
-                try {
-                    await db.collection("pamyatki").add({
-                        uid: user.uid,
-                        displayName: user.displayName || user.email.split('@')[0],
-                        email: user.email,
-                        title, 
-                        imageUrl: url,
-                        status: "pending",
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    alert("Отправлено на модерацию!");
-                    setShowModal(null);
-                    e.target.reset();
-                } catch (err) { 
-                    alert(err.message); 
-                }
-            };
+    const saveVideoOverrides = async () => {
+        if (!ADMINS.includes(user.uid)) return;
 
-            const handleMod = async (id, status) => {
-                if(status === 'approved') {
-                    await db.collection("pamyatki").doc(id).update({ status: "approved" });
-                    alert("Принято!");
-                } else {
-                    if(confirm("Удалить навсегда?")) {
-                        await db.collection("pamyatki").doc(id).delete();
-                        alert("Удалено.");
-                    }
-                }
-            };
+        try {
+            await db.collection('settings').doc('video_overrides').set({
+                yt_override: ytOverride.trim() || null,
+                vk_override: vkOverride.trim() || null,
+                nebula_override: nebulaOverride.trim() || null,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedBy: user.uid
+            }, { merge: true });
 
-            const changeNickname = async (e) => {
-                e.preventDefault();
-                const newName = e.target.new_nickname.value.trim();
-                if (!newName) return alert("Введите никнейм!");
-                try {
-                    await user.updateProfile({ displayName: newName });
-                    alert("Никнейм обновлён!");
-                    window.location.reload();
-                } catch (e) { 
-                    alert(e.message); 
-                }
-            };
+            alert('Переопределения ссылок сохранены');
+        } catch (err) {
+            alert('Ошибка сохранения: ' + err.message);
+        }
+    };
 
-            const changeEmail = async (e) => {
-                e.preventDefault();
-                const newEmail = e.target.new_email.value.trim().toLowerCase();
-                const password = e.target.current_password_email.value;
-                if (!newEmail || !password) return alert("Заполните все поля!");
-                try {
-                    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
-                    await user.reauthenticateWithCredential(credential);
-                    await user.verifyBeforeUpdateEmail(newEmail);
-                    alert("Проверьте новый email! Перейдите по ссылке в письме.");
-                } catch (e) { 
-                    alert(e.message); 
-                }
-            };
+    const uploadAvatar = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setIsUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=fac7e04a7bdbc05013b7483b33eae743`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            const url = data.data.url;
+            await user.updateProfile({ photoURL: url });
+            setAvatar(url);
+            alert("Аватар обновлен!");
+        } catch (err) {
+            alert("Ошибка загрузки");
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
-            const changePassword = async (e) => {
-                e.preventDefault();
-                const cur = e.target.current_password.value;
-                const np = e.target.new_password.value;
-                const npc = e.target.new_password_confirm.value;
-                if (np !== npc) return alert("Пароли не совпадают!");
-                if (np.length < 6) return alert("Пароль должен быть не менее 6 символов!");
-                try {
-                    const cred = firebase.auth.EmailAuthProvider.credential(user.email, cur);
-                    await user.reauthenticateWithCredential(cred);
-                    await user.updatePassword(np);
-                    alert("Пароль изменён!");
-                    e.target.reset();
-                } catch (e) { 
-                    alert(e.message); 
-                }
-            };
+    const submitPamyatka = async (e) => {
+        e.preventDefault();
+        const title = e.target.p_title.value.trim();
+        const url = e.target.p_url.value.trim();
+        if(!title || !url) return alert("Заполните поля");
+        try {
+            await db.collection("pamyatki").add({
+                uid: user.uid,
+                displayName: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                title,
+                imageUrl: url,
+                status: "pending",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert("Отправлено на модерацию!");
+            setShowModal(null);
+            e.target.reset();
+        } catch (err) {
+            alert(err.message);
+        }
+    };
 
-            const deleteAccount = async (e) => {
-                e.preventDefault();
-                const password = e.target.del_password.value;
-                if (!password) return alert("Введите текущий пароль для подтверждения");
-                if (!confirm("Вы уверены? Аккаунт будет удалён навсегда без возможности восстановления!")) return;
+    const handleMod = async (id, status) => {
+        if(status === 'approved') {
+            await db.collection("pamyatki").doc(id).update({ status: "approved" });
+            alert("Принято!");
+        } else {
+            if(confirm("Удалить навсегда?")) {
+                await db.collection("pamyatki").doc(id).delete();
+                alert("Удалено.");
+            }
+        }
+    };
 
-                try {
-                    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
-                    await user.reauthenticateWithCredential(credential);
-                    await user.delete();
-                    alert("Аккаунт успешно удалён");
-                    navigate('home');
-                } catch (err) {
-                    alert("Ошибка удаления: " + err.message);
-                }
-            };
+    const changeNickname = async (e) => {
+        e.preventDefault();
+        const newName = e.target.new_nickname.value.trim();
+        if (!newName) return alert("Введите никнейм!");
+        try {
+            await user.updateProfile({ displayName: newName });
+            alert("Никнейм обновлён!");
+            window.location.reload();
+        } catch (e) {
+            alert(e.message);
+        }
+    };
 
-            return (
-                <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in duration-700">
-                    <div className="glass-card p-8 md:p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-10">
-                        <div className="relative group cursor-pointer" onClick={() => fileInput.current.click()}>
-                            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#00ff88]/20 group-hover:border-[#00ff88] transition-all duration-500 shadow-2xl">
-                                {avatar ? (
-                                    <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl font-black accent-text">
-                                        {(user.displayName || user.email)[0].toUpperCase()}
-                                    </div>
-                                )}
+    const changeEmail = async (e) => {
+        e.preventDefault();
+        const newEmail = e.target.new_email.value.trim().toLowerCase();
+        const password = e.target.current_password_email.value;
+        if (!newEmail || !password) return alert("Заполните все поля!");
+        try {
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+            await user.reauthenticateWithCredential(credential);
+            await user.verifyBeforeUpdateEmail(newEmail);
+            alert("Проверьте новый email! Перейдите по ссылке в письме.");
+        } catch (e) {
+            alert(e.message);
+        }
+    };
+
+    const changePassword = async (e) => {
+        e.preventDefault();
+        const cur = e.target.current_password.value;
+        const np = e.target.new_password.value;
+        const npc = e.target.new_password_confirm.value;
+        if (np !== npc) return alert("Пароли не совпадают!");
+        if (np.length < 6) return alert("Пароль должен быть не менее 6 символов!");
+        try {
+            const cred = firebase.auth.EmailAuthProvider.credential(user.email, cur);
+            await user.reauthenticateWithCredential(cred);
+            await user.updatePassword(np);
+            alert("Пароль изменён!");
+            e.target.reset();
+        } catch (e) {
+            alert(e.message);
+        }
+    };
+
+    const deleteAccount = async (e) => {
+        e.preventDefault();
+        const password = e.target.del_password.value;
+        if (!password) return alert("Введите текущий пароль для подтверждения");
+        if (!confirm("Вы уверены? Аккаунт будет удалён навсегда без возможности восстановления!")) return;
+        try {
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+            await user.reauthenticateWithCredential(credential);
+            await user.delete();
+            alert("Аккаунт успешно удалён");
+            navigate('home');
+        } catch (err) {
+            alert("Ошибка удаления: " + err.message);
+        }
+    };
+
+    return (
+        <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in duration-700">
+            <div className="glass-card p-8 md:p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-10">
+                <div className="relative group cursor-pointer" onClick={() => fileInput.current.click()}>
+                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#00ff88]/20 group-hover:border-[#00ff88] transition-all duration-500 shadow-2xl">
+                        {avatar ? (
+                            <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl font-black accent-text">
+                                {(user.displayName || user.email)[0].toUpperCase()}
                             </div>
-                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-[#00ff88]">Сменить</span>
-                            </div>
-                            <input type="file" ref={fileInput} className="hidden" accept="image/*" onChange={uploadAvatar} />
-                            {isUploading && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#00ff88] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">UP...</div>}
-                        </div>
-                       
-                        <div className="text-center md:text-left space-y-4">
-                            <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
-                            <p className="text-xs md:text-sm opacity-30 font-medium tracking-widest uppercase">{user.email}</p>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                                <button onClick={() => setShowModal('add')} className="btn-primary px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest">Добавить памятку</button>
-                                {ADMINS.includes(user.uid) && (
-                                    <button onClick={() => setShowModal('mod')} className="glass-card px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold border-l-4 border-[#00ff88]">
-                                        Модерация ({moderationCount})
-                                    </button>
-                                )}
-                                <button onClick={() => auth.signOut().then(() => navigate('home'))} className="bg-white/5 hover:bg-red-500/20 px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold transition">Выйти</button>
-                            </div>
-                        </div>
+                        )}
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
-                            <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Настройки профиля</h3>
-                           
-                            <form onSubmit={changeNickname} className="space-y-4">
-                                <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Изменить никнейм</label>
-                                <input name="new_nickname" type="text" placeholder="Новый никнейм" defaultValue={user.displayName || ''} />
-                                <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить имя</button>
-                            </form>
-
-                            <form onSubmit={changeEmail} className="space-y-4 pt-4">
-                                <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Сменить Email</label>
-                                <input name="new_email" type="email" placeholder="Новый email" required />
-                                <input name="current_password_email" type="password" placeholder="Текущий пароль" required />
-                                <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Сменить почту</button>
-                            </form>
-                        </div>
-
-                        <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
-                            <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Безопасность</h3>
-                            <form onSubmit={changePassword} className="space-y-4">
-                                <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Смена пароля</label>
-                                <input name="current_password" type="password" placeholder="Текущий пароль" required />
-                                <input name="new_password" type="password" placeholder="Новый пароль" required />
-                                <input name="new_password_confirm" type="password" placeholder="Повторите пароль" required />
-                                <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить пароль</button>
-                            </form>
-
-                            <div>
-                                <h3 className="text-lg font-black italic uppercase tracking-tighter text-red-500 mb-4">Удаление аккаунта</h3>
-                                <p className="text-xs opacity-50 mb-4">Все данные будут удалены навсегда.</p>
-                                <form onSubmit={deleteAccount} className="space-y-4">
-                                    <input name="del_password" type="password" placeholder="Текущий пароль" required className="border-red-500/30 focus:border-red-500" />
-                                    <button type="submit" className="w-full py-4 rounded-xl text-[9px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition">
-                                        Удалить аккаунт навсегда
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#00ff88]">Сменить</span>
                     </div>
-
-                    {showModal === 'add' && (
-                        <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                            <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
-                                <h3 className="text-xl font-black italic uppercase tracking-tighter text-center">Новая памятка</h3>
-                                <form onSubmit={submitPamyatka} className="space-y-4">
-                                    <input name="p_title" placeholder="Название (напр. Процессуальный кодекс)" required />
-                                    <input name="p_url" type="url" placeholder="Прямая ссылка на изображение (imgbb.com → Direct Link)" required />
-                                    <button className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]">Отправить на модерацию</button>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-
-                    {showModal === 'mod' && ADMINS.includes(user.uid) && (
-                        <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                            <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                                <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
-                                <h3 className="text-xl font-black italic uppercase tracking-tighter">Памятки на модерации ({moderationCount})</h3>
-                                {pendingPamyatki.length === 0 ? 
-                                    <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">Нет памяток на модерации</p> : 
-                                    <div className="space-y-6">
-                                        {pendingPamyatki.map(p => (
-                                            <div key={p.id} className="p-6 bg-white/5 rounded-3xl space-y-4 border border-white/5">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <h4 className="font-bold accent-text uppercase text-xs tracking-widest">{p.title}</h4>
-                                                        <p className="text-[9px] opacity-30 mt-1 uppercase">От: {p.email}</p>
-                                                    </div>
-                                                    <div className="flex gap-2">
-                                                        <button onClick={() => handleMod(p.id, 'approved')} className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Принять</button>
-                                                        <button onClick={() => handleMod(p.id, 'reject')} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Отклонить</button>
-                                                    </div>
-                                                </div>
-                                                <img src={p.imageUrl} alt={p.title} className="w-full rounded-xl border border-white/10" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    )}
+                    <input type="file" ref={fileInput} className="hidden" accept="image/*" onChange={uploadAvatar} />
+                    {isUploading && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#00ff88] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">UP...</div>}
                 </div>
-            );
-        };
+
+                <div className="text-center md:text-left space-y-4">
+                    <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
+                    <p className="text-xs md:text-sm opacity-30 font-medium tracking-widest uppercase">{user.email}</p>
+                    <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                        <button onClick={() => setShowModal('add')} className="btn-primary px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest">Добавить памятку</button>
+                        {ADMINS.includes(user.uid) && (
+                            <button onClick={() => setShowModal('mod')} className="glass-card px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold border-l-4 border-[#00ff88]">
+                                Модерация ({moderationCount})
+                            </button>
+                        )}
+                        <button onClick={() => auth.signOut().then(() => navigate('home'))} className="bg-white/5 hover:bg-red-500/20 px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold transition">Выйти</button>
+                    </div>
+                </div>
+            </div>
+
+            {ADMINS.includes(user.uid) && (
+                <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8 border-t-4 border-[#00ff88]/30">
+                    <h3 className="text-xl font-black italic uppercase tracking-tighter accent-text">
+                        Управление ссылками видео (ручное переопределение)
+                    </h3>
+                    <p className="text-sm opacity-70 leading-relaxed">
+                        Если автоматическая подгрузка новых роликов не работает, укажите здесь прямые ссылки.<br/>
+                        Оставьте поле пустым — будет использоваться автоопределение или кэш.
+                    </p>
+
+                    <div className="grid md:grid-cols-1 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">YouTube embed</label>
+                            <input
+                                type="url"
+                                value={ytOverride}
+                                onChange={e => setYtOverride(e.target.value)}
+                                placeholder="https://www.youtube.com/embed/VIDEO_ID?rel=0"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">VK видео</label>
+                            <input
+                                type="url"
+                                value={vkOverride}
+                                onChange={e => setVkOverride(e.target.value)}
+                                placeholder="https://vk.com/video_ext.php?oid=...&id=...&hash=..."
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">Nebula плеер</label>
+                            <input
+                                type="url"
+                                value={nebulaOverride}
+                                onChange={e => setNebulaOverride(e.target.value)}
+                                placeholder="https://xqr4d.github.io/Nebula/embed.html?v=https://..."
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={saveVideoOverrides}
+                        className="btn-primary w-full py-5 rounded-2xl text-sm uppercase tracking-[0.3em] font-black mt-4"
+                    >
+                        Сохранить переопределения
+                    </button>
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
+                    <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Настройки профиля</h3>
+                    <form onSubmit={changeNickname} className="space-y-4">
+                        <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Изменить никнейм</label>
+                        <input name="new_nickname" type="text" placeholder="Новый никнейм" defaultValue={user.displayName || ''} />
+                        <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить имя</button>
+                    </form>
+                    <form onSubmit={changeEmail} className="space-y-4 pt-4">
+                        <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Сменить Email</label>
+                        <input name="new_email" type="email" placeholder="Новый email" required />
+                        <input name="current_password_email" type="password" placeholder="Текущий пароль" required />
+                        <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Сменить почту</button>
+                    </form>
+                </div>
+                <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
+                    <h3 className="text-lg font-black italic uppercase tracking-tighter accent-text">Безопасность</h3>
+                    <form onSubmit={changePassword} className="space-y-4">
+                        <label className="text-[9px] uppercase opacity-30 font-bold tracking-[0.2em]">Смена пароля</label>
+                        <input name="current_password" type="password" placeholder="Текущий пароль" required />
+                        <input name="new_password" type="password" placeholder="Новый пароль" required />
+                        <input name="new_password_confirm" type="password" placeholder="Повторите пароль" required />
+                        <button className="btn-primary w-full py-4 rounded-xl text-[9px] uppercase tracking-widest">Обновить пароль</button>
+                    </form>
+                    <div className="pt-6">
+                        <h3 className="text-lg font-black italic uppercase tracking-tighter text-red-500 mb-4">Удаление аккаунта</h3>
+                        <p className="text-xs opacity-50 mb-4">Все данные будут удалены навсегда.</p>
+                        <form onSubmit={deleteAccount} className="space-y-4">
+                            <input name="del_password" type="password" placeholder="Текущий пароль" required className="border-red-500/30 focus:border-red-500" />
+                            <button type="submit" className="w-full py-4 rounded-xl text-[9px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition">
+                                Удалить аккаунт навсегда
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {showModal === 'add' && (
+                <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+                    <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+                        <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
+                        <h3 className="text-xl font-black italic uppercase tracking-tighter text-center">Новая памятка</h3>
+                        <form onSubmit={submitPamyatka} className="space-y-4">
+                            <input name="p_title" placeholder="Название (напр. Процессуальный кодекс)" required />
+                            <input name="p_url" type="url" placeholder="Прямая ссылка на изображение (imgbb.com → Direct Link)" required />
+                            <button className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]">Отправить на модерацию</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {showModal === 'mod' && ADMINS.includes(user.uid) && (
+                <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+                    <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+                        <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
+                        <h3 className="text-xl font-black italic uppercase tracking-tighter">Памятки на модерации ({moderationCount})</h3>
+                        {pendingPamyatki.length === 0 ? (
+                            <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">Нет памяток на модерации</p>
+                        ) : (
+                            <div className="space-y-6">
+                                {pendingPamyatki.map(p => (
+                                    <div key={p.id} className="p-6 bg-white/5 rounded-3xl space-y-4 border border-white/10">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h4 className="font-bold accent-text uppercase text-xs tracking-widest">{p.title}</h4>
+                                                <p className="text-[9px] opacity-30 mt-1 uppercase">От: {p.email}</p>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button onClick={() => handleMod(p.id, 'approved')} className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Принять</button>
+                                                <button onClick={() => handleMod(p.id, 'reject')} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Отклонить</button>
+                                            </div>
+                                        </div>
+                                        <img src={p.imageUrl} alt={p.title} className="w-full rounded-xl border border-white/10" />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
         const App = () => {
             const [page, setPage] = useState(() => localStorage.getItem('bipbup_last_page') || 'home');
