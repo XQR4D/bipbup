@@ -762,6 +762,41 @@
             );
         };
 
+        const PC = ({ navigate }) => {
+            return (
+                <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
+                    <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
+                        <div className="space-y-8 text-center">
+                            <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">Настройки игры</h3>
+                            <p>
+                                <img style={{height: "300px"}} src="images/settings.png" alt="Settings" className="mx-auto rounded-2xl" />
+                            </p>
+                        </div>
+                        <div className="space-y-8 text-center">
+                            <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">Конфигурация ПК</h3>
+                            <p>Процессор — AMD Ryzen 9 7900X3D</p>
+                            <p>ОЗУ — 32 GB ddr5</p>
+                            <p>ГПУ — GeForce GTX 4070 SUPER 12GB</p>
+                            <p>Материнская плата — ASUS B550 AORUS</p>
+                            <p>Клавиатура — Logitech G413</p>
+                            <p>Мышка — RAZER Abyssus 2014</p>
+                            <p>Мауспад — SteelSeries QcK Mass</p>
+                            <p>Наушники — HyperX Cloud Alpha S</p>
+                            <p>Микрофон — AUDIO-TECHNICA AT2020</p>
+                        </div>
+                        <div className="space-y-8 text-center">
+                            <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">Моя графика</h3>
+                            <p>
+                            <a href="https://ntw.graphics/library/graphics-mods/california-refined" target="_blank">
+                                <img style={{height: "300px"}} src="images/graphics.png" alt="QR-код для коммерческих предложений" className="mx-auto rounded-2xl" />
+                            </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const Player = () => {
             const [activePlayer, setActivePlayer] = useState('nebula');
             const [vkUrl, setVkUrl] = useState('');
@@ -1605,6 +1640,7 @@
                     case 'home': return <Home navigate={navigate} />;
                     case 'knowledge': return <KnowledgeBase />;
                     case 'social': return <SocialLinks navigate={navigate} />;
+                    case 'PC': return <PC navigate={navigate} />;
                     case 'player': return <Player />;
                     case 'tools': return <ToolsPage />;
                     case 'privacy': return <PrivacyPage />;
@@ -1632,6 +1668,7 @@
                             <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>База знаний</button>
                             <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
                             <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
+                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>Мой ПК</button>
                             <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>Плееры</button>
                             {user ? (
                                 <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>Аккаунт</button>
@@ -1649,6 +1686,7 @@
                                 <button onClick={() => navigate('knowledge')} className={page === 'knowledge' ? 'accent-text' : ''}>База знаний</button>
                                 <button onClick={() => navigate('tools')} className={page === 'tools' ? 'accent-text' : ''}>Инструменты</button>
                                 <button onClick={() => navigate('social')} className={page === 'social' ? 'accent-text' : ''}>Ссылки</button>
+                                <button onClick={() => navigate('PC')} className={page === 'PC' ? 'accent-text' : ''}>Мой ПК</button>
                                 <button onClick={() => navigate('player')} className={page === 'player' ? 'accent-text' : ''}>Плееры</button>
                                 {user ? (
                                     <button onClick={() => navigate('lk')} className="accent-text border border-[#00ff88] px-6 py-2 rounded-full">Аккаунт</button>
