@@ -401,14 +401,14 @@
 
             return (
                 <div className="space-y-8 animate-in fade-in duration-300">
-                    <h3 className="text-2xl font-black italic uppercase tracking-tighter text-center">Калькулятор заработка GTA5 RP</h3>
+                    <h3 className="text-2xl font-black italic uppercase tracking-tighter text-center">Калькулятор заработка</h3>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Зарплата в час / за рейс ($)</label>
+                            <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Получаемая сумма за час ($)</label>
                             <input type="number" value={rate} onChange={e => setRate(e.target.value)} placeholder="Например: 15000" className="text-xl font-bold" />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Количество часов / рейсов</label>
+                            <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Количество часов</label>
                             <input type="number" value={hours} onChange={e => setHours(e.target.value)} placeholder="Например: 4" className="text-xl font-bold" />
                         </div>
                     </div>
@@ -421,10 +421,6 @@
                                 <option value="25">Gold (+25%)</option>
                                 <option value="35">Platinum (+35%)</option>
                             </select>
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">Налог (%)</label>
-                             <input type="number" value={tax} onChange={e => setTax(e.target.value)} placeholder="0" />
                         </div>
                     </div>
                     <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-2">
@@ -553,6 +549,162 @@
             );
         };
 
+        const LevelCalculator = () => {
+            const [currentLevel, setCurrentLevel] = useState(1);
+            const [expPerPayday, setExpPerPayday] = useState(1);
+            const [hasX2, setHasX2] = useState(false);
+            const [paydaysToNext, setPaydaysToNext] = useState(0);
+            const [expNeeded, setExpNeeded] = useState(0);
+
+            useEffect(() => {
+                const baseExpToNext = currentLevel * 2;
+                const multiplier = hasX2 ? 2 : 1;
+                const effectiveExp = expPerPayday * multiplier;
+
+                const needed = Math.max(0, baseExpToNext);
+                const paydays = effectiveExp > 0 ? Math.ceil(needed / effectiveExp) : 0;
+
+                setExpNeeded(needed);
+                setPaydaysToNext(paydays);
+            }, [currentLevel, expPerPayday, hasX2]);
+
+            return (
+                <div className="space-y-8 animate-in fade-in duration-300">
+                <h3 className="text-2xl font-black italic uppercase tracking-tighter text-center">
+                    Калькулятор уровней
+                </h3>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                    <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                        Текущий уровень
+                    </label>
+                    <input
+                        type="number"
+                        value={currentLevel}
+                        onChange={e => setCurrentLevel(Number(e.target.value) || 1)}
+                        min="1"
+                        placeholder="10"
+                        className="text-xl font-bold"
+                    />
+                    </div>
+
+                    <div className="space-y-2">
+                    <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                        Опыт за один payday
+                    </label>
+                    <input
+                        type="number"
+                        value={expPerPayday}
+                        onChange={e => setExpPerPayday(Number(e.target.value) || 0)}
+                        placeholder="500"
+                        className="text-xl font-bold"
+                    />
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <label className="text-sm font-medium opacity-80">Есть x2 на сервере?</label>
+                    <input
+                    type="checkbox"
+                    checked={hasX2}
+                    onChange={e => setHasX2(e.target.checked)}
+                    className="w-5 h-5 accent-[#00ff88]"
+                    />
+                </div>
+
+                <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-4">
+                    <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
+                    До следующего уровня
+                    </div>
+                    <div className="text-4xl md:text-5xl font-black accent-text">
+                    {expNeeded.toLocaleString()} exp
+                    </div>
+                    <div className="text-xl opacity-80">
+                    ≈ {paydaysToNext} payday
+                    </div>
+                    <div className="text-xs opacity-60 mt-4">
+                    (при {hasX2 ? 'x2' : 'x1'} опыте за payday)
+                    </div>
+                </div>
+                </div>
+            );
+            };
+
+            const RepairCost = () => {
+                const [govPrice, setGovPrice] = useState(1000000);
+                const [wearPercent, setWearPercent] = useState(70);
+                const [detailFactor, setDetailFactor] = useState(0.01);
+                const [detailCount, setDetailCount] = useState(8);
+                const [fixedFee, setFixedFee] = useState(0);
+                const [total, setTotal] = useState(0);
+
+                useEffect(() => {
+                    const wearMultiplier = wearPercent / 100;
+                    const detailsCost = detailCount * detailFactor * govPrice;
+                    const base = govPrice * wearMultiplier;
+                    const calculated = Math.round(base + detailsCost + fixedFee);
+                    setTotal(calculated);
+                }, [govPrice, wearPercent, detailFactor, detailCount, fixedFee]);
+
+                return (
+                    <div className="space-y-8 animate-in fade-in duration-300">
+                    <h3 className="text-2xl font-black italic uppercase tracking-tighter text-center">
+                        Расчет ремонта ТС (Beta)
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                            Гос. цена авто ($)
+                        </label>
+                        <input type="number" value={govPrice} onChange={e => setGovPrice(Number(e.target.value))} placeholder="1 000 000" />
+                        </div>
+
+                        <div className="space-y-2">
+                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                            Средний износ деталей (%)
+                        </label>
+                        <input type="number" value={wearPercent} onChange={e => setWearPercent(Number(e.target.value))} min="0" max="100" placeholder="70" />
+                        </div>
+
+                        <div className="space-y-2">
+                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                            Кол-во ремонтируемых деталей
+                        </label>
+                        <input type="number" value={detailCount} onChange={e => setDetailCount(Number(e.target.value))} min="1" placeholder="8" />
+                        </div>
+
+                        <div className="space-y-2">
+                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                            Коэффициент на деталь (0.005–0.015)
+                        </label>
+                        <input type="number" value={detailFactor} onChange={e => setDetailFactor(Number(e.target.value))} step="0.001" placeholder="0.01" />
+                        </div>
+
+                        <div className="space-y-2 md:col-span-2">
+                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
+                            Фиксированная плата (если есть, $)
+                        </label>
+                        <input type="number" value={fixedFee} onChange={e => setFixedFee(Number(e.target.value))} placeholder="0" />
+                        </div>
+                    </div>
+
+                    <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-2">
+                        <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
+                        Итоговая стоимость ремонта
+                        </div>
+                        <div className="text-5xl font-black accent-text">
+                        ${total.toLocaleString()}
+                        </div>
+                        <div className="text-xs opacity-60 mt-4">
+                        Расчёт: (Гос.цена × Износ %) + (Детали × Коэфф. × Гос.цена) + Фикс. плата
+                        </div>
+                    </div>
+                    </div>
+                );
+                };
+
         const ToolsPage = () => {
             const [activeTool, setActiveTool] = useState('gen');
             const tools = [
@@ -560,7 +712,8 @@
                 { id: 'calc', name: 'Калькулятор заработка' },
                 { id: 'game', name: 'Проверка реакции' },
                 { id: 'pass', name: 'Генератор паролей' },
-                { id: 'link', name: 'В разработке' }
+                { id: 'levelcalc', name: 'Калькулятор уровней' },
+                { id: 'repairCost', name: 'Расчет ремонта ТС' }
             ];
 
             return (
@@ -581,6 +734,8 @@
                         {activeTool === 'calc' && <GrindCalculator />}
                         {activeTool === 'game' && <QueueKiller />}
                         {activeTool === 'pass' && <PasswordGenerator />}
+                        {activeTool === 'levelcalc' && <LevelCalculator />}
+                        {activeTool === 'repairCost' && <RepairCost />}
                     </div>
                 </div>
             );
@@ -600,7 +755,7 @@
                         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                             <div className="text-center md:text-left max-w-3xl md:max-w-none">
                                 <h1 className="text-4xl md:text-7xl font-black mb-6 md:mb-8 leading-[1] md:leading-[0.9] tracking-tighter italic">
-                                    /PROMO<br className="hidden md:block" /> <span className="accent-text">BIPBUP</span> 12500$ + 10 дней VIP
+                                    ЛУЧШИЙ<br className="hidden md:block" /> ПРОМОКОД <span className="accent-text">BIPBUP</span>
                                 </h1>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                                     <button onClick={() => navigate('knowledge')} className="btn-primary px-10 py-4 rounded-xl text-xs uppercase tracking-widest">Перейти к памяткам</button>
@@ -1277,6 +1432,27 @@
     const [ytOverride, setYtOverride] = useState('');
     const [vkOverride, setVkOverride] = useState('');
     const [nebulaOverride, setNebulaOverride] = useState('');
+    const [role, setRole] = useState('Пользователь');
+const [isAdmin, setIsAdmin] = useState(false);
+
+useEffect(() => {
+  if (!user?.uid) return;
+
+  const userRef = db.collection('users').doc(user.uid);
+
+  userRef.get()
+    .then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+        const adminStatus = data.isAdmin === true || ADMINS.includes(user.uid);
+        setIsAdmin(adminStatus);
+        setRole(adminStatus ? 'Администратор' : 'Пользователь');
+      }
+    })
+    .catch(err => {
+      console.error('Ошибка чтения роли:', err);
+    });
+}, [user?.uid]);
 
     const fileInput = useRef();
 
@@ -1464,14 +1640,25 @@
                 <div className="text-center md:text-left space-y-4">
                     <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
                     <p className="text-xs md:text-sm opacity-30 font-medium tracking-widest uppercase">{user.email}</p>
+                    <div className="flex items-center gap-3 justify-center md:justify-start mt-1">
+                    <span className="text-xs opacity-50 uppercase tracking-widest">Роль:</span>
+                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                        isAdmin
+                        ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-200 border border-purple-400/40 shadow-sm'
+                        : 'bg-gradient-to-r from-blue-600/30 to-blue-500/20 text-blue-200 border border-blue-400/40 shadow-sm'
+                    }`}
+                    >
+                    {isAdmin ? 'Администратор' : 'Пользователь'}
+                    </span>
+                    </div>
                     <div className="flex flex-wrap justify-center md:justify-start gap-3">
                         <button onClick={() => setShowModal('add')} className="btn-primary px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest">Добавить памятку</button>
                         {ADMINS.includes(user.uid) && (
                             <button onClick={() => setShowModal('mod')} className="glass-card px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold">
-                                Модерация ({moderationCount})
+                                Ожидает модерацию ({moderationCount})
                             </button>
                         )}
-                        <button onClick={() => auth.signOut().then(() => navigate('home'))} className="bg-white/5 hover:bg-red-500/20 px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold transition">Выйти</button>
+                        <button onClick={() => auth.signOut().then(() => navigate('home'))} className="px-6 py-3 rounded-xl text-[9px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition">Выйти</button>
                     </div>
                 </div>
             </div>
@@ -1618,12 +1805,37 @@
             const [isMenuOpen, setIsMenuOpen] = useState(false);
            
             useEffect(() => {
-                const unsub = auth.onAuthStateChanged(u => {
+                const unsubscribe = auth.onAuthStateChanged(async (u) => {
                     setUser(u);
                     setLoading(false);
+
+                    if (u) {
+                    const userRef = db.collection('users').doc(u.uid);
+
+                    try {
+                        const doc = await userRef.get();
+
+                        if (!doc.exists) {
+                        await userRef.set({
+                            email: u.email || '',
+                            displayName: u.displayName || null,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            isAdmin: false
+                        });
+                        }
+                        else {
+                        await userRef.update({
+                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        }
+                    } catch (err) {
+                        console.error('Ошибка при инициализации профиля пользователя:', err);
+                    }
+                    }
                 });
-                return () => unsub();
-            }, []);
+
+                return () => unsubscribe();
+                }, []);
            
             const navigate = (p) => {
                 window.scrollTo({top: 0, behavior: 'smooth'});
@@ -1666,10 +1878,10 @@
                         <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase tracking-[0.2em] items-center">
                             <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>Главная</button>
                             <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>База знаний</button>
-                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
-                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
-                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>Мой ПК</button>
                             <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>Плееры</button>
+                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>Мой ПК</button>
+                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
+                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
                             {user ? (
                                 <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>Аккаунт</button>
                             ) : (
@@ -1700,7 +1912,7 @@
                         {renderPage()}
                     </main>
                     <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024-2026 BIP BUP Media</div>
+                        <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024–{new Date().getFullYear()} BIP BUP Media</div>
                         <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
                             <button onClick={() => navigate('privacy')} className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">PRIVACY POLICY</button>
                         </div>
