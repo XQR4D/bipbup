@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.gstatic.com">
     <link rel="preconnect" href="https://mc.yandex.ru">
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js" defer></script>
@@ -26,14 +26,14 @@
     <style>
         :root {
             --accent: #00ff88;
-            --bg: #08090a;
+            --bg: #000000;
             --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
         }
         body {
             background-color: var(--bg);
             color: #e0e0e0;
-            font-family: 'Unbounded', sans-serif;
+            font-family: "Days One", sans-serif;
             overflow-x: hidden;
             margin: 0;
         }
@@ -251,8 +251,7 @@
             { n: 15, name: "Davis", id: "1268" }, { n: 16, name: "Harmony", id: "1369" },
             { n: 17, name: "Redwood", id: "1468" }, { n: 18, name: "Hawick", id: "1535" },
             { n: 19, name: "Grapeseed", id: "1644" }, { n: 20, name: "Murrieta", id: "1732" },
-            { n: 21, name: "Vespucci", id: "1821" }, { n: 22, name: "Milton", id: "1912" },
-            { n: 23, name: "La Puerta", id: "1984" }, { n: 24, name: "?", id: "" }
+            { n: 21, name: "Vespucci", id: "1821" }, { n: 22, name: "Milton", id: "1912" }
         ];
 
         const MAJESTIC_SERVERS = [
@@ -273,8 +272,7 @@
             { n: 15, name: "Phoenix", id: "1213" },
             { n: 16, name: "Denver", id: "1276" },
             { n: 17, name: "Portland", id: "1338" },
-            { n: 18, name: "Orlando", id: "1405" },
-            { n: 19, name: "?", id: "" }
+            { n: 18, name: "Orlando", id: "1405" }
         ];
 
         const ErrorPage = ({ code, text, navigate }) => (
@@ -1877,14 +1875,14 @@ useEffect(() => {
                             />
                         </div>
                         <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase tracking-[0.2em] items-center">
-                            <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>Главная</button>
-                            <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>База знаний</button>
-                            <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>Плееры</button>
-                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>Мой ПК</button>
-                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>Ссылки</button>
-                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>Инструменты</button>
+                            <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>ГЛАВНАЯ</button>
+                            <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>БАЗА ЗНАНИЙ</button>
+                            <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>ПЛЕЕРЫ</button>
+                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>МОЙ ПК</button>
+                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>ССЫЛКИ</button>
+                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>ИНСТРУМЕНТЫ</button>
                             {user ? (
-                                <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>Аккаунт</button>
+                                <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>АККАУНТ</button>
                             ) : (
                                 <button onClick={() => navigate('login')} className="nav-link btn-login">Вход</button>
                             )}
@@ -1987,6 +1985,10 @@ useEffect(() => {
             let orbs = [];
            
             const colorPalette = [
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
+                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
                 { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
                 { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
                 { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 }
