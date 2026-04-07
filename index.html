@@ -761,6 +761,7 @@
                                     <button onClick={() => navigate('knowledge')} className="btn-primary px-10 py-4 rounded-xl text-xs uppercase tracking-widest">Перейти к памяткам</button>
                                     <button onClick={() => navigate('player')} className="glass-card px-10 py-4 rounded-xl text-xs uppercase tracking-widest font-bold">Смотреть видео</button>
                                 </div>
+                            <p className="mt-6 text-[9px] opacity-40 max-w-lg mx-auto">Вся информация, размещённая на сайте, носит исключительно ознакомительный характер и не является публичной офертой.</p>
                             </div>
                             {bannerConfig.enabled && (
                                 <div className="order-first md:order-last">
@@ -860,18 +861,50 @@
                         <div className="text-center space-y-4">
                             <h2 className="text-2xl md:text-3xl font-black tracking-tighter">ПАМЯТКИ ОТ ИГРОКОВ</h2>
                             <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Для упрощения игры в гос.структурах</p>
-                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Открывайте памятки через: ПКМ - Открыть в новой вкладке</p>
+                            <br></br>
+                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Как открыть памятку?</p>
+                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest"> ПКМ - Открыть в новой вкладке, или перейдите по ссылке под фото.</p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                             {pamyatki.length > 0 ? pamyatki.map((p, i) => (
-                                <div key={i} className="glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col">
-                                    <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">{p.title}</h4>
-                                    <div className="pamyatka-img-container shadow-2xl">
-                                        <img src={p.imageUrl} alt={p.title} loading="lazy" />
-                                    </div>
+                                <div 
+                                    key={i} 
+                                    className="glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col"
+                                >
+                                    <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">
+                                        {p.title}
+                                    </h4>
+
+                                    <a 
+                                        href={p.imageUrl} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="pamyatka-img-container shadow-2xl block overflow-hidden rounded-2xl border border-white/10 hover:border-[#00ff88]/50 transition-all"
+                                    >
+                                        <img 
+                                            src={p.imageUrl} 
+                                            alt={p.title} 
+                                            loading="lazy" 
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                        />
+                                    </a>
+
+                                    {p.tableUrl && (
+                                        <a 
+                                            href={p.tableUrl} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#00ff88]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#00ff88]"
+                                        >
+                                            Открыть таблицу
+                                            <span className="text-xs opacity-60">↗</span>
+                                        </a>
+                                    )}
                                 </div>
                             )) : (
-                                <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">Загрузка памяток...</p>
+                                <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">
+                                    Загрузка памяток...
+                                </p>
                             )}
                         </div>
                     </div>
@@ -1524,26 +1557,36 @@ useEffect(() => {
     };
 
     const submitPamyatka = async (e) => {
-        e.preventDefault();
-        const title = e.target.p_title.value.trim();
-        const url = e.target.p_url.value.trim();
-        if(!title || !url) return alert("Заполните поля");
-        try {
-            await db.collection("pamyatki").add({
-                uid: user.uid,
-                displayName: user.displayName || user.email.split('@')[0],
-                email: user.email,
-                title,
-                imageUrl: url,
-                status: "pending",
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            alert("Отправлено на модерацию!");
-            setShowModal(null);
-            e.target.reset();
-        } catch (err) {
-            alert(err.message);
-        }
+    e.preventDefault();
+    
+    const title = e.target.p_title.value.trim();
+    const imageUrl = e.target.p_url.value.trim();
+    const tableUrl = e.target.p_table_url.value.trim() || null;
+
+    if (!title || !imageUrl) {
+        alert("Название и ссылка на изображение обязательны");
+        return;
+    }
+
+    try {
+        await db.collection("pamyatki").add({
+            uid: user.uid,
+            displayName: user.displayName || user.email?.split('@')[0] || '',
+            email: user.email,
+            title: title,
+            imageUrl: imageUrl,
+            tableUrl: tableUrl,                    
+            status: "pending",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("Памятка отправлена на модерацию!");
+        setShowModal(null);
+        e.target.reset();
+    } catch (err) {
+        console.error(err);
+        alert("Ошибка: " + err.message);
+    }
     };
 
     const handleMod = async (id, status) => {
@@ -1621,7 +1664,7 @@ useEffect(() => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in duration-700">
+        <div className="max-w-4xl mx-auto flex flex-col gap-10 animate-in fade-in duration-700">
             <div className="glass-card p-8 md:p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-10">
                 <div className="relative group cursor-pointer" onClick={() => fileInput.current.click()}>
                     <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#00ff88]/20 group-hover:border-[#00ff88] transition-all duration-500 shadow-2xl">
@@ -1655,7 +1698,7 @@ useEffect(() => {
                     </span>
                     </div>
                     <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                        <button onClick={() => setShowModal('add')} className="btn-primary px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest">Добавить памятку</button>
+                        <button onClick={() => setShowModal('add')} className="btn-primary  px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest">Добавить памятку</button>
                         {ADMINS.includes(user.uid) && (
                             <button onClick={() => setShowModal('mod')} className="glass-card px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold">
                                 Ожидает модерацию ({moderationCount})
@@ -1755,48 +1798,122 @@ useEffect(() => {
             </div>
 
             {showModal === 'add' && (
-                <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                    <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                        <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
-                        <h3 className="text-xl font-black tracking-tighter text-center">НОВАЯ ПАМЯТКА</h3>
-                        <form onSubmit={submitPamyatka} className="space-y-4">
-                            <input name="p_title" placeholder="Название (напр. Процессуальный кодекс)" required />
-                            <input name="p_url" type="url" placeholder="Прямая ссылка на изображение (imgbb.com → Direct Link)" required />
-                            <button className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]">Отправить на модерацию</button>
-                        </form>
-                    </div>
-                </div>
-            )}
+    <div className="fixed inset-0 z-[2000] backdrop-blur-xl flex items-center justify-center p-4">
+        <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+            <button 
+                onClick={() => setShowModal(null)} 
+                className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl"
+            >
+                ×
+            </button>
+            
+            <h3 className="text-xl font-black tracking-tighter text-center">НОВАЯ ПАМЯТКА</h3>
+            
+            <form onSubmit={submitPamyatka} className="space-y-4">
+                <input 
+                    name="p_title" 
+                    placeholder="Название памятки" 
+                    required 
+                />
+                
+                <input 
+                    name="p_url" 
+                    type="url" 
+                    placeholder="Прямая ссылка на изображение" 
+                    required 
+                />
+                
+                <input 
+                    name="p_table_url" 
+                    type="url" 
+                    placeholder="Ссылка на таблицу" 
+                />
+                
+                <button 
+                    className="btn-primary w-full py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em]"
+                >
+                    Отправить на модерацию
+                </button>
+            </form>
+        </div>
+    </div>
+)}
 
-            {showModal === 'mod' && ADMINS.includes(user.uid) && (
-                <div className="fixed inset-0 z-[2000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-                    <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
-                        <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl">×</button>
-                        <h3 className="text-xl font-black tracking-tighter">ПАМЯТКИ НА МОДЕРАЦИИ ({moderationCount})</h3>
-                        {pendingPamyatki.length === 0 ? (
-                            <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">Нет памяток на модерации</p>
-                        ) : (
-                            <div className="space-y-6">
-                                {pendingPamyatki.map(p => (
-                                    <div key={p.id} className="p-6 bg-white/5 rounded-3xl space-y-4 border border-white/10">
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <h4 className="font-bold accent-text uppercase text-xs tracking-widest">{p.title}</h4>
-                                                <p className="text-[9px] opacity-30 mt-1 uppercase">От: {p.email}</p>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <button onClick={() => handleMod(p.id, 'approved')} className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Принять</button>
-                                                <button onClick={() => handleMod(p.id, 'reject')} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold">Отклонить</button>
-                                            </div>
-                                        </div>
-                                        <img src={p.imageUrl} alt={p.title} className="w-full rounded-xl border border-white/10" />
-                                    </div>
-                                ))}
+{showModal === 'mod' && ADMINS.includes(user.uid) && (
+    <div className="fixed inset-0 z-[2000] backdrop-blur-xl flex items-center justify-center p-4">
+        <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+            <button 
+                onClick={() => setShowModal(null)} 
+                className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl"
+            >
+                ×
+            </button>
+            
+            <h3 className="text-xl font-black tracking-tighter">
+                ПАМЯТКИ НА МОДЕРАЦИИ ({moderationCount})
+            </h3>
+            
+            {pendingPamyatki.length === 0 ? (
+                <p className="opacity-20 text-center py-10 uppercase text-xs tracking-widest">
+                    Нет памяток на модерации
+                </p>
+            ) : (
+                <div className="space-y-6">
+                    {pendingPamyatki.map(p => (
+                        <div 
+                            key={p.id} 
+                            className="p-6 bg-white/5 rounded-3xl space-y-4 border border-white/10"
+                        >
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h4 className="font-bold accent-text uppercase text-xs tracking-widest">
+                                        {p.title}
+                                    </h4>
+                                    <p className="text-[9px] opacity-30 mt-1 uppercase">
+                                        От: {p.email}
+                                    </p>
+                                </div>
+                                
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => handleMod(p.id, 'approved')} 
+                                        className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold"
+                                    >
+                                        Принять
+                                    </button>
+                                    <button 
+                                        onClick={() => handleMod(p.id, 'reject')} 
+                                        className="bg-red-600 text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold"
+                                    >
+                                        Отклонить
+                                    </button>
+                                </div>
                             </div>
-                        )}
-                    </div>
+
+                            <img 
+                                src={p.imageUrl} 
+                                alt={p.title} 
+                                className="w-full rounded-xl border border-white/10" 
+                            />
+
+                            {p.tableUrl && (
+                                <a 
+                                    href={p.tableUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 text-[#00ff88] hover:text-[#00ff88]/80 transition text-sm font-medium"
+                                >
+                                    Открыть таблицу с памяткой
+                                    <span className="text-xs opacity-50">↗</span>
+                                </a>
+                            )}
+                        </div>
+                    ))}
                 </div>
             )}
+        </div>
+    </div>
+)}
         </div>
     );
 };
