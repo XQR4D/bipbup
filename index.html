@@ -8,11 +8,10 @@
     <title>BIPBUP</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://mc.yandex.ru">
     <link href="https://fonts.googleapis.com/css2?family=Days+One&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js" defer></script>
@@ -252,7 +251,7 @@
             { n: 17, name: "Redwood", id: "1468" }, { n: 18, name: "Hawick", id: "1535" },
             { n: 19, name: "Grapeseed", id: "1644" }, { n: 20, name: "Murrieta", id: "1732" },
             { n: 21, name: "Vespucci", id: "1821" }, { n: 22, name: "Milton", id: "1912" },
-            { n: 23, name: "Senora", id: "" }
+            { n: 23, name: "Senora", id: "2059" }
         ];
 
         const MAJESTIC_SERVERS = [
@@ -431,64 +430,6 @@
             );
         };
 
-        const QueueKiller = () => {
-            const [state, setState] = useState('waiting');
-            const [startTime, setStartTime] = useState(0);
-            const [score, setScore] = useState(null);
-            const timeoutRef = useRef(null);
-
-            const start = () => {
-                setState('ready');
-                setScore(null);
-                const randomTime = Math.floor(Math.random() * 3000) + 1000;
-                timeoutRef.current = setTimeout(() => {
-                    setState('now');
-                    setStartTime(Date.now());
-                }, randomTime);
-            };
-
-            const handleClick = () => {
-                if (state === 'ready') {
-                    clearTimeout(timeoutRef.current);
-                    setState('waiting');
-                    alert("Слишком рано! Попробуй еще раз.");
-                } else if (state === 'now') {
-                    const time = Date.now() - startTime;
-                    setScore(time);
-                    setState('result');
-                } else {
-                    start();
-                }
-            };
-
-            return (
-                <div className="h-full flex flex-col items-center justify-center space-y-6 text-center animate-in fade-in duration-300">
-                    <h3 className="text-2xl font-black tracking-tighter">ПРОВЕРКА РЕАКЦИИ</h3>
-                    <p className="text-xs opacity-40 max-w-sm">Жди зеленого экрана.</p>
-                    <p className="text-xs opacity-40 max-w-sm">Как только цвет изменится — кликай как можно быстрее.</p>
-                   
-                    <div
-                        onClick={handleClick}
-                        className={`w-full max-w-md aspect-video rounded-3xl flex items-center justify-center cursor-pointer transition-all duration-100 shadow-2xl select-none
-                            ${state === 'waiting' || state === 'result' ? 'bg-white/5 hover:border-[#00ff88] border-2 border-transparent' : ''}
-                            ${state === 'ready' ? 'bg-red-500/80 shadow-[0_0_50px_red]' : ''}
-                            ${state === 'now' ? 'bg-[#00ff88] shadow-[0_0_100px_#00ff88] scale-105' : ''}
-                        `}
-                    >
-                        {state === 'waiting' && <span className="text-xl font-black uppercase tracking-widest">Начать</span>}
-                        {state === 'ready' && <span className="text-xl font-black uppercase tracking-widest">ЖДИ...</span>}
-                        {state === 'now' && <span className="text-4xl font-black uppercase tracking-widest text-black">ЖМИ!</span>}
-                        {state === 'result' && (
-                            <div className="space-y-2">
-                                <div className="text-6xl font-black accent-text">{score} ms</div>
-                                <div className="text-xs opacity-50 uppercase tracking-widest">Кликни чтобы повторить</div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        };
-
         const PasswordGenerator = () => {
             const [length, setLength] = useState(16);
             const [upper, setUpper] = useState(true);
@@ -631,89 +572,13 @@
             );
             };
 
-            const RepairCost = () => {
-                const [govPrice, setGovPrice] = useState(1000000);
-                const [wearPercent, setWearPercent] = useState(70);
-                const [detailFactor, setDetailFactor] = useState(0.01);
-                const [detailCount, setDetailCount] = useState(8);
-                const [fixedFee, setFixedFee] = useState(0);
-                const [total, setTotal] = useState(0);
-
-                useEffect(() => {
-                    const wearMultiplier = wearPercent / 100;
-                    const detailsCost = detailCount * detailFactor * govPrice;
-                    const base = govPrice * wearMultiplier;
-                    const calculated = Math.round(base + detailsCost + fixedFee);
-                    setTotal(calculated);
-                }, [govPrice, wearPercent, detailFactor, detailCount, fixedFee]);
-
-                return (
-                    <div className="space-y-8 animate-in fade-in duration-300">
-                    <h3 className="text-2xl font-black tracking-tighter text-center">
-                        РАСЧЕТ РЕМОНТА ТС (Beta)
-                    </h3>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                            Гос. цена авто ($)
-                        </label>
-                        <input type="number" value={govPrice} onChange={e => setGovPrice(Number(e.target.value))} placeholder="1 000 000" />
-                        </div>
-
-                        <div className="space-y-2">
-                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                            Средний износ деталей (%)
-                        </label>
-                        <input type="number" value={wearPercent} onChange={e => setWearPercent(Number(e.target.value))} min="0" max="100" placeholder="70" />
-                        </div>
-
-                        <div className="space-y-2">
-                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                            Кол-во ремонтируемых деталей
-                        </label>
-                        <input type="number" value={detailCount} onChange={e => setDetailCount(Number(e.target.value))} min="1" placeholder="8" />
-                        </div>
-
-                        <div className="space-y-2">
-                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                            Коэффициент на деталь (0.005–0.015)
-                        </label>
-                        <input type="number" value={detailFactor} onChange={e => setDetailFactor(Number(e.target.value))} step="0.001" placeholder="0.01" />
-                        </div>
-
-                        <div className="space-y-2 md:col-span-2">
-                        <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                            Фиксированная плата (если есть, $)
-                        </label>
-                        <input type="number" value={fixedFee} onChange={e => setFixedFee(Number(e.target.value))} placeholder="0" />
-                        </div>
-                    </div>
-
-                    <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-2">
-                        <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                        Итоговая стоимость ремонта
-                        </div>
-                        <div className="text-5xl font-black accent-text">
-                        ${total.toLocaleString()}
-                        </div>
-                        <div className="text-xs opacity-60 mt-4">
-                        Расчёт: (Гос.цена × Износ %) + (Детали × Коэфф. × Гос.цена) + Фикс. плата
-                        </div>
-                    </div>
-                    </div>
-                );
-                };
-
         const ToolsPage = () => {
             const [activeTool, setActiveTool] = useState('gen');
             const tools = [
                 { id: 'gen', name: 'RP Никнейм' },
                 { id: 'calc', name: 'Калькулятор заработка' },
-                { id: 'game', name: 'Проверка реакции' },
                 { id: 'pass', name: 'Генератор паролей' },
                 { id: 'levelcalc', name: 'Калькулятор уровней' },
-                { id: 'repairCost', name: 'Расчет ремонта ТС' }
             ];
 
             return (
@@ -732,10 +597,8 @@
                     <div className="glass-card p-6 md:p-12 rounded-[2.5rem] relative overflow-hidden min-h-[400px]">
                         {activeTool === 'gen' && <NicknameGenerator />}
                         {activeTool === 'calc' && <GrindCalculator />}
-                        {activeTool === 'game' && <QueueKiller />}
                         {activeTool === 'pass' && <PasswordGenerator />}
                         {activeTool === 'levelcalc' && <LevelCalculator />}
-                        {activeTool === 'repairCost' && <RepairCost />}
                     </div>
                 </div>
             );
