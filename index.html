@@ -653,7 +653,7 @@
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                         {[
                             { t: 'База знаний', d: 'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.' },
-                            { t: 'Плееры без замедлений', d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Nebula.' },
+                            { t: 'Плееры без замедлений', d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Hinata.' },
                             { t: 'Быстрая и удобная регистрация', d: 'Входите по почте, Google и Github аккаунту.' }
                         ].map((c, i) => (
                             <div key={i} className="glass-card p-8 md:p-10 rounded-3xl">
@@ -851,10 +851,10 @@
         };
 
         const Player = () => {
-            const [activePlayer, setActivePlayer] = useState('nebula');
+            const [activePlayer, setActivePlayer] = useState('hinata');
             const [vkUrl, setVkUrl] = useState('');
             const [ytUrl, setYtUrl] = useState('');
-            const [nebulaUrl, setNebulaUrl] = useState('');
+            const [hinataUrl, setHinataUrl] = useState('');
             const [isLoading, setIsLoading] = useState(true);
 
             useEffect(() => {
@@ -893,26 +893,26 @@
                         }
                         setYtUrl(finalYt || '');
 
-                        let finalNebula = overrides.nebula_override;
-                        if (!finalNebula) {
-                            finalNebula = localStorage.getItem('cached_nebula');
-                            if (!finalNebula) {
+                        let finalHinata = overrides.hinata_override;
+                        if (!finalHinata) {
+                            finalHinata = localStorage.getItem('cached_hinata');
+                            if (!finalhinata) {
                                 try {
-                                    const res = await fetch('https://api.github.com/repos/XQR4D/Nebula/releases/latest');
+                                    const res = await fetch('https://api.github.com/repos/XQR4D/Hinata/releases/latest');
                                     if (res.ok) {
                                         const json = await res.json();
                                         const asset = json.assets?.find(a => a.name.endsWith('.mp4'));
                                         if (asset?.browser_download_url) {
-                                            finalNebula = `https://xqr4d.github.io/Nebula/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
-                                            localStorage.setItem('cached_nebula', finalNebula);
+                                            finalHinata = `https://xqr4d.github.io/Hinata/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
+                                            localStorage.setItem('cached_hinata', finalHinata);
                                         }
                                     }
                                 } catch (e) {
-                                    console.warn("Nebula fetch failed", e);
+                                    console.warn("Hinata fetch failed", e);
                                 }
                             }
                         }
-                        setNebulaUrl(finalNebula || '');
+                        setHinataUrl(finalHinata || '');
 
                     } catch (err) {
                         console.error('Ошибка при загрузке видео:', err);
@@ -927,7 +927,7 @@
             const players = {
                 youtube: ytUrl,
                 vk: vkUrl,
-                nebula: nebulaUrl
+                hinata: hinataUrl
             };
 
             return (
@@ -960,7 +960,7 @@
                         <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
                             <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">Выбор плеера</h4>
                             <div className="flex flex-wrap gap-3 md:gap-4">
-                                {['youtube', 'vk', 'nebula'].map(p => (
+                                {['youtube', 'vk', 'hinata'].map(p => (
                                     <button
                                         key={p}
                                         onClick={() => setActivePlayer(p)}
@@ -987,8 +987,8 @@
 
                         <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
                             <div>
-                                <a href="https://xqr4d.github.io/Nebula/" target="_blank" className="hover:scale-110 transition-transform">
-                                    <img style={{height: "60px"}} src="images/play.png" alt="Nebula плеер" />
+                                <a href="https://xqr4d.github.io/Hinata/" target="_blank" className="hover:scale-110 transition-transform">
+                                    <img style={{height: "60px"}} src="images/play.png" alt="Hinata" />
                                 </a>
                                 <div className="text-[#00ff88] text-lg md:text-xl font-black tracking-tighter">НАШ ПЛЕЕР</div>
                             </div>
@@ -1329,7 +1329,7 @@
 
     const [ytOverride, setYtOverride] = useState('');
     const [vkOverride, setVkOverride] = useState('');
-    const [nebulaOverride, setNebulaOverride] = useState('');
+    const [hinataOverride, setHinataOverride] = useState('');
     const [role, setRole] = useState('Пользователь');
 const [isAdmin, setIsAdmin] = useState(false);
 
@@ -1371,7 +1371,7 @@ useEffect(() => {
                     const data = doc.data();
                     setYtOverride(data.yt_override || '');
                     setVkOverride(data.vk_override || '');
-                    setNebulaOverride(data.nebula_override || '');
+                    setHinataOverride(data.hinata_override || '');
                 }
             }).catch(console.error);
         }
@@ -1384,7 +1384,7 @@ useEffect(() => {
             await db.collection('settings').doc('video_overrides').set({
                 yt_override: ytOverride.trim() || null,
                 vk_override: vkOverride.trim() || null,
-                nebula_override: nebulaOverride.trim() || null,
+                hinata_override: hinataOverride.trim() || null,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedBy: user.uid
             }, { merge: true });
@@ -1603,12 +1603,12 @@ useEffect(() => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">Nebula плеер</label>
+                            <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">Hinata player</label>
                             <input
                                 type="url"
-                                value={nebulaOverride}
-                                onChange={e => setNebulaOverride(e.target.value)}
-                                placeholder="https://xqr4d.github.io/Nebula/embed.html?v=https://..."
+                                value={hinataOverride}
+                                onChange={e => setHinataOverride(e.target.value)}
+                                placeholder="https://xqr4d.github.io/Hinata/embed.html?v=https://..."
                             />
                         </div>
                     </div>
