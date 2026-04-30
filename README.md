@@ -1,9 +1,6 @@
-## 📈 Метрики
-- Посещаемость и взаимодействие Яндекс.Метрика
-- Данные для быстрой загрузки и корректной работы сайта WebCookies, Cookies
-- Плееры Fast API requests
-- Фото, памятки IMGBB
-- Аккаунты Firebase
-
-## 👨‍💻 Разработчик
-Создано [XQR4D](https://xqr4d.github.io/XQR4D/)
+# https://www.youtube.com/@BIPBUP
+# https://vk.com/bipbupyoutube
+# https://t.me/bipbupyoutube
+# https://www.twitch.tv/bipbup_ya
+# https://t.me/bipbupvods
+# https://rutube.ru/channel/29939381/
