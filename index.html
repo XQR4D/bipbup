@@ -143,6 +143,23 @@
         color: #ffffff !important;
     }
 
+    [data-theme="light"] .cookie-btn.accept {
+        background: #0d0d0d;
+        color: #ffffff;
+        border: 1px solid #0d0d0d;
+    }
+
+    [data-theme="light"] .cookie-btn.reject,
+    [data-theme="light"] .cookie-btn.settings {
+        background: rgba(0, 0, 0, 0.05);
+        color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    [data-theme="light"] h3 {
+        color: #ffffff;
+    }
+
     body {
         background-color: var(--bg);
         color: var(--text);
@@ -267,32 +284,39 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     #cookie-banner {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        top: 50%;
+        left: 50%;
         backdrop-filter: blur(12px);
         border-radius: 25px;
         padding: 16px 24px;
         z-index: 9999;
-        transform: translateY(100%);
-        transition: transform 0.4s ease;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.95);
+        transition: transform 0.4s ease, opacity 0.4s ease;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+        max-width: 90%;
+        width: 450px;
+        background: rgba(20, 20, 20, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     #cookie-banner.show {
-        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
     }
 
     #cookie-banner p {
         font-size: 13px;
         line-height: 1.5;
         margin: 0 0 12px;
-        color: #ccc;
+        color: #ffffff;
     }
 
     #cookie-banner a {
-        color: var(--accent);
-        text-decoration: underline;
+        color: #df6d93;
+        text-decoration: none;
         font-weight: 500;
     }
 
@@ -309,30 +333,38 @@
         font-size: 13px;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.25s;
+        transition: all 0.25s ease;
     }
 
     .cookie-btn.accept {
-        background: var(--accent);
-        color: #000;
-        border: none;
+        background: rgb(0, 255, 136);
+        border: 1px solid rgb(0, 255, 136);
+        color: #0d0d0d;
     }
 
     .cookie-btn.reject,
     .cookie-btn.settings {
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.15);
-        color: #aaa;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #e4e4e7;
     }
 
-    .cookie-btn:hover {
-        opacity: 0.92;
+    .cookie-btn.accept:hover {
+        transform: translateY(-1px);
+    }
+
+    .cookie-btn.reject:hover,
+    .cookie-btn.settings:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
         transform: translateY(-1px);
     }
 
     @media (max-width: 640px) {
         #cookie-banner {
             padding: 16px;
+            width: calc(100% - 32px);
         }
         .cookie-buttons {
             flex-direction: column;
@@ -360,16 +392,19 @@
     <canvas id="background-canvas"></canvas>
     <noscript><div><img src="https://mc.yandex.ru/watch/99936739" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <div id="cookie-banner">
+    <div>
+        <h3>🍪 Cookies!</h3>
         <p>
-            Мы используем файлы cookie и сервисы аналитики Яндекс.Метрика, чтобы улучшить работу сайта.
+            Мы используем файлы cookie для улучшения работы сайта и аналитики.
             <br>
-            Продолжая использовать сайт, вы соглашаетесь с <a href="#privacy">политикой конфиденциальности</a> и <a href="#terms">пользовательским соглашением</a>.
+            Продолжая использовать сайт вы соглашаетесь с <a href="#privacy">политикой конфиденциальности</a> и <a href="#terms">условиями пользования</a>.
         </p>
         <div class="cookie-buttons">
-            <button class="cookie-btn accept" id="cookie-accept">Принять</button>
-            <button class="cookie-btn reject" id="cookie-reject">Отклонить</button>
+            <button id="cookie-reject" class="cookie-btn reject">Отклонить</button>
+            <button id="cookie-accept" class="cookie-btn accept">Принять</button>
         </div>
     </div>
+</div>
     <div id="root"></div>
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
