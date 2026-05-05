@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://mc.yandex.ru">
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght,CRSV@700,0&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js" defer></script>
@@ -23,187 +23,337 @@
     <script src="https://cdn.tailwindcss.com" defer></script>
 
     <style>
-        :root {
-            --accent: #00ff88;
-            --bg: #000000;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-        body {
-            background-color: var(--bg);
-            color: #e0e0e0;
-            font-family: "Geologica", sans-serif;
-            overflow-x: hidden;
-            margin: 0;
-        }
-        #background-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform, box-shadow;
-        }
-        .glass-card:hover {
-            border-color: var(--accent);
-            background: rgba(0, 255, 136, 0.04);
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
-        }
-        .accent-text {
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-        .nav-link {
-            position: relative;
-            padding: 8px 0;
-            cursor: pointer;
-        }
-        .nav-link.btn-login {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 9999px;
-        }
-        .nav-link.btn-login:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-        }
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
-            font-weight: 700;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
-        }
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
-        }
-        .pamyatka-img-container {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-        .pamyatka-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        input {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            padding: 0 24px !important;
-            border-radius: 16px !important;
-            outline: none !important;
-            color: white !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            height: 60px !important;
-            width: 100%;
-            display: block;
-            transition: all 0.3s ease;
-        }
-        input:focus {
-            border-color: var(--accent) !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-        }
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-        .error-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
-            text-align: center;
-        }
-        .mobile-nav {
-            background: rgba(8, 9, 10, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    :root {
+        --accent: #000000;
+        --bg: #EDEDED;
+        --card-bg: rgba(0, 0, 0, 0.03);
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #000000;
+        --text-secondary: rgba(0, 0, 0, 0.75);
+        --glass: rgba(255,255,255,0.95);
+    }
+
+    [data-theme="dark"] {
+        --accent: #00ff88;
+        --bg: #0a0a0a;
+        --card-bg: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.12);
+        --text: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.75);
+        --glass: rgba(15,15,15,0.95);
+    }
+
+    [data-theme="light"] .nav-link:hover,
+    [data-theme="light"] .nav-link.active {
+        color: var(--accent);
+    }
+
+    [data-theme="light"] .nav-link.btn-login {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: var(--text);
+    }
+
+    [data-theme="light"] .nav-link.btn-login:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--accent);
+    }
+
+    [data-theme="light"] .glass-card {
+    background: rgba(31, 30, 30, 0.062) !important;
+    color: #000 !important;
+    }
+
+    [data-theme="dark"] .nav-link.btn-login {
+    border-color: rgba(255,255,255,0.2);
+    color: #ffffff;
+    }
+
+    [data-theme="dark"] .nav-link.btn-login:hover {
+        background: rgba(0, 255, 136, 0.1);
+        border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .glass-card.group:hover {
+        border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .glass-card.group:hover .text-\[9px\] {
+        color: var(--accent) !important; 
+    }
+
+    [data-theme="dark"] button.btn-primary {
+        background: rgb(0, 255, 136);
+        color: #000000;
+        border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    [data-theme="dark"] .glass-card:hover {
+        border-color: var(--accent);
+    }
+
+    [data-theme="dark"] a.bg-black\/5,
+    [data-theme="dark"] a.border-black\/10 {
+        background: rgba(255,255,255,0.08) !important;
+        border-color: rgba(255,255,255,0.15) !important;
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .text-\[\#000000\] {
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .btn-primary {
+        background: rgb(0, 255, 136);
+        color: #000000;
+        border: none;
+    }
+
+    [data-theme="dark"] .btn-primary {
+        background: rgb(0, 255, 136);
+        color: #000000;
+    }
+
+    [data-theme="dark"] input {
+        background: rgba(255,255,255,0.06) !important;
+        border-color: rgba(255,255,255,0.15) !important;
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] input:focus {
+        border-color: var(--accent) !important;
+        background: rgba(0, 255, 136, 0.08) !important;
+    }
+
+    [data-theme="dark"] .glass-card {
+        background: rgba(255,255,255,0.04);
+    }
+
+    [data-theme="dark"] .text-\[\#000000\] {
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .text-\[\#000000\].text-lg,
+    [data-theme="dark"] .text-\[\#000000\].text-xl,
+    [data-theme="dark"] .text-\[\#000000\].md\:text-xl {
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .glass-card p.text-\[\#000000\],
+    [data-theme="dark"] .glass-card div.text-\[\#000000\] {
+        color: #ffffff !important;
+    }
+
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: "Unbounded", sans-serif;
+        overflow-x: hidden;
+        margin: 0;
+        transition: background-color 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    #background-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .glass-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .glass-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    [data-theme="dark"] .glass-card:hover {
+        background: rgba(0, 255, 136, 0.12);
+    }
+
+    .accent-text {
+        color: var(--accent);
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-link {
+        position: relative;
+        padding: 8px 0;
+        cursor: pointer;
+        color: var(--text);
+    }
+
+    .nav-link.btn-login {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 8px 20px;
+        border-radius: 9999px;
+    }
+
+    .btn-primary {
+        background: rgb(0, 0, 0);
+        color: #ffffff;
+        font-weight: 700;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .pamyatka-img-container {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+
+    .pamyatka-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    input {
+        background: var(--card-bg) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        padding: 0 24px !important;
+        border-radius: 16px !important;
+        outline: none !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        height: 60px !important;
+        width: 100%;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    input:focus {
+        border-color: var(--accent) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    input::placeholder {
+        color: var(--text-secondary);
+    }
+
+    .error-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        text-align: center;
+    }
+
+    .mobile-nav {
+        background: var(--bg) !important;
+        backdrop-filter: blur(20px);
+        z-index: 1000;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    #cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        backdrop-filter: blur(12px);
+        border-radius: 25px;
+        padding: 16px 24px;
+        z-index: 9999;
+        transform: translateY(100%);
+        transition: transform 0.4s ease;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    }
+
+    #cookie-banner.show {
+        transform: translateY(0);
+    }
+
+    #cookie-banner p {
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0 0 12px;
+        color: #ccc;
+    }
+
+    #cookie-banner a {
+        color: var(--accent);
+        text-decoration: underline;
+        font-weight: 500;
+    }
+
+    .cookie-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .cookie-btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s;
+    }
+
+    .cookie-btn.accept {
+        background: var(--accent);
+        color: #000;
+        border: none;
+    }
+
+    .cookie-btn.reject,
+    .cookie-btn.settings {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #aaa;
+    }
+
+    .cookie-btn:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
         #cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            backdrop-filter: blur(12px);
-            border-radius: 25px;
-            padding: 16px 24px;
-            z-index: 9999;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
-        }
-        #cookie-banner.show {
-            transform: translateY(0);
-        }
-        #cookie-banner p {
-            font-size: 13px;
-            line-height: 1.5;
-            margin: 0 0 12px;
-            color: #ccc;
-        }
-        #cookie-banner a {
-            color: var(--accent);
-            text-decoration: underline;
-            font-weight: 500;
+            padding: 16px;
         }
         .cookie-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+            flex-direction: column;
         }
         .cookie-btn {
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s;
+            width: 100%;
         }
-        .cookie-btn.accept {
-            background: var(--accent);
-            color: #000;
-            border: none;
-        }
-        .cookie-btn.reject,
-        .cookie-btn.settings {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #aaa;
-        }
-        .cookie-btn:hover {
-            opacity: 0.92;
-            transform: translateY(-1px);
-        }
-        @media (max-width: 640px) {
-            #cookie-banner {
-                padding: 16px;
-            }
-            .cookie-buttons {
-                flex-direction: column;
-            }
-            .cookie-btn {
-                width: 100%;
-            }
-        }
+    }
+
+    .page-transition {
+        transition: all 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+        opacity: 1;
+        transform: translateY(0);
+        min-height: 70vh;
+    }
+
+    .page-transition.opacity-0 {
+        opacity: 0 !important;
+        transform: translateY(30px) !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
+    }
     </style>
 </head>
 <body>
@@ -213,7 +363,7 @@
         <p>
             Мы используем файлы cookie и сервисы аналитики Яндекс.Метрика, чтобы улучшить работу сайта.
             <br>
-            Продолжая использовать сайт, вы соглашаетесь с политикой конфиденциальности.
+            Продолжая использовать сайт, вы соглашаетесь с <a href="#privacy">политикой конфиденциальности</a> и <a href="#terms">пользовательским соглашением</a>.
         </p>
         <div class="cookie-buttons">
             <button class="cookie-btn accept" id="cookie-accept">Принять</button>
@@ -348,8 +498,8 @@
                 <div className="text-center space-y-8 animate-in fade-in duration-300">
                     <h3 className="text-2xl font-black tracking-tighter">ГЕНЕРАТОР НИКОВ</h3>
                     <div className="flex justify-center gap-4">
-                        <button onClick={() => setGender('male')} className={`p-4 rounded-xl border transition-all ${gender === 'male' ? 'border-[#00ff88] bg-[#00ff88]/10 text-[#00ff88]' : 'border-white/10 opacity-50'}`}>МУЖСКОЙ</button>
-                        <button onClick={() => setGender('female')} className={`p-4 rounded-xl border transition-all ${gender === 'female' ? 'border-[#00ff88] bg-[#00ff88]/10 text-[#00ff88]' : 'border-white/10 opacity-50'}`}>ЖЕНСКИЙ</button>
+                        <button onClick={() => setGender('male')} className={`p-4 rounded-xl border transition-all ${gender === 'male' ? 'bg-- text--' : 'border--/10 opacity-50'}`}>МУЖСКОЙ</button>
+                        <button onClick={() => setGender('female')} className={`p-4 rounded-xl border transition-all ${gender === 'female' ? 'bg-- text--' : 'border--/10 opacity-50'}`}>ЖЕНСКИЙ</button>
                     </div>
                     <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
                         {[
@@ -365,19 +515,19 @@
                             <button
                                 key={n.id}
                                 onClick={() => setNation(n.id)}
-                                className={`text-[11px] uppercase font-bold py-3 rounded-lg transition-all ${nation === n.id ? 'bg-[#00ff88] text-black shadow-[0_0_15px_#00ff88]' : 'bg-white/5 hover:bg-white/10'}`}
+                                className={`text-[11px] uppercase font-bold py-3 rounded-lg transition-all ${nation === n.id ? 'bg-[#000000] text-white shadow-[0_0_15px_#000000]' : 'bg-white/5 hover:bg-white/10'}`}
                             >
                                 {n.t}
                             </button>
                         ))}
                     </div>
                     <div onClick={copyToClipboard} className="cursor-pointer group py-8">
-                        <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00ff88] tracking-wider min-h-[60px] group-hover:scale-110 transition-transform">
+                        <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-[#000000] tracking-wider min-h-[60px] group-hover:scale-110 transition-transform">
                             {result || "..."}
                         </div>
                         <p className="text-[8px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">Нажми чтобы скопировать</p>
                     </div>
-                    <button onClick={generate} className="btn-primary w-full py-5 rounded-2xl text-[13px] font-black">Сгенерировать</button>
+                    <button onClick={generate} className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">Сгенерировать</button>
                 </div>
             );
         };
@@ -422,7 +572,7 @@
                             </select>
                         </div>
                     </div>
-                    <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-2">
+                    <div className="glass-card bg-[#000000]/10 border-[#000000]/30 p-8 rounded-2xl text-center space-y-2">
                         <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">Итоговый заработок</div>
                         <div className="text-4xl md:text-5xl font-black accent-text">${total.toLocaleString()}</div>
                     </div>
@@ -480,7 +630,7 @@
                         </div>
                         <button onClick={generate} className="btn-primary w-full py-5 rounded-2xl text-xs uppercase tracking-[0.3em] font-black">Сгенерировать</button>
                         <div onClick={copy} className="cursor-pointer group py-8">
-                            <div className="text-2xl md:text-3xl font-bold break-all text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00ff88] group-hover:scale-105 transition-transform">
+                            <div className="text-2xl md:text-3xl font-bold break-all text-transparent bg-clip-text bg-gradient-to-r from-white to-[#000000] group-hover:scale-105 transition-transform">
                                 {password || '...'}
                             </div>
                             {password && <p className="text-[8px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">Нажми чтобы скопировать</p>}
@@ -550,11 +700,11 @@
                     type="checkbox"
                     checked={hasX2}
                     onChange={e => setHasX2(e.target.checked)}
-                    className="w-5 h-5 accent-[#00ff88]"
+                    className="w-5 h-5 accent-[#000000]"
                     />
                 </div>
 
-                <div className="glass-card bg-[#00ff88]/10 border-[#00ff88]/30 p-8 rounded-2xl text-center space-y-4">
+                <div className="glass-card bg-[#000000]/10 border-[#000000]/30 p-8 rounded-2xl text-center space-y-4">
                     <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
                     До следующего уровня
                     </div>
@@ -588,7 +738,7 @@
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTool(t.id)}
-                                className={`px-6 py-3 rounded-xl text-[11px] uppercase font-bold tracking-widest transition-all duration-300 ${activeTool === t.id ? 'btn-primary' : 'glass-card hover:border-[#00ff88]'}`}
+                                className={`px-6 py-3 rounded-xl text-[11px] uppercase font-bold tracking-widest transition-all duration-300 ${activeTool === t.id ? 'btn-primary' : 'glass-card hover:border-[#000000]'}`}
                             >
                                 {t.name}
                             </button>
@@ -604,721 +754,729 @@
             );
         };
 
-        const Home = ({ navigate }) => {
-            const bannerConfig = {
-                enabled: true,
-                imageUrl: "images/freeplace.png",
-                linkUrl: "https://xqr4d.github.io/Hinata/",
-                altText: "Рекламный баннер"
-            };
+    const Home = ({ navigate }) => {
+        return (
+            <div className="space-y-12 md:space-y-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                <section className="relative py-10 md:py-24 flex items-center min-h-[65vh]">
+                    <div className="max-w-5xl mx-auto text-center px-4 w-full">
+                        <h1 className="font-black tracking-[-0.03em] leading-[0.85] 
+                                    text-[2.65rem] 
+                                    xs:text-[3.1rem]
+                                    sm:text-[3.9rem] 
+                                    md:text-[5.2rem] 
+                                    lg:text-[6.0rem] 
+                                    xl:text-[6.7rem]">
+                            ТВОЙ<br />
+                            ИГРОВОЙ<br />
+                            ПОМОЩНИК
+                        </h1>
 
-            return (
-                <div className="space-y-12 md:space-y-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
-                    <section className="relative py-10 md:py-20">
-                        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                            <div className="text-center md:text-left max-w-3xl md:max-w-none">
-                                <h1 className="text-4xl md:text-7xl font-black mb-6 md:mb-8 leading-[1] md:leading-[0.9]">
-                                    ТВОЙ<br className="hidden md:block" /> ИГРОВОЙ <span className="accent-text">ПОМОЩНИК</span>
-                                </h1>
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                                    <button onClick={() => navigate('knowledge')} className="btn-primary px-10 py-4 rounded-xl text-[11px] uppercase tracking-widest">Перейти к памяткам</button>
-                                </div>
-                            <p className="mt-6 text-[9px] opacity-40 max-w-lg mx-auto">Вся информация, размещённая на сайте, носит исключительно ознакомительный характер и не является публичной офертой.</p>
+                    <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                        <button 
+                            onClick={() => navigate('knowledge')} 
+                            className="btn-primary px-10 py-4 rounded-2xl text-[11px] uppercase tracking-widest font-bold">
+                            Перейти к памяткам
+                        </button>
+                    </div>
+
+                    <p className="mt-10 text-[9px] md:text-xs opacity-40 max-w-md mx-auto px-2">
+                        Вся информация, размещённая на сайте, носит исключительно ознакомительный характер 
+                        и не является публичной офертой.
+                    </p>
+            </div>
+            </section>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto px-4">
+                {[
+                    { 
+                        t: 'База знаний', 
+                        d: 'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.',
+                        href: '#knowledge'
+                    },
+                    { 
+                        t: 'Плееры без замедлений', 
+                        d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Hinata.',
+                        href: '#player' 
+                    },
+                    { 
+                        t: 'Быстрая и удобная регистрация', 
+                        d: 'Входите по почте, Google и Github аккаунту.',
+                        href: '#login' 
+                    }
+                ].map((c, i) => (
+                    <a 
+                        key={i} 
+                        href={c.href}
+                        className="block group"
+                    >
+                        <div className="glass-card p-8 md:p-10 rounded-3xl h-full transition-all duration-300 
+                                    hover:scale-[1.02] hover:shadow-xl cursor-pointer">
+                            <div className="w-10 h-10 bg-[#000000]/10 rounded-lg flex items-center justify-center mb-6 text-- font-black">
+                                0{i + 1}
                             </div>
-                            {bannerConfig.enabled && (
-                                <div className="order-first md:order-last">
-                                    <div className="w-full aspect-video md:aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl glass-card hover:border-accent transition-all duration-500">
-                                        {bannerConfig.linkUrl ? (
-                                            <a href={bannerConfig.linkUrl} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-                                                <img
-                                                    src={bannerConfig.imageUrl}
-                                                    alt={bannerConfig.altText}
-                                                    className="w-full h-full object-cover"
-                                                    loading="lazy"
-                                                />
-                                            </a>
-                                        ) : (
-                                            <img
-                                                src={bannerConfig.imageUrl}
-                                                alt={bannerConfig.altText}
-                                                className="w-full h-full object-cover"
-                                                loading="lazy"
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            )}
+                            <h3 className="text-lg md:text-xl font-bold mb-4 tracking-tighter group-hover:text-black-600 transition-colors">
+                                {c.t}
+                            </h3>
+                            <p className="text-xs md:text-sm opacity-40 leading-relaxed font-light">
+                                {c.d}
+                            </p>
                         </div>
-                    </section>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                        {[
-                            { t: 'База знаний', d: 'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.' },
-                            { t: 'Плееры без замедлений', d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Hinata.' },
-                            { t: 'Быстрая и удобная регистрация', d: 'Входите по почте, Google и Github аккаунту.' }
-                        ].map((c, i) => (
-                            <div key={i} className="glass-card p-8 md:p-10 rounded-3xl">
-                                <div className="w-10 h-10 bg-[#00ff88]/10 rounded-lg flex items-center justify-center mb-6 text-[#00ff88] font-black">
-                                    0{i + 1}
-                                </div>
-                                <h3 className="text-lg md:text-xl font-bold mb-4 tracking-tighter">{c.t}</h3>
-                                <p className="text-xs md:text-sm opacity-40 leading-relaxed font-light">{c.d}</p>
-                            </div>
+                    </a>
+                ))}
+            </div>
+        </div>
+        );
+    };
+
+    const KnowledgeBase = () => {
+        const [pamyatki, setPamyatki] = useState([]);
+        const [project, setProject] = useState('gta5rp');
+
+        useEffect(() => {
+            const unsub = db.collection("pamyatki")
+                .where("status", "==", "approved")
+                .orderBy("createdAt", "desc")
+                .onSnapshot(snap => {
+                    const data = snap.docs.map(doc => doc.data());
+                    setPamyatki(data);
+                }, err => console.error(err));
+            return () => unsub();
+        }, []);
+
+        const currentServers = project === 'gta5rp' ? GTA5RP_SERVERS : MAJESTIC_SERVERS;
+        const forumUrl = project === 'gta5rp'
+            ? 'https://forum.gta5rp.com/forums/zakonodatelnaja-baza.'
+            : 'https://forum.majestic-rp.ru/forums/zakonodatelstvo.';
+
+        return (
+            <div className="space-y-12 md:space-y-16 animate-in fade-in duration-500">
+                <div className="space-y-8 md:space-y-12">
+                    <div className="text-center space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter">ЗАКОНОДАТЕЛЬСТВО</h2>
+                        <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Выберите проект и кликните на нужный сервер</p>
+                    </div>
+                    <div className="flex justify-center gap-4 mb-8">
+                        <button
+                            onClick={() => setProject('gta5rp')}
+                            className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'gta5rp' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
+                        >
+                            GTA5RP
+                        </button>
+                        <button
+                            onClick={() => setProject('majestic')}
+                            className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'majestic' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
+                        >
+                            Majestic RP
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
+                        {currentServers.map(s => (
+                            <a key={s.n} href={`${forumUrl}${s.id}/`} target="_blank" className="glass-card p-4 md:p-6 rounded-2xl text-center group">
+                                <div className="text-[9px] md:text-[10px] opacity-20 mb-1 md:mb-2 font-bold transition">#{s.n}</div>
+                                <div className="text-[11px] md:text-xs font-bold uppercase tracking-tighter">{s.name}</div>
+                            </a>
                         ))}
                     </div>
                 </div>
-            );
-        };
-
-        const KnowledgeBase = () => {
-            const [pamyatki, setPamyatki] = useState([]);
-            const [project, setProject] = useState('gta5rp');
-
-            useEffect(() => {
-                const unsub = db.collection("pamyatki")
-                    .where("status", "==", "approved")
-                    .orderBy("createdAt", "desc")
-                    .onSnapshot(snap => {
-                        const data = snap.docs.map(doc => doc.data());
-                        setPamyatki(data);
-                    }, err => console.error(err));
-                return () => unsub();
-            }, []);
-
-            const currentServers = project === 'gta5rp' ? GTA5RP_SERVERS : MAJESTIC_SERVERS;
-            const forumUrl = project === 'gta5rp'
-                ? 'https://forum.gta5rp.com/forums/zakonodatelnaja-baza.'
-                : 'https://forum.majestic-rp.ru/forums/zakonodatelstvo.';
-
-            return (
-                <div className="space-y-12 md:space-y-16 animate-in fade-in duration-500">
-                    <div className="space-y-8 md:space-y-12">
-                        <div className="text-center space-y-4">
-                            <h2 className="text-2xl md:text-3xl font-black tracking-tighter">ЗАКОНОДАТЕЛЬСТВО</h2>
-                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Выберите проект и кликните на нужный сервер</p>
-                        </div>
-                        <div className="flex justify-center gap-4 mb-8">
-                            <button
-                                onClick={() => setProject('gta5rp')}
-                                className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'gta5rp' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
-                            >
-                                GTA5RP
-                            </button>
-                            <button
-                                onClick={() => setProject('majestic')}
-                                className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'majestic' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
-                            >
-                                Majestic RP
-                            </button>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-                            {currentServers.map(s => (
-                                <a key={s.n} href={`${forumUrl}${s.id}/`} target="_blank" className="glass-card p-4 md:p-6 rounded-2xl text-center group">
-                                    <div className="text-[9px] md:text-[10px] opacity-20 mb-1 md:mb-2 font-bold group-hover:text-[#00ff88] transition">#{s.n}</div>
-                                    <div className="text-[11px] md:text-xs font-bold uppercase tracking-tighter">{s.name}</div>
-                                </a>
-                            ))}
-                        </div>
+                <div className="space-y-8 md:space-y-12">
+                    <div className="text-center space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter">ПАМЯТКИ ОТ ИГРОКОВ</h2>
+                        <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Для упрощения игры в гос.структурах</p>
+                        <br></br>
+                        <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Как открыть памятку?</p>
+                        <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest"> ПКМ - Открыть в новой вкладке, или перейдите по ссылке под фото.</p>
                     </div>
-                    <div className="space-y-8 md:space-y-12">
-                        <div className="text-center space-y-4">
-                            <h2 className="text-2xl md:text-3xl font-black tracking-tighter">ПАМЯТКИ ОТ ИГРОКОВ</h2>
-                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Для упрощения игры в гос.структурах</p>
-                            <br></br>
-                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">Как открыть памятку?</p>
-                            <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest"> ПКМ - Открыть в новой вкладке, или перейдите по ссылке под фото.</p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                            {pamyatki.length > 0 ? pamyatki.map((p, i) => (
-                                <div 
-                                    key={i} 
-                                    className="glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col"
-                                >
-                                    <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">
-                                        {p.title}
-                                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                        {pamyatki.length > 0 ? pamyatki.map((p, i) => (
+                            <div 
+                                key={i} 
+                                className="glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col"
+                            >
+                                <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">
+                                    {p.title}
+                                </h4>
 
+                                <a 
+                                    href={p.imageUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="pamyatka-img-container shadow-2xl block overflow-hidden rounded-2xl border border-white/10 hover:border-[#000000]/50 transition-all"
+                                >
+                                    <img 
+                                        src={p.imageUrl} 
+                                        alt={p.title} 
+                                        loading="lazy" 
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                    />
+                                </a>
+
+                                {p.tableUrl && (
                                     <a 
-                                        href={p.imageUrl} 
+                                        href={p.tableUrl} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="pamyatka-img-container shadow-2xl block overflow-hidden rounded-2xl border border-white/10 hover:border-[#00ff88]/50 transition-all"
+                                        className="inline-flex items-center justify-center gap-2 bg-black/5 hover:bg-black/10 border border-black/10 hover:border-[#000000]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#000000]"
                                     >
-                                        <img 
-                                            src={p.imageUrl} 
-                                            alt={p.title} 
-                                            loading="lazy" 
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                        />
+                                        Открыть таблицу
+                                        <span className="text-xs opacity-60">↗</span>
                                     </a>
-
-                                    {p.tableUrl && (
-                                        <a 
-                                            href={p.tableUrl} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#00ff88]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#00ff88]"
-                                        >
-                                            Открыть таблицу
-                                            <span className="text-xs opacity-60">↗</span>
-                                        </a>
-                                    )}
-                                </div>
-                            )) : (
-                                <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">
-                                    Загрузка памяток...
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const SocialLinks = ({ navigate }) => {
-            return (
-                <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-                    <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
-                        <div className="text-center">
-                            <h2 className="text-2xl md:text-3xl font-black tracking-tighter">АКТУАЛЬНЫЕ ССЫЛКИ</h2>
-                        </div>
-                        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-                            <a href="https://vk.com/bipbupyoutube" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/vk.webp" alt="VK" />
-                            </a>
-                            <a href="https://vk.com/club233266973" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/vkrezerv.webp" alt="VK" />
-                            </a>
-                            <a href="https://t.me/bipbupyoutube" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
-                            </a>
-                            <a href="https://t.me/+99uLwWeMDK85NTE6" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/tgchat.png" alt="Telegram чат" />
-                            </a>
-                            <a href="https://discord.gg/r99jwjKVQ3" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/ds.png" alt="Discord" />
-                            </a>
-                            <a href="https://www.twitch.tv/bipbup_ya" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/twitch.png" alt="Twitch" />
-                            </a>
-                            <a href="https://www.youtube.com/c/BIPBUP/videos" target="_blank" className="hover:scale-110 transition-transform">
-                                <img style={{height: "60px"}} src="images/yt.png" alt="YouTube" />
-                            </a>
-                        </div>
-                        <div className="space-y-8 text-center">
-                            <h3 className="text-2xl md:text-3xl font-black tracking-tighter">КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ</h3>
-                            <a href="https://t.me/bipbupmanager" target="_blank">
-                                <img style={{height: "300px"}} src="images/qrcodecomm.png" alt="QR-код для коммерческих предложений" className="mx-auto rounded-2xl" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const PC = ({ navigate }) => {
-            return (
-                <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-                    <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
-                        <div className="space-y-8 text-center">
-                            <h3 className="text-2xl md:text-3xl font-black tracking-tighter">НАСТРОЙКИ ИГРЫ</h3>
-                            <p>
-                                <img style={{height: "300px"}} src="images/settings.png" alt="Settings" className="mx-auto rounded-2xl" />
+                                )}
+                            </div>
+                        )) : (
+                            <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">
+                                Загрузка памяток...
                             </p>
-                        </div>
-                        <div className="space-y-8 text-center">
-                            <h3 className="text-2xl md:text-3xl font-black tracking-tighter">КОНФИГУРАЦИЯ ПК</h3>
-                            <p>Процессор — AMD Ryzen 9 7900X3D</p>
-                            <p>ОЗУ — 32 GB DDR5</p>
-                            <p>ГПУ — GeForce GTX 4070 SUPER 12GB</p>
-                            <p>Материнская плата — ASUS B550 AORUS</p>
-                            <p>Клавиатура — Logitech G413</p>
-                            <p>Мышка — RAZER Abyssus 2014</p>
-                            <p>Мауспад — SteelSeries QcK Mass</p>
-                            <p>Наушники — HyperX Cloud Alpha S</p>
-                            <p>Микрофон — AUDIO-TECHNICA AT2020</p>
-                        </div>
-                        <div className="space-y-8 text-center">
-                            <h3 className="text-2xl md:text-3xl font-black tracking-tighter">МОЯ ГРАФИКА</h3>
-                            <p>
-                            <a href="https://ntw.graphics/library/graphics-mods/california-refined" target="_blank">
-                                <img style={{height: "300px"}} src="images/graphics.png" alt="QR-код для коммерческих предложений" className="mx-auto rounded-2xl" />
-                            </a>
-                            </p>
-                        </div>
+                        )}
                     </div>
                 </div>
-            );
-        };
+            </div>
+        );
+    };
 
-        const Player = () => {
-            const [activePlayer, setActivePlayer] = useState('hinata');
-            const [vkUrl, setVkUrl] = useState('');
-            const [ytUrl, setYtUrl] = useState('');
-            const [hinataUrl, setHinataUrl] = useState('');
-            const [isLoading, setIsLoading] = useState(true);
-
-            useEffect(() => {
-                const loadVideos = async () => {
-                    setIsLoading(true);
-                    try {
-                        const overridesSnap = await db.collection('settings').doc('video_overrides').get();
-                        const overrides = overridesSnap.exists ? overridesSnap.data() : {};
-
-                        let finalVk = overrides.vk_override;
-                        if (!finalVk) {
-                            finalVk = localStorage.getItem('cached_vk') ||
-                                    "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239424&hash=5c6f77d900591ee9&hd=4";
-                            localStorage.setItem('cached_vk', finalVk);
-                        }
-                        setVkUrl(finalVk);
-
-                        let finalYt = overrides.yt_override;
-                        if (!finalYt) {
-                            finalYt = localStorage.getItem('cached_yt');
-                            if (!finalYt) {
-                                try {
-                                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(
-                                        'https://www.youtube.com/feeds/videos.xml?channel_id=UCjrmposCYp6sJsT2VybjH9A'
-                                    )}`);
-                                    const data = await res.json();
-                                    const idMatch = data.contents?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
-                                    if (idMatch?.[1]) {
-                                        finalYt = `https://www.youtube.com/embed/${idMatch[1]}?rel=0`;
-                                        localStorage.setItem('cached_yt', finalYt);
-                                    }
-                                } catch (e) {
-                                    console.warn("YouTube fetch failed", e);
-                                }
-                            }
-                        }
-                        setYtUrl(finalYt || '');
-
-                        let finalHinata = overrides.hinata_override;
-                        if (!finalHinata) {
-                            finalHinata = localStorage.getItem('cached_hinata');
-                            if (!finalhinata) {
-                                try {
-                                    const res = await fetch('https://api.github.com/repos/XQR4D/Hinata/releases/latest');
-                                    if (res.ok) {
-                                        const json = await res.json();
-                                        const asset = json.assets?.find(a => a.name.endsWith('.mp4'));
-                                        if (asset?.browser_download_url) {
-                                            finalHinata = `https://xqr4d.github.io/Hinata/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
-                                            localStorage.setItem('cached_hinata', finalHinata);
-                                        }
-                                    }
-                                } catch (e) {
-                                    console.warn("Hinata fetch failed", e);
-                                }
-                            }
-                        }
-                        setHinataUrl(finalHinata || '');
-
-                    } catch (err) {
-                        console.error('Ошибка при загрузке видео:', err);
-                    } finally {
-                        setIsLoading(false);
-                    }
-                };
-
-                loadVideos();
-            }, []);
-
-            const players = {
-                youtube: ytUrl,
-                vk: vkUrl,
-                hinata: hinataUrl
-            };
-
-            return (
-                <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-in fade-in duration-700">
-                    <div className="glass-card p-2 md:p-4 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#00ff88]/5 relative">
-                        <div className="aspect-video bg-black rounded-[1rem] md:rounded-[1.8rem] overflow-hidden">
-                            {isLoading ? (
-                                <div className="w-full h-full flex flex-col items-center justify-center">
-                                    <div className="w-8 h-8 border-2 border-[#00ff88]/20 border-t-[#00ff88] rounded-full animate-spin mb-4"></div>
-                                    <div className="text-[10px] uppercase tracking-widest opacity-40">Загрузка...</div>
-                                </div>
-                            ) : players[activePlayer] ? (
-                                <iframe
-                                    key={activePlayer + players[activePlayer]}
-                                    className="w-full h-full"
-                                    src={players[activePlayer]}
-                                    allowFullScreen
-                                    allow="autoplay; encrypted-media; fullscreen"
-                                    frameBorder="0"
-                                ></iframe>
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center text-sm opacity-60">
-                                    Видео недоступно
-                                </div>
-                            )}
-                        </div>
+    const SocialLinks = ({ navigate }) => {
+        return (
+            <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
+                <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
+                    <div className="text-center">
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter">АКТУАЛЬНЫЕ ССЫЛКИ</h2>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                        <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
-                            <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">Выбор плеера</h4>
-                            <div className="flex flex-wrap gap-3 md:gap-4">
-                                {['youtube', 'vk', 'hinata'].map(p => (
-                                    <button
-                                        key={p}
-                                        onClick={() => setActivePlayer(p)}
-                                        className={`flex-grow md:flex-none px-4 md:px-6 py-3 rounded-xl text-[11px] md:text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${
-                                            activePlayer === p
-                                                ? 'bg-[#00ff88] text-black shadow-[0_0_20px_#00ff88]'
-                                                : 'bg-white/5 opacity-40 hover:opacity-100'
-                                        }`}
-                                    >
-                                        {p.charAt(0).toUpperCase() + p.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
-                            <div>
-                                <a href="https://t.me/bipbupvods" target="_blank" className="hover:scale-110 transition-transform">
-                                    <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
-                                </a>
-                                <div className="text-[#00ff88] text-lg md:text-xl font-black tracking-tighter">РОЛИКИ ОФФЛАЙН</div>
-                            </div>
-                        </div>
-
-                        <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
-                            <div>
-                                <a href="https://xqr4d.github.io/Hinata/" target="_blank" className="hover:scale-110 transition-transform">
-                                    <img style={{height: "60px"}} src="images/play.png" alt="Hinata" />
-                                </a>
-                                <div className="text-[#00ff88] text-lg md:text-xl font-black tracking-tighter">НАШ ПЛЕЕР</div>
-                            </div>
-                        </div>
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+                        <a href="https://vk.com/bipbupyoutube" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/vk.webp" alt="VK" />
+                        </a>
+                        <a href="https://vk.com/club233266973" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/vkrezerv.webp" alt="VK" />
+                        </a>
+                        <a href="https://t.me/bipbupyoutube" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
+                        </a>
+                        <a href="https://t.me/+99uLwWeMDK85NTE6" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/tgchat.png" alt="Telegram чат" />
+                        </a>
+                        <a href="https://discord.gg/r99jwjKVQ3" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/ds.png" alt="Discord" />
+                        </a>
+                        <a href="https://www.twitch.tv/bipbup_ya" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/twitch.png" alt="Twitch" />
+                        </a>
+                        <a href="https://www.youtube.com/c/BIPBUP/videos" target="_blank" className="hover:scale-110 transition-transform">
+                            <img style={{height: "60px"}} src="images/yt.png" alt="YouTube" />
+                        </a>
+                    </div>
+                    <div className="space-y-8 text-center">
+                        <h3 className="text-2xl md:text-3xl font-black tracking-tighter">КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ</h3>
+                        <a href="https://t.me/bipbupmanager" target="_blank">
+                            <img style={{height: "300px"}} src="images/qrcodecomm.png" alt="QR-код для коммерческих предложений" className="mx-auto rounded-2xl" />
+                        </a>
                     </div>
                 </div>
-            );
-        };
+            </div>
+        );
+    };
 
-        const Login = ({ navigate }) => {
-            const [mode, setMode] = useState('login');
-            const [email, setEmail] = useState('');
-            const [pass, setPass] = useState('');
-            const [resetSent, setResetSent] = useState(false);
-            const recaptchaRef = useRef(null);
+    const PC = ({ navigate }) => {
+        return (
+            <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
+                <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
+                    <div className="space-y-8 text-center">
+                        <h3 className="text-2xl md:text-3xl font-black tracking-tighter">НАСТРОЙКИ ИГРЫ</h3>
+                        <p>
+                            <img style={{height: "300px"}} src="images/settings.png" alt="Settings" className="mx-auto rounded-2xl" />
+                        </p>
+                    </div>
+                    <div className="space-y-8 text-center">
+                        <h3 className="text-2xl md:text-3xl font-black tracking-tighter">КОНФИГУРАЦИЯ ПК</h3>
+                        <p>Процессор — AMD Ryzen 9 7900X3D</p>
+                        <p>ОЗУ — 32 GB DDR5</p>
+                        <p>ГПУ — GeForce GTX 4070 SUPER 12GB</p>
+                        <p>Материнская плата — ASUS B550 AORUS</p>
+                        <p>Клавиатура — Logitech G413</p>
+                        <p>Мышка — RAZER Abyssus 2014</p>
+                        <p>Мауспад — SteelSeries QcK Mass</p>
+                        <p>Наушники — HyperX Cloud Alpha S</p>
+                        <p>Микрофон — AUDIO-TECHNICA AT2020</p>
+                    </div>
+                    <div className="space-y-8 text-center">
+                        <h3 className="text-2xl md:text-3xl font-black tracking-tighter">МОЯ ГРАФИКА</h3>
+                        <p>
+                        <a href="https://ntw.graphics/library/graphics-mods/california-refined" target="_blank">
+                            <img style={{height: "300px"}} src="images/graphics.png" alt="QR-код для коммерческих предложений" className="mx-auto rounded-2xl" />
+                        </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
-            useEffect(() => {
-                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                    'size': 'invisible',
-                    'callback': (response) => { }
-                });
-            }, []);
+    const Player = () => {
+        const [activePlayer, setActivePlayer] = useState('hinata');
+        const [vkUrl, setVkUrl] = useState('');
+        const [ytUrl, setYtUrl] = useState('');
+        const [hinataUrl, setHinataUrl] = useState('');
+        const [isLoading, setIsLoading] = useState(true);
 
-            const verifyCaptcha = async () => {
+        useEffect(() => {
+            const loadVideos = async () => {
+                setIsLoading(true);
                 try {
-                    return await window.recaptchaVerifier.verify();
-                } catch (error) {
-                    console.error("Captcha verification failed", error);
-                    window.recaptchaVerifier.render().then(widgetId => {
-                        grecaptcha.reset(widgetId);
-                    });
-                    return null;
+                    const overridesSnap = await db.collection('settings').doc('video_overrides').get();
+                    const overrides = overridesSnap.exists ? overridesSnap.data() : {};
+
+                    let finalVk = overrides.vk_override;
+                    if (!finalVk) {
+                        finalVk = localStorage.getItem('cached_vk') ||
+                                "https://vkvideo.ru/video_ext.php?oid=-209507445&id=456239424&hash=5c6f77d900591ee9&hd=4";
+                        localStorage.setItem('cached_vk', finalVk);
+                    }
+                    setVkUrl(finalVk);
+
+                    let finalYt = overrides.yt_override;
+                    if (!finalYt) {
+                        finalYt = localStorage.getItem('cached_yt');
+                        if (!finalYt) {
+                            try {
+                                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(
+                                    'https://www.youtube.com/feeds/videos.xml?channel_id=UCjrmposCYp6sJsT2VybjH9A'
+                                )}`);
+                                const data = await res.json();
+                                const idMatch = data.contents?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+                                if (idMatch?.[1]) {
+                                    finalYt = `https://www.youtube.com/embed/${idMatch[1]}?rel=0`;
+                                    localStorage.setItem('cached_yt', finalYt);
+                                }
+                            } catch (e) {
+                                console.warn("YouTube fetch failed", e);
+                            }
+                        }
+                    }
+                    setYtUrl(finalYt || '');
+
+                    let finalHinata = overrides.hinata_override;
+                    if (!finalHinata) {
+                        finalHinata = localStorage.getItem('cached_hinata');
+                        if (!finalhinata) {
+                            try {
+                                const res = await fetch('https://api.github.com/repos/XQR4D/Hinata/releases/latest');
+                                if (res.ok) {
+                                    const json = await res.json();
+                                    const asset = json.assets?.find(a => a.name.endsWith('.mp4'));
+                                    if (asset?.browser_download_url) {
+                                        finalHinata = `https://xqr4d.github.io/Hinata/embed.html?v=${encodeURIComponent(asset.browser_download_url)}`;
+                                        localStorage.setItem('cached_hinata', finalHinata);
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn("Hinata fetch failed", e);
+                            }
+                        }
+                    }
+                    setHinataUrl(finalHinata || '');
+
+                } catch (err) {
+                    console.error('Ошибка при загрузке видео:', err);
+                } finally {
+                    setIsLoading(false);
                 }
             };
 
-            const handleAuth = async (e) => {
-                e.preventDefault();
-                const token = await verifyCaptcha();
-                if (!token) return;
+            loadVideos();
+        }, []);
 
-                const promise = mode === 'login'
-                    ? auth.signInWithEmailAndPassword(email, pass)
-                    : auth.createUserWithEmailAndPassword(email, pass);
+        const players = {
+            youtube: ytUrl,
+            vk: vkUrl,
+            hinata: hinataUrl
+        };
 
-                promise.then(() => navigate('lk')).catch(e => alert(e.message));
-            };
-
-            const handleGoogleLogin = async () => {
-                const token = await verifyCaptcha();
-                if (!token) return;
-                const provider = new firebase.auth.GoogleAuthProvider();
-                auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
-            };
-
-            const handleGithubLogin = async () => {
-                const token = await verifyCaptcha();
-                if (!token) return;
-                const provider = new firebase.auth.GithubAuthProvider();
-                auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
-            };
-
-            const handleReset = (e) => {
-                e.preventDefault();
-                auth.sendPasswordResetEmail(email).then(() => {
-                    setResetSent(true);
-                    setTimeout(() => setMode('login'), 3000);
-                }).catch(e => alert(e.message));
-            };
-
-            return (
-                <div className="max-w-md mx-auto py-6 md:py-10">
-                    <div id="recaptcha-container"></div>
-                    <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8 border-t-2 border-[#00ff88]/20">
-                        <div className="flex justify-between">
-                            <button onClick={() => setMode('login')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'login' ? 'text-[#00ff88]' : 'opacity-20'}`}>Логин</button>
-                            <button onClick={() => setMode('reg')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'reg' ? 'text-[#00ff88]' : 'opacity-20'}`}>Регистрация</button>
-                        </div>
-                       
-                        {mode === 'reset' ? (
-                            <form onSubmit={handleReset} className="space-y-4 animate-in fade-in duration-300">
-                                <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">Восстановление</h3>
-                                <input type="email" placeholder="Email" className="w-full" onChange={e => setEmail(e.target.value)} required />
-                                <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">Отправить ссылку</button>
-                                {resetSent && <p className="text-[9px] text-green-400 text-center animate-pulse">Проверьте почту!</p>}
-                                <button type="button" onClick={() => setMode('login')} className="w-full text-[9px] opacity-40 uppercase">Назад</button>
-                            </form>
+        return (
+            <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-in fade-in duration-700">
+                <div className="glass-card p-2 md:p-4 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#000000]/5 relative">
+                    <div className="aspect-video bg-black rounded-[1rem] md:rounded-[1.8rem] overflow-hidden">
+                        {isLoading ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center">
+                                <div className="w-8 h-8 border-2 border-[#000000]/20 border-t-[#000000] rounded-full animate-spin mb-4"></div>
+                                <div className="text-[10px] uppercase tracking-widest opacity-40">Загрузка...</div>
+                            </div>
+                        ) : players[activePlayer] ? (
+                            <iframe
+                                key={activePlayer + players[activePlayer]}
+                                className="w-full h-full"
+                                src={players[activePlayer]}
+                                allowFullScreen
+                                allow="autoplay; encrypted-media; fullscreen"
+                                frameBorder="0"
+                            ></iframe>
                         ) : (
-                            <div className="space-y-8 animate-in fade-in duration-300">
-                                <form onSubmit={handleAuth} className="space-y-4">
-                                    <input type="email" placeholder="Email Address" className="w-full" onChange={e => setEmail(e.target.value)} required />
-                                    <input type="password" placeholder="Password" className="w-full" onChange={e => setPass(e.target.value)} required />
-                                    <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">Продолжить</button>
-                                    <button type="button" onClick={() => setMode('reset')} className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition">Забыли пароль?</button>
-                                </form>
-                                <div className="relative py-2">
-                                    <div className="absolute inset-0 flex items-center"><div></div></div>
-                                    <div className="relative flex justify-center">
-                                        <span className="px-4 text-[8px] uppercase tracking-[0.3em] opacity-40 font-bold">Войти с помощью</span>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button onClick={handleGoogleLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300 hover:border-[#00ff88]/50">
-                                        <svg className="w-6 h-6 mb-2 transition-all duration-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.07-3.71 1.07-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                                            <path d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z" fill="#EA4335"/>
-                                        </svg>
-                                        <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100 group-hover:text-[#00ff88]">Google</span>
-                                    </button>
-                                   
-                                    <button onClick={handleGithubLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300 hover:border-[#00ff88]/50">
-                                        <svg className="w-5 h-5 mb-2 opacity-100" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                                        </svg>
-                                        <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100 group-hover:text-[#00ff88]">GitHub</span>
-                                    </button>
-                                </div>
+                            <div className="w-full h-full flex items-center justify-center text-sm opacity-60">
+                                Видео недоступно
                             </div>
                         )}
                     </div>
                 </div>
-            );
-        };
 
-        const PrivacyPage = () => (
-        <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-        <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
-            ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
-        </h1>
-        <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
-            <p className="opacity-60 text-xs uppercase tracking-widest">Последнее изменение: 14 февраля 2026 г.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                    <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+                        <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">Выбор плеера</h4>
+                        <div className="flex flex-wrap gap-3 md:gap-4">
+                            {['youtube', 'vk', 'hinata'].map(p => (
+                                <button
+                                    key={p}
+                                    onClick={() => setActivePlayer(p)}
+                                    className={`flex-grow md:flex-none px-4 md:px-6 py-3 rounded-xl text-[11px] md:text-[10px] uppercase font-bold tracking-widest transition-all duration-300 ${
+                                        activePlayer === p
+                                            ? 'bg-[#000000] text-white shadow-[0_0_20px_#000000]'
+                                            : 'bg-white/5 opacity-40 hover:opacity-100'
+                                    }`}
+                                >
+                                    {p.charAt(0).toUpperCase() + p.slice(1)}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
 
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">1. ОБЩИЕ ПОЛОЖЕНИЯ</h2>
-                <p>Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных» 
-                    (далее — Закон о персональных данных) 
-                    и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных, предпринимаемые BIP BUP Media.</p>
-                <p>1.1. BIP BUP Media ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, 
-                    в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
-                <p>1.2. Настоящая политика BIP BUP Media в отношении обработки персональных данных (далее — Политика) применяется ко всей информации, 
-                    которую BIP BUP Media может получить о посетителях веб-сайта https://xqr4d.github.io/bipbup/.</p>
-            </section>
+                    <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
+                        <div>
+                            <a href="https://t.me/bipbupvods" target="_blank" className="hover:scale-110 transition-transform">
+                                <img style={{height: "60px"}} src="images/tg.png" alt="Telegram канал" />
+                            </a>
+                            <div className="text-- text-lg md:text-xl font-black tracking-tighter">РОЛИКИ ОФФЛАЙН</div>
+                        </div>
+                    </div>
 
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">2. ОСНОВНЫЕ ПОНЯТИЯ, ИСПОЛЬЗУЕМЫЕ В ПОЛИТИКЕ</h2>
-                <p>2.1. Автоматизированная обработка персональных данных — обработка персональных данных с помощью средств вычислительной техники.</p>
-                <p>2.2. Блокирование персональных данных — временное прекращение обработки персональных данных (за исключением случаев, если обработка необходима для уточнения персональных данных).</p>
-                <p>2.3. Веб-сайт — совокупность графических и информационных материалов, а также программ для ЭВМ и баз данных, обеспечивающих их доступность в сети интернет по сетевому адресу https://xqr4d.github.io/bipbup/.</p>
-                <p>2.4. Информационная система персональных данных — совокупность содержащихся в базах данных персональных данных и обеспечивающих их обработку информационных технологий и технических средств.</p>
-                <p>2.5. Обезличивание персональных данных — действия, в результате которых невозможно определить без использования дополнительной информации принадлежность персональных данных конкретному Пользователю или иному субъекту персональных данных.</p>
-                <p>2.6. Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
-                <p>2.7. BIP BUP Media — государственный орган, муниципальный орган, юридическое или физическое лицо, самостоятельно или совместно с другими лицами организующие и/или осуществляющие обработку персональных данных, а также определяющие цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
-                <p>2.8. Персональные данные — любая информация, относящаяся прямо или косвенно к определенному или определяемому Пользователю веб-сайта https://xqr4d.github.io/bipbup/.</p>
-                <p>2.9. Персональные данные, разрешенные субъектом персональных данных для распространения, — персональные данные, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных путем дачи согласия на обработку персональных данных, разрешенных субъектом персональных данных для распространения в порядке, предусмотренном Законом о персональных данных (далее — персональные данные, разрешенные для распространения).</p>
-                <p>2.10. Пользователь — любой посетитель веб-сайта https://xqr4d.github.io/bipbup/.</p>
-                <p>2.11. Предоставление персональных данных — действия, направленные на раскрытие персональных данных определенному лицу или определенному кругу лиц.</p>
-                <p>2.12. Распространение персональных данных — любые действия, направленные на раскрытие персональных данных неопределенному кругу лиц (передача персональных данных) или на ознакомление с персональными данными неограниченного круга лиц, в том числе обнародование персональных данных в средствах массовой информации, размещение в информационно-телекоммуникационных сетях или предоставление доступа к персональным данным каким-либо иным способом.</p>
-                <p>2.13. Трансграничная передача персональных данных — передача персональных данных на территорию иностранного государства органу власти иностранного государства, иностранному физическому или иностранному юридическому лицу.</p>
-                <p>2.14. Уничтожение персональных данных — любые действия, в результате которых персональные данные уничтожаются безвозвратно с невозможностью дальнейшего восстановления содержания персональных данных в информационной системе персональных данных и/или уничтожаются материальные носители персональных данных.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">3. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ BIP BUP Media</h2>
-                <p>3.1. BIP BUP Media имеет право:
-                — получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;
-                — в случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, BIP BUP Media вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;
-                — самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
-                                <p>3.2. BIP BUP Media обязан:
-                — предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;
-                — организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;
-                — отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;
-                — сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;
-                — публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;
-                — принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;
-                — прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;
-                — исполнять иные обязанности, предусмотренные Законом о персональных данных.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">4. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ СУБЪЕКТОВ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>4.1. Субъекты персональных данных имеют право:
-                — получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами. Сведения предоставляются субъекту персональных данных BIP BUP Media в доступной форме, и в них не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных. Перечень информации и порядок ее получения установлен Законом о персональных данных;
-                — требовать от BIP BUP Media уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав;
-                — выдвигать условие предварительного согласия при обработке персональных данных в целях продвижения на рынке товаров, работ и услуг;
-                — на отзыв согласия на обработку персональных данных, а также, на направление требования о прекращении обработки персональных данных;
-                — обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в судебном порядке неправомерные действия или бездействие BIP BUP Media при обработке его персональных данных;
-                — на осуществление иных прав, предусмотренных законодательством РФ.</p>
-                                <p>4.2. Субъекты персональных данных обязаны:
-                — предоставлять BIP BUP Media достоверные данные о себе;
-                — сообщать BIP BUP Media об уточнении (обновлении, изменении) своих персональных данных.</p>
-                <p>4.3. Лица, передавшие BIP BUP Media недостоверные сведения о себе, либо сведения о другом субъекте персональных данных без согласия последнего, несут ответственность в соответствии с законодательством РФ.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">5. ПРИНЦИПЫ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>5.1. Обработка персональных данных осуществляется на законной и справедливой основе.</p>
-                <p>5.2. Обработка персональных данных ограничивается достижением конкретных, заранее определенных и законных целей. Не допускается обработка персональных данных, несовместимая с целями сбора персональных данных.</p>
-                <p>5.3. Не допускается объединение баз данных, содержащих персональные данные, обработка которых осуществляется в целях, несовместимых между собой.</p>
-                <p>5.4. Обработке подлежат только персональные данные, которые отвечают целям их обработки.</p>
-                <p>5.5. Содержание и объем обрабатываемых персональных данных соответствуют заявленным целям обработки. Не допускается избыточность обрабатываемых персональных данных по отношению к заявленным целям их обработки.</p>
-                <p>5.6. При обработке персональных данных обеспечивается точность персональных данных, их достаточность, а в необходимых случаях и актуальность по отношению к целям обработки персональных данных. BIP BUP Media принимает необходимые меры и/или обеспечивает их принятие по удалению или уточнению неполных или неточных данных.</p>
-                <p>5.7. Хранение персональных данных осуществляется в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных. Обрабатываемые персональные данные уничтожаются либо обезличиваются по достижении целей обработки или в случае утраты необходимости в достижении этих целей, если иное не предусмотрено федеральным законом.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">6. ЦЕЛИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>6.1. Предоставление доступа Пользователю к сервисам, информации и/или материалам, содержащимся на веб-сайте.</p>
-                <p>6.2. Персональные данные используемые для обработки персональных данных: электронный адрес, фотографии, имя.</p>
-                <p>6.3. Правовые основания: Федеральный закон «Об информации, информационных технологиях и о защите информации» от 27.07.2006 N 149-ФЗ.</p>
-                <p>6.4. Виды обработки данных: Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание персональных данных.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">7. УСЛОВИЯ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>7.1. Обработка персональных данных осуществляется с согласия субъекта персональных данных на обработку его персональных данных.</p>
-                <p>7.2. Обработка персональных данных необходима для достижения целей, предусмотренных международным договором Российской Федерации или законом, для осуществления возложенных законодательством Российской Федерации на BIP BUP Media функций, полномочий и обязанностей.</p>
-                <p>7.3. Обработка персональных данных необходима для осуществления правосудия, исполнения судебного акта, акта другого органа или должностного лица, подлежащих исполнению в соответствии с законодательством Российской Федерации об исполнительном производстве.</p>
-                <p>7.4. Обработка персональных данных необходима для исполнения договора, стороной которого либо выгодоприобретателем или поручителем по которому является субъект персональных данных, а также для заключения договора по инициативе субъекта персональных данных или договора, по которому субъект персональных данных будет являться выгодоприобретателем или поручителем.</p>
-                <p>7.5. Обработка персональных данных необходима для осуществления прав и законных интересов BIP BUP Media или третьих лиц либо для достижения общественно значимых целей при условии, что при этом не нарушаются права и свободы субъекта персональных данных.</p>
-                <p>7.6. Осуществляется обработка персональных данных, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных либо по его просьбе (далее — общедоступные персональные данные).</p>
-                <p>7.7. Осуществляется обработка персональных данных, подлежащих опубликованию или обязательному раскрытию в соответствии с федеральным законом.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">8. ПОРЯДОК СБОРА, ХРАНЕНИЯ, ПЕРЕДАЧИ И ДРУГИХ ВИДОВ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>Безопасность персональных данных, которые обрабатываются BIP BUP Media, обеспечивается путем реализации правовых, организационных и технических мер, необходимых для выполнения в полном объеме требований действующего законодательства в области защиты персональных данных.</p>
-                <p>8.1. BIP BUP Media обеспечивает сохранность персональных данных и принимает все возможные меры, исключающие доступ к персональным данным неуполномоченных лиц.</p>
-                <p>8.2. Персональные данные Пользователя никогда, ни при каких условиях не будут переданы третьим лицам, за исключением случаев, связанных с исполнением действующего законодательства либо в случае, если субъектом персональных данных дано согласие BIP BUP Media на передачу данных третьему лицу для исполнения обязательств по гражданско-правовому договору.</p>
-                <p>8.3. В случае выявления неточностей в персональных данных, Пользователь может актуализировать их самостоятельно, путем направления BIP BUP Media уведомление на адрес электронной почты BIP BUP Media bipbupmedia@protonmail.com с пометкой «Актуализация персональных данных».</p>
-                <p>8.4. Срок обработки персональных данных определяется достижением целей, для которых были собраны персональные данные, если иной срок не предусмотрен договором или действующим законодательством.
-Пользователь может в любой момент отозвать свое согласие на обработку персональных данных, направив BIP BUP Media уведомление посредством электронной почты на электронный адрес BIP BUP Media bipbupmedia@protonmail.com с пометкой «Отзыв согласия на обработку персональных данных».</p>
-                <p>8.5. Вся информация, которая собирается сторонними сервисами, в том числе платежными системами, средствами связи и другими поставщиками услуг, хранится и обрабатывается указанными лицами (BIP BUP Media) в соответствии с их Пользовательским соглашением и Политикой конфиденциальности. Субъект персональных данных и/или с указанными документами. BIP BUP Media не несет ответственность за действия третьих лиц, в том числе указанных в настоящем пункте поставщиков услуг.</p>
-                <p>8.6. Установленные субъектом персональных данных запреты на передачу (кроме предоставления доступа), а также на обработку или условия обработки (кроме получения доступа) персональных данных, разрешенных для распространения, не действуют в случаях обработки персональных данных в государственных, общественных и иных публичных интересах, определенных законодательством РФ.</p>
-                <p>8.7. BIP BUP Media при обработке персональных данных обеспечивает конфиденциальность персональных данных.</p>
-                <p>8.8. BIP BUP Media осуществляет хранение персональных данных в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
-                <p>8.9. Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия субъекта персональных данных, отзыв согласия субъектом персональных данных или требование о прекращении обработки персональных данных, а также выявление неправомерной обработки персональных данных.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">9. ПЕРЕЧЕНЬ ДЕЙСТВИЙ, ПРОИЗВОДИМЫХ BIP BUP Media С ПОЛУЧЕННЫМИ ПЕРСОНАЛЬНЫМИ ДАННЫМИ</h2>
-                <p>9.1. BIP BUP Media осуществляет сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление и уничтожение персональных данных.</p>
-                <p>9.2. BIP BUP Media осуществляет автоматизированную обработку персональных данных с получением и/или передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">10. ТРАНСГРАНИЧНАЯ ПЕРЕДАЧА ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>10.1. BIP BUP Media до начала осуществления деятельности по трансграничной передаче персональных данных обязан уведомить уполномоченный орган по защите прав субъектов персональных данных о своем намерении осуществлять трансграничную передачу персональных данных (такое уведомление направляется отдельно от уведомления о намерении осуществлять обработку персональных данных).</p>
-                <p>10.2. BIP BUP Media до подачи вышеуказанного уведомления, обязан получить от органов власти иностранного государства, иностранных физических лиц, иностранных юридических лиц, которым планируется трансграничная передача персональных данных, соответствующие сведения.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">11. КОНФИДЕНЦИАЛЬНОСТЬ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
-                <p>BIP BUP Media и иные лица, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
-            </section>
-
-            <section className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">12. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h2>
-                <p>12.1. Пользователь может получить любые разъяснения по интересующим вопросам, касающимся обработки его персональных данных, обратившись к BIP BUP Media с помощью электронной почты bipbupmedia@protonmail.com.</p>
-                <p>12.2. В данном документе будут отражены любые изменения политики обработки персональных данных BIP BUP Media. Политика действует бессрочно до замены ее новой версией.</p>
-                <p>12.3. Актуальная версия Политики в свободном доступе расположена в сети Интернет по адресу https://xqr4d.github.io/bipbup/.</p>
-            </section>
-            
-            </div>
-        </div>
-        );
-
-        const TermsPage = () => (
-            <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-                <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
-                    ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ
-                </h1>
-                <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
-                    <p className="opacity-60 text-xs uppercase tracking-widest">Последнее изменение: 14 февраля 2026 г.</p>
-
-                    <section className="space-y-4">
-                        <h2 className="md:text-2xl font-bold">Настоящее Пользовательское соглашение (далее – «Соглашение») является публичной офертой и определяет условия использования материалов и сервисов, размещенных на сайте в сети Интернет по адресу: https://xqr4d.github.io/bipbup/ (далее – «Сайт»), посетителями и пользователями данного интернет-сайта (далее – «Пользователи»).</h2>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">1. ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ</h2>
-                        <p>1.1. Пользователь – любое физическое лицо, достигшее возраста, допустимого для акцепта настоящего Соглашения, и использующее Сайт.</p>
-                        <p>1.2. Сайт – совокупность программ для электронных вычислительных машин и иной информации, содержащейся в информационной системе, доступ к которой обеспечивается посредством сети «Интернет» по доменному имени https://xqr4d.github.io/bipbup/.</p>
-                        <p>1.3. Акцепт оферты – полное и безоговорочное принятие Пользователем условий настоящего Соглашения, совершаемое путем использования Сайта (просмотр страниц, регистрация, отправка форм и т.д.).</p>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">2. ПРЕДМЕТ СОГЛАШЕНИЯ</h2>
-                        <p>2.1. Администрация Сайта предоставляет Пользователю право на использование Сайта и его сервисов на условиях, изложенных в настоящем Соглашении. Предметом соглашения является предоставление доступа к информационным материалам и сервисам сайта.</p>
-                        <p>2.2. Настоящее Соглашение является юридически обязательным документом для Пользователя и Администрации Сайта.</p>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">3. ПРАВА И ОБЯЗАННОСТИ СТОРОН</h2>
-                        <p>3.1. Администрация Сайта обязуется:</p>
-                        <p>3.1.1. Предоставлять Пользователю доступ к Сайту в соответствии с условиями настоящего Соглашения.</p>
-                        <p>3.1.2. Обеспечивать конфиденциальность информации, предоставленной Пользователем, в соответствии с Политикой конфиденциальности, размещенной на Сайте.</p>
-                        <p>3.2. Администрация Сайта вправе:</p>
-                        <p>3.2.1. В любое время изменять содержание Сайта, изменять или дополнять настоящее Соглашение без предварительного уведомления Пользователя.</p>
-                        <p>3.2.2. Ограничивать доступ к Сайту или его отдельным сервисам в случае нарушения Пользователем условий настоящего Соглашения.</p>
-                        <p>3.3.1. Соблюдать условия настоящего Соглашения.</p>
-                        <p>3.3.2. Не использовать Сайт для совершения действий, противоречащих действующему законодательству Российской Федерации.</p>
-                        <p>3.4.1. Копировать, распространять, изменять любую информацию, размещенную на Сайте, без предварительного согласия Администрации Сайта.</p>
-                        <p>3.5. Пользователь обязуется не размещать на Сайте информацию и объекты (включая, но не ограничиваясь, текстовые и графические материалы), которые могут нарушать права и интересы других лиц, а также информацию, запрещенную к распространению законодательством РФ.</p>
-                        <p>3.6. Администрация Сайта имеет право без уведомления удалять любую информацию и/или материалы, размещенные Пользователем, если сочтет, что они нарушают законодательство, права третьих лиц или настоящее Соглашение.</p>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">4. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h2>
-                        <p>4.1. Все объекты, размещенные на Сайте, в том числе элементы дизайна, текст, графические изображения, иллюстрации, видео, скрипты, программы и другие объекты и их подборки (далее – Контент), являются объектами исключительных прав Администрации Сайта и других правообладателей.</p>
-                        <p>4.2. Любое использование Сайта или Контента, кроме разрешенного в настоящем Соглашении, без предварительного письменного разрешения правообладателя категорически запрещено.</p>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">5. ОТВЕТСТВЕННОСТЬ И ПОРЯДОК РАЗРЕШЕНИЯ СПОРОВ</h2>
-                        <p>5.1. Администрация Сайта не несет ответственности за возможные убытки, причиненные Пользователю в связи с использованием Сайта.</p>
-                        <p>5.2. Все споры и разногласия, которые могут возникнуть между Сторонами, будут разрешаться путем переговоров.</p>
-                        <p>5.3. Порядок разрешения споров: В досудебном претензионном порядке. Срок ответа на претензию - 30 (тридцать) календарных дней.</p>
-                    </section>
-
-                    <section className="space-y-4">
-                        <h2 className="text-xl md:text-2xl font-bold">6. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h2>
-                        <p>6.1. Настоящее Соглашение вступает в силу с момента начала использования Пользователем Сайта и действует бессрочно.</p>
-                        <p>6.2. Действующая редакция Соглашения всегда находится на странице по адресу: https://xqr4d.github.io/bipbup/.</p>
-                        <p>6.3. По всем вопросам, не урегулированным настоящим Соглашением, Стороны руководствуются действующим законодательством Российской Федерации.</p>
-                    </section>
-
+                    <div className="glass-card p-6 md:p-8 rounded-3xl flex items-center justify-between">
+                        <div>
+                            <a href="https://xqr4d.github.io/Hinata/" target="_blank" className="hover:scale-110 transition-transform">
+                                <img style={{height: "60px"}} src="images/play.png" alt="Hinata" />
+                            </a>
+                            <div className="text-- text-lg md:text-xl font-black tracking-tighter">НАШ ПЛЕЕР</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
+    };
+
+    const Login = ({ navigate }) => {
+        const [mode, setMode] = useState('login');
+        const [email, setEmail] = useState('');
+        const [pass, setPass] = useState('');
+        const [resetSent, setResetSent] = useState(false);
+        const recaptchaRef = useRef(null);
+
+        useEffect(() => {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => { }
+            });
+        }, []);
+
+        const verifyCaptcha = async () => {
+            try {
+                return await window.recaptchaVerifier.verify();
+            } catch (error) {
+                console.error("Captcha verification failed", error);
+                window.recaptchaVerifier.render().then(widgetId => {
+                    grecaptcha.reset(widgetId);
+                });
+                return null;
+            }
+        };
+
+        const handleAuth = async (e) => {
+            e.preventDefault();
+            const token = await verifyCaptcha();
+            if (!token) return;
+
+            const promise = mode === 'login'
+                ? auth.signInWithEmailAndPassword(email, pass)
+                : auth.createUserWithEmailAndPassword(email, pass);
+
+            promise.then(() => navigate('lk')).catch(e => alert(e.message));
+        };
+
+        const handleGoogleLogin = async () => {
+            const token = await verifyCaptcha();
+            if (!token) return;
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
+        };
+
+        const handleGithubLogin = async () => {
+            const token = await verifyCaptcha();
+            if (!token) return;
+            const provider = new firebase.auth.GithubAuthProvider();
+            auth.signInWithPopup(provider).then(() => navigate('lk')).catch(e => alert(e.message));
+        };
+
+        const handleReset = (e) => {
+            e.preventDefault();
+            auth.sendPasswordResetEmail(email).then(() => {
+                setResetSent(true);
+                setTimeout(() => setMode('login'), 3000);
+            }).catch(e => alert(e.message));
+        };
+
+        return (
+            <div className="max-w-md mx-auto py-6 md:py-10">
+                <div id="recaptcha-container"></div>
+                <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8 border-t-2">
+                    <div className="flex justify-between">
+                        <button onClick={() => setMode('login')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'login' ? '' : 'opacity-20'}`}>Логин</button>
+                        <button onClick={() => setMode('reg')} className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'reg' ? '' : 'opacity-20'}`}>Регистрация</button>
+                    </div>
+                    
+                    {mode === 'reset' ? (
+                        <form onSubmit={handleReset} className="space-y-4 animate-in fade-in duration-300">
+                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">Восстановление</h3>
+                            <input type="email" placeholder="Email" className="w-full" onChange={e => setEmail(e.target.value)} required />
+                            <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">Отправить ссылку</button>
+                            {resetSent && <p className="text-[9px] text-green-400 text-center animate-pulse">Проверьте почту!</p>}
+                            <button type="button" onClick={() => setMode('login')} className="w-full text-[9px] opacity-40 uppercase">Назад</button>
+                        </form>
+                    ) : (
+                        <div className="space-y-8 animate-in fade-in duration-300">
+                            <form onSubmit={handleAuth} className="space-y-4">
+                                <input type="email" placeholder="Email Address" className="w-full" onChange={e => setEmail(e.target.value)} required />
+                                <input type="password" placeholder="Password" className="w-full" onChange={e => setPass(e.target.value)} required />
+                                <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">Войти</button>
+                                <button type="button" onClick={() => setMode('reset')} className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition">Забыли пароль?</button>
+                            </form>
+                            <div className="relative py-2">
+                                <div className="absolute inset-0 flex items-center"><div></div></div>
+                                <div className="relative flex justify-center">
+                                    <span className="px-4 text-[8px] uppercase tracking-[0.3em] opacity-40 font-bold">Войти с помощью</span>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <button onClick={handleGoogleLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300">
+                                    <svg className="w-6 h-6 mb-2 transition-all duration-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.07-3.71 1.07-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                        <path d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z" fill="#EA4335"/>
+                                    </svg>
+                                    <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">Google</span>
+                                </button>
+                                
+                                <button onClick={handleGithubLogin} className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300">
+                                    <svg className="w-5 h-5 mb-2 opacity-100" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                                    </svg>
+                                    <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">GitHub</span>
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    const PrivacyPage = () => (
+    <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
+    <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
+        ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
+    </h1>
+    <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
+        <p className="opacity-60 text-xs uppercase tracking-widest">Последнее изменение: 14 февраля 2026 г.</p>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">1. ОБЩИЕ ПОЛОЖЕНИЯ</h2>
+            <p>Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных» 
+                (далее — Закон о персональных данных) 
+                и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных, предпринимаемые BIP BUP Media.</p>
+            <p>1.1. BIP BUP Media ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, 
+                в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
+            <p>1.2. Настоящая политика BIP BUP Media в отношении обработки персональных данных (далее — Политика) применяется ко всей информации, 
+                которую BIP BUP Media может получить о посетителях веб-сайта https://xqr4d.github.io/bipbup/.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">2. ОСНОВНЫЕ ПОНЯТИЯ, ИСПОЛЬЗУЕМЫЕ В ПОЛИТИКЕ</h2>
+            <p>2.1. Автоматизированная обработка персональных данных — обработка персональных данных с помощью средств вычислительной техники.</p>
+            <p>2.2. Блокирование персональных данных — временное прекращение обработки персональных данных (за исключением случаев, если обработка необходима для уточнения персональных данных).</p>
+            <p>2.3. Веб-сайт — совокупность графических и информационных материалов, а также программ для ЭВМ и баз данных, обеспечивающих их доступность в сети интернет по сетевому адресу https://xqr4d.github.io/bipbup/.</p>
+            <p>2.4. Информационная система персональных данных — совокупность содержащихся в базах данных персональных данных и обеспечивающих их обработку информационных технологий и технических средств.</p>
+            <p>2.5. Обезличивание персональных данных — действия, в результате которых невозможно определить без использования дополнительной информации принадлежность персональных данных конкретному Пользователю или иному субъекту персональных данных.</p>
+            <p>2.6. Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
+            <p>2.7. BIP BUP Media — государственный орган, муниципальный орган, юридическое или физическое лицо, самостоятельно или совместно с другими лицами организующие и/или осуществляющие обработку персональных данных, а также определяющие цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
+            <p>2.8. Персональные данные — любая информация, относящаяся прямо или косвенно к определенному или определяемому Пользователю веб-сайта https://xqr4d.github.io/bipbup/.</p>
+            <p>2.9. Персональные данные, разрешенные субъектом персональных данных для распространения, — персональные данные, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных путем дачи согласия на обработку персональных данных, разрешенных субъектом персональных данных для распространения в порядке, предусмотренном Законом о персональных данных (далее — персональные данные, разрешенные для распространения).</p>
+            <p>2.10. Пользователь — любой посетитель веб-сайта https://xqr4d.github.io/bipbup/.</p>
+            <p>2.11. Предоставление персональных данных — действия, направленные на раскрытие персональных данных определенному лицу или определенному кругу лиц.</p>
+            <p>2.12. Распространение персональных данных — любые действия, направленные на раскрытие персональных данных неопределенному кругу лиц (передача персональных данных) или на ознакомление с персональными данными неограниченного круга лиц, в том числе обнародование персональных данных в средствах массовой информации, размещение в информационно-телекоммуникационных сетях или предоставление доступа к персональным данным каким-либо иным способом.</p>
+            <p>2.13. Трансграничная передача персональных данных — передача персональных данных на территорию иностранного государства органу власти иностранного государства, иностранному физическому или иностранному юридическому лицу.</p>
+            <p>2.14. Уничтожение персональных данных — любые действия, в результате которых персональные данные уничтожаются безвозвратно с невозможностью дальнейшего восстановления содержания персональных данных в информационной системе персональных данных и/или уничтожаются материальные носители персональных данных.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">3. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ BIP BUP Media</h2>
+            <p>3.1. BIP BUP Media имеет право:
+            — получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;
+            — в случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, BIP BUP Media вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;
+            — самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
+                            <p>3.2. BIP BUP Media обязан:
+            — предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;
+            — организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;
+            — отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;
+            — сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;
+            — публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;
+            — принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;
+            — прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;
+            — исполнять иные обязанности, предусмотренные Законом о персональных данных.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">4. ОСНОВНЫЕ ПРАВА И ОБЯЗАННОСТИ СУБЪЕКТОВ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>4.1. Субъекты персональных данных имеют право:
+            — получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами. Сведения предоставляются субъекту персональных данных BIP BUP Media в доступной форме, и в них не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных. Перечень информации и порядок ее получения установлен Законом о персональных данных;
+            — требовать от BIP BUP Media уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав;
+            — выдвигать условие предварительного согласия при обработке персональных данных в целях продвижения на рынке товаров, работ и услуг;
+            — на отзыв согласия на обработку персональных данных, а также, на направление требования о прекращении обработки персональных данных;
+            — обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в судебном порядке неправомерные действия или бездействие BIP BUP Media при обработке его персональных данных;
+            — на осуществление иных прав, предусмотренных законодательством РФ.</p>
+                            <p>4.2. Субъекты персональных данных обязаны:
+            — предоставлять BIP BUP Media достоверные данные о себе;
+            — сообщать BIP BUP Media об уточнении (обновлении, изменении) своих персональных данных.</p>
+            <p>4.3. Лица, передавшие BIP BUP Media недостоверные сведения о себе, либо сведения о другом субъекте персональных данных без согласия последнего, несут ответственность в соответствии с законодательством РФ.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">5. ПРИНЦИПЫ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>5.1. Обработка персональных данных осуществляется на законной и справедливой основе.</p>
+            <p>5.2. Обработка персональных данных ограничивается достижением конкретных, заранее определенных и законных целей. Не допускается обработка персональных данных, несовместимая с целями сбора персональных данных.</p>
+            <p>5.3. Не допускается объединение баз данных, содержащих персональные данные, обработка которых осуществляется в целях, несовместимых между собой.</p>
+            <p>5.4. Обработке подлежат только персональные данные, которые отвечают целям их обработки.</p>
+            <p>5.5. Содержание и объем обрабатываемых персональных данных соответствуют заявленным целям обработки. Не допускается избыточность обрабатываемых персональных данных по отношению к заявленным целям их обработки.</p>
+            <p>5.6. При обработке персональных данных обеспечивается точность персональных данных, их достаточность, а в необходимых случаях и актуальность по отношению к целям обработки персональных данных. BIP BUP Media принимает необходимые меры и/или обеспечивает их принятие по удалению или уточнению неполных или неточных данных.</p>
+            <p>5.7. Хранение персональных данных осуществляется в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных. Обрабатываемые персональные данные уничтожаются либо обезличиваются по достижении целей обработки или в случае утраты необходимости в достижении этих целей, если иное не предусмотрено федеральным законом.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">6. ЦЕЛИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>6.1. Предоставление доступа Пользователю к сервисам, информации и/или материалам, содержащимся на веб-сайте.</p>
+            <p>6.2. Персональные данные используемые для обработки персональных данных: электронный адрес, фотографии, имя.</p>
+            <p>6.3. Правовые основания: Федеральный закон «Об информации, информационных технологиях и о защите информации» от 27.07.2006 N 149-ФЗ.</p>
+            <p>6.4. Виды обработки данных: Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание персональных данных.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">7. УСЛОВИЯ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>7.1. Обработка персональных данных осуществляется с согласия субъекта персональных данных на обработку его персональных данных.</p>
+            <p>7.2. Обработка персональных данных необходима для достижения целей, предусмотренных международным договором Российской Федерации или законом, для осуществления возложенных законодательством Российской Федерации на BIP BUP Media функций, полномочий и обязанностей.</p>
+            <p>7.3. Обработка персональных данных необходима для осуществления правосудия, исполнения судебного акта, акта другого органа или должностного лица, подлежащих исполнению в соответствии с законодательством Российской Федерации об исполнительном производстве.</p>
+            <p>7.4. Обработка персональных данных необходима для исполнения договора, стороной которого либо выгодоприобретателем или поручителем по которому является субъект персональных данных, а также для заключения договора по инициативе субъекта персональных данных или договора, по которому субъект персональных данных будет являться выгодоприобретателем или поручителем.</p>
+            <p>7.5. Обработка персональных данных необходима для осуществления прав и законных интересов BIP BUP Media или третьих лиц либо для достижения общественно значимых целей при условии, что при этом не нарушаются права и свободы субъекта персональных данных.</p>
+            <p>7.6. Осуществляется обработка персональных данных, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных либо по его просьбе (далее — общедоступные персональные данные).</p>
+            <p>7.7. Осуществляется обработка персональных данных, подлежащих опубликованию или обязательному раскрытию в соответствии с федеральным законом.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">8. ПОРЯДОК СБОРА, ХРАНЕНИЯ, ПЕРЕДАЧИ И ДРУГИХ ВИДОВ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>Безопасность персональных данных, которые обрабатываются BIP BUP Media, обеспечивается путем реализации правовых, организационных и технических мер, необходимых для выполнения в полном объеме требований действующего законодательства в области защиты персональных данных.</p>
+            <p>8.1. BIP BUP Media обеспечивает сохранность персональных данных и принимает все возможные меры, исключающие доступ к персональным данным неуполномоченных лиц.</p>
+            <p>8.2. Персональные данные Пользователя никогда, ни при каких условиях не будут переданы третьим лицам, за исключением случаев, связанных с исполнением действующего законодательства либо в случае, если субъектом персональных данных дано согласие BIP BUP Media на передачу данных третьему лицу для исполнения обязательств по гражданско-правовому договору.</p>
+            <p>8.3. В случае выявления неточностей в персональных данных, Пользователь может актуализировать их самостоятельно, путем направления BIP BUP Media уведомление на адрес электронной почты BIP BUP Media bipbupmedia@protonmail.com с пометкой «Актуализация персональных данных».</p>
+            <p>8.4. Срок обработки персональных данных определяется достижением целей, для которых были собраны персональные данные, если иной срок не предусмотрен договором или действующим законодательством.
+Пользователь может в любой момент отозвать свое согласие на обработку персональных данных, направив BIP BUP Media уведомление посредством электронной почты на электронный адрес BIP BUP Media bipbupmedia@protonmail.com с пометкой «Отзыв согласия на обработку персональных данных».</p>
+            <p>8.5. Вся информация, которая собирается сторонними сервисами, в том числе платежными системами, средствами связи и другими поставщиками услуг, хранится и обрабатывается указанными лицами (BIP BUP Media) в соответствии с их Пользовательским соглашением и Политикой конфиденциальности. Субъект персональных данных и/или с указанными документами. BIP BUP Media не несет ответственность за действия третьих лиц, в том числе указанных в настоящем пункте поставщиков услуг.</p>
+            <p>8.6. Установленные субъектом персональных данных запреты на передачу (кроме предоставления доступа), а также на обработку или условия обработки (кроме получения доступа) персональных данных, разрешенных для распространения, не действуют в случаях обработки персональных данных в государственных, общественных и иных публичных интересах, определенных законодательством РФ.</p>
+            <p>8.7. BIP BUP Media при обработке персональных данных обеспечивает конфиденциальность персональных данных.</p>
+            <p>8.8. BIP BUP Media осуществляет хранение персональных данных в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
+            <p>8.9. Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия субъекта персональных данных, отзыв согласия субъектом персональных данных или требование о прекращении обработки персональных данных, а также выявление неправомерной обработки персональных данных.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">9. ПЕРЕЧЕНЬ ДЕЙСТВИЙ, ПРОИЗВОДИМЫХ BIP BUP Media С ПОЛУЧЕННЫМИ ПЕРСОНАЛЬНЫМИ ДАННЫМИ</h2>
+            <p>9.1. BIP BUP Media осуществляет сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление и уничтожение персональных данных.</p>
+            <p>9.2. BIP BUP Media осуществляет автоматизированную обработку персональных данных с получением и/или передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">10. ТРАНСГРАНИЧНАЯ ПЕРЕДАЧА ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>10.1. BIP BUP Media до начала осуществления деятельности по трансграничной передаче персональных данных обязан уведомить уполномоченный орган по защите прав субъектов персональных данных о своем намерении осуществлять трансграничную передачу персональных данных (такое уведомление направляется отдельно от уведомления о намерении осуществлять обработку персональных данных).</p>
+            <p>10.2. BIP BUP Media до подачи вышеуказанного уведомления, обязан получить от органов власти иностранного государства, иностранных физических лиц, иностранных юридических лиц, которым планируется трансграничная передача персональных данных, соответствующие сведения.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">11. КОНФИДЕНЦИАЛЬНОСТЬ ПЕРСОНАЛЬНЫХ ДАННЫХ</h2>
+            <p>BIP BUP Media и иные лица, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
+        </section>
+
+        <section className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-bold">12. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h2>
+            <p>12.1. Пользователь может получить любые разъяснения по интересующим вопросам, касающимся обработки его персональных данных, обратившись к BIP BUP Media с помощью электронной почты bipbupmedia@protonmail.com.</p>
+            <p>12.2. В данном документе будут отражены любые изменения политики обработки персональных данных BIP BUP Media. Политика действует бессрочно до замены ее новой версией.</p>
+            <p>12.3. Актуальная версия Политики в свободном доступе расположена в сети Интернет по адресу https://xqr4d.github.io/bipbup/.</p>
+        </section>
+        
+        </div>
+    </div>
+    );
+
+    const TermsPage = () => (
+        <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
+            <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
+                ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ
+            </h1>
+            <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
+                <p className="opacity-60 text-xs uppercase tracking-widest">Последнее изменение: 14 февраля 2026 г.</p>
+
+            <section className="space-y-4">
+                <h2 className="md:text-2xl font-bold">Настоящее Пользовательское соглашение (далее – «Соглашение») является публичной офертой и определяет условия использования материалов и сервисов, размещенных на сайте в сети Интернет по адресу: https://xqr4d.github.io/bipbup/ (далее – «Сайт»), посетителями и пользователями данного интернет-сайта (далее – «Пользователи»).</h2>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">1. ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ</h2>
+                <p>1.1. Пользователь – любое физическое лицо, достигшее возраста, допустимого для акцепта настоящего Соглашения, и использующее Сайт.</p>
+                <p>1.2. Сайт – совокупность программ для электронных вычислительных машин и иной информации, содержащейся в информационной системе, доступ к которой обеспечивается посредством сети «Интернет» по доменному имени https://xqr4d.github.io/bipbup/.</p>
+                <p>1.3. Акцепт оферты – полное и безоговорочное принятие Пользователем условий настоящего Соглашения, совершаемое путем использования Сайта (просмотр страниц, регистрация, отправка форм и т.д.).</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">2. ПРЕДМЕТ СОГЛАШЕНИЯ</h2>
+                <p>2.1. Администрация Сайта предоставляет Пользователю право на использование Сайта и его сервисов на условиях, изложенных в настоящем Соглашении. Предметом соглашения является предоставление доступа к информационным материалам и сервисам сайта.</p>
+                <p>2.2. Настоящее Соглашение является юридически обязательным документом для Пользователя и Администрации Сайта.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">3. ПРАВА И ОБЯЗАННОСТИ СТОРОН</h2>
+                <p>3.1. Администрация Сайта обязуется:</p>
+                <p>3.1.1. Предоставлять Пользователю доступ к Сайту в соответствии с условиями настоящего Соглашения.</p>
+                <p>3.1.2. Обеспечивать конфиденциальность информации, предоставленной Пользователем, в соответствии с Политикой конфиденциальности, размещенной на Сайте.</p>
+                <p>3.2. Администрация Сайта вправе:</p>
+                <p>3.2.1. В любое время изменять содержание Сайта, изменять или дополнять настоящее Соглашение без предварительного уведомления Пользователя.</p>
+                <p>3.2.2. Ограничивать доступ к Сайту или его отдельным сервисам в случае нарушения Пользователем условий настоящего Соглашения.</p>
+                <p>3.3.1. Соблюдать условия настоящего Соглашения.</p>
+                <p>3.3.2. Не использовать Сайт для совершения действий, противоречащих действующему законодательству Российской Федерации.</p>
+                <p>3.4.1. Копировать, распространять, изменять любую информацию, размещенную на Сайте, без предварительного согласия Администрации Сайта.</p>
+                <p>3.5. Пользователь обязуется не размещать на Сайте информацию и объекты (включая, но не ограничиваясь, текстовые и графические материалы), которые могут нарушать права и интересы других лиц, а также информацию, запрещенную к распространению законодательством РФ.</p>
+                <p>3.6. Администрация Сайта имеет право без уведомления удалять любую информацию и/или материалы, размещенные Пользователем, если сочтет, что они нарушают законодательство, права третьих лиц или настоящее Соглашение.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">4. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h2>
+                <p>4.1. Все объекты, размещенные на Сайте, в том числе элементы дизайна, текст, графические изображения, иллюстрации, видео, скрипты, программы и другие объекты и их подборки (далее – Контент), являются объектами исключительных прав Администрации Сайта и других правообладателей.</p>
+                <p>4.2. Любое использование Сайта или Контента, кроме разрешенного в настоящем Соглашении, без предварительного письменного разрешения правообладателя категорически запрещено.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">5. ОТВЕТСТВЕННОСТЬ И ПОРЯДОК РАЗРЕШЕНИЯ СПОРОВ</h2>
+                <p>5.1. Администрация Сайта не несет ответственности за возможные убытки, причиненные Пользователю в связи с использованием Сайта.</p>
+                <p>5.2. Все споры и разногласия, которые могут возникнуть между Сторонами, будут разрешаться путем переговоров.</p>
+                <p>5.3. Порядок разрешения споров: В досудебном претензионном порядке. Срок ответа на претензию - 30 (тридцать) календарных дней.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">6. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h2>
+                <p>6.1. Настоящее Соглашение вступает в силу с момента начала использования Пользователем Сайта и действует бессрочно.</p>
+                <p>6.2. Действующая редакция Соглашения всегда находится на странице по адресу: https://xqr4d.github.io/bipbup/.</p>
+                <p>6.3. По всем вопросам, не урегулированным настоящим Соглашением, Стороны руководствуются действующим законодательством Российской Федерации.</p>
+            </section>
+            </div>
+        </div>
+    );
 
         const Profile = ({ user, navigate }) => {
     const [isUploading, setIsUploading] = useState(false);
@@ -1334,23 +1492,23 @@
 const [isAdmin, setIsAdmin] = useState(false);
 
 useEffect(() => {
-  if (!user?.uid) return;
+    if (!user?.uid) return;
 
-  const userRef = db.collection('users').doc(user.uid);
+    const userRef = db.collection('users').doc(user.uid);
 
-  userRef.get()
+    userRef.get()
     .then(doc => {
-      if (doc.exists) {
+        if (doc.exists) {
         const data = doc.data();
         const adminStatus = data.isAdmin === true || ADMINS.includes(user.uid);
         setIsAdmin(adminStatus);
         setRole(adminStatus ? 'Администратор' : 'Пользователь');
-      }
+        }
     })
     .catch(err => {
-      console.error('Ошибка чтения роли:', err);
+        console.error('Ошибка чтения роли:', err);
     });
-}, [user?.uid]);
+    }, [user?.uid]);
 
     const fileInput = useRef();
 
@@ -1529,7 +1687,7 @@ useEffect(() => {
         <div className="max-w-4xl mx-auto flex flex-col gap-10 animate-in fade-in duration-700">
             <div className="glass-card p-8 md:p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-10">
                 <div className="relative group cursor-pointer" onClick={() => fileInput.current.click()}>
-                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#00ff88]/20 group-hover:border-[#00ff88] transition-all duration-500 shadow-2xl">
+                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 transition-all duration-500 shadow-2xl">
                         {avatar ? (
                             <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
                         ) : (
@@ -1539,21 +1697,21 @@ useEffect(() => {
                         )}
                     </div>
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#00ff88]">Сменить</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#ffffff]">Сменить</span>
                     </div>
                     <input type="file" ref={fileInput} className="hidden" accept="image/*" onChange={uploadAvatar} />
-                    {isUploading && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#00ff88] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">UP...</div>}
+                    {isUploading && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#000000] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">UP...</div>}
                 </div>
 
                 <div className="text-center md:text-left space-y-4">
-                    <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase">{user.displayName || 'Пользователь'}</h2>
                     <p className="text-xs md:text-sm opacity-30 font-medium tracking-widest uppercase">{user.email}</p>
                     <div className="flex items-center gap-3 justify-center md:justify-start mt-1">
                     <span className="text-xs opacity-50 uppercase tracking-widest">Роль:</span>
                     <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                         isAdmin
-                        ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-200 border border-purple-400/40 shadow-sm'
-                        : 'bg-gradient-to-r from-blue-600/30 to-blue-500/20 text-blue-200 border border-blue-400/40 shadow-sm'
+                        ? 'bg-gradient-to-r from-red-600/30 to-red-500/20 border border-red-400/40 shadow-sm'
+                        : 'bg-gradient-to-r from-yellow-600/30 to-yellow-500/20 border border-yellow-400/40 shadow-sm'
                     }`}
                     >
                     {isAdmin ? 'Администратор' : 'Пользователь'}
@@ -1660,50 +1818,81 @@ useEffect(() => {
             </div>
 
             {showModal === 'add' && (
-    <div className="fixed inset-0 z-[2000] backdrop-blur-xl flex items-center justify-center p-4">
-        <div className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+    <div 
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/1 backdrop-blur-3xl"
+        onClick={(e) => {
+            if (e.target === e.currentTarget) setShowModal(null);
+        }}
+    >
+        <div 
+            className="glass-card w-full max-w-lg p-8 md:p-10 rounded-[2.5rem] relative animate-in zoom-in duration-300 shadow-2xl border border-white/10"
+            onClick={e => e.stopPropagation()}
+            style={{ maxHeight: '92vh', overflowY: 'auto' }}
+        >
             <button 
                 onClick={() => setShowModal(null)} 
-                className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl"
+                className="absolute top-6 right-6 text-4xl leading-none text-black/70 hover:text-white transition-all z-10"
             >
                 ×
             </button>
             
-            <h3 className="text-xl font-black tracking-tighter text-center">НОВАЯ ПАМЯТКА</h3>
+            <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-2xl mb-4 shadow-lg">
+                    <span className="text-3xl">📋</span>
+                </div>
+                <h3 className="text-3xl font-black tracking-tighter">НОВАЯ ПАМЯТКА</h3>
+                <p className="text-sm opacity-60 mt-2">Добавьте памятку для сообщества</p>
+            </div>
             
-            <form onSubmit={submitPamyatka} className="space-y-4">
-                <input 
-                    name="p_title" 
-                    placeholder="Название памятки" 
-                    required 
-                />
+            <form onSubmit={submitPamyatka} className="space-y-6">
+                <div>
+                    <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">Название памятки</label>
+                    <input 
+                        name="p_title" 
+                        placeholder="Например: Orlando" 
+                        required 
+                        className="w-full"
+                    />
+                </div>
                 
-                <input 
-                    name="p_url" 
-                    type="url" 
-                    placeholder="Прямая ссылка на изображение" 
-                    required 
-                />
+                <div>
+                    <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">Прямая ссылка на изображение</label>
+                    <input 
+                        name="p_url" 
+                        type="url" 
+                        placeholder="https://i.imgur.com/..." 
+                        required 
+                        className="w-full"
+                    />
+                </div>
                 
-                <input 
-                    name="p_table_url" 
-                    type="url" 
-                    placeholder="Ссылка на таблицу" 
-                />
+                <div>
+                    <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">Ссылка на таблицу (необязательно)</label>
+                    <input 
+                        name="p_table_url" 
+                        type="url" 
+                        placeholder="https://docs.google.com/..." 
+                        className="w-full"
+                    />
+                </div>
                 
                 <button 
-                    className="btn-primary w-full py-5 rounded-2xl text-[11px] uppercase"
+                    type="submit"
+                    className="btn-primary w-full py-5 rounded-2xl text-[13px] uppercase tracking-widest font-bold mt-6 shadow-lg hover:scale-[1.02] transition-transform"
                 >
                     Отправить на модерацию
                 </button>
             </form>
+            
+            <p className="text-center text-[10px] opacity-50 mt-6">
+                После отправки памятка попадёт на модерацию
+            </p>
         </div>
     </div>
 )}
-
 {showModal === 'mod' && ADMINS.includes(user.uid) && (
     <div className="fixed inset-0 z-[2000] backdrop-blur-xl flex items-center justify-center p-4">
-        <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#00ff88]/20 animate-in zoom-in duration-300">
+        <div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 md:p-10 rounded-[2.5rem] space-y-6 relative border-t-2 border-[#000000]/20 animate-in zoom-in duration-300">
             <button 
                 onClick={() => setShowModal(null)} 
                 className="absolute top-6 right-6 opacity-30 hover:opacity-100 text-2xl"
@@ -1739,7 +1928,7 @@ useEffect(() => {
                                 <div className="flex gap-2">
                                     <button 
                                         onClick={() => handleMod(p.id, 'approved')} 
-                                        className="bg-[#00ff88] text-black px-4 py-2 rounded-lg hover:scale-110 transition font-bold"
+                                        className="bg-[#000000] text-white px-4 py-2 rounded-lg hover:scale-110 transition font-bold"
                                     >
                                         Принять
                                     </button>
@@ -1763,7 +1952,7 @@ useEffect(() => {
                                     href={p.tableUrl} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-[#00ff88] hover:text-[#00ff88]/80 transition text-sm font-medium"
+                                    className="inline-flex items-center gap-2 text-- hover:text-[#000000]/80 transition text-sm font-medium"
                                 >
                                     Открыть таблицу с памяткой
                                     <span className="text-xs opacity-50">↗</span>
@@ -1780,143 +1969,275 @@ useEffect(() => {
     );
 };
 
-        const App = () => {
-            const [page, setPage] = useState(() => localStorage.getItem('bipbup_last_page') || 'home');
-            const [user, setUser] = useState(null);
-            const [loading, setLoading] = useState(true);
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-           
-            useEffect(() => {
-                const unsubscribe = auth.onAuthStateChanged(async (u) => {
-                    setUser(u);
-                    setLoading(false);
+        const routes = {
+        'home': { title: 'Главная', component: Home },
+        'knowledge': { title: 'База знаний', component: KnowledgeBase },
+        'player': { title: 'Плееры', component: Player },
+        'PC': { title: 'Мой ПК', component: PC },
+        'social': { title: 'Ссылки', component: SocialLinks },
+        'tools': { title: 'Инструменты', component: ToolsPage },
+        'privacy': { title: 'Политика конфиденциальности', component: PrivacyPage },
+        'terms': { title: 'Пользовательское соглашение', component: TermsPage },
+        'login': { title: 'Вход', component: Login },
+        'lk': { title: 'Личный кабинет', component: Profile }
+    };
 
-                    if (u) {
-                    const userRef = db.collection('users').doc(u.uid);
+    const App = () => {
+        const [currentPage, setCurrentPage] = useState('home');
+        const [user, setUser] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [isTransitioning, setIsTransitioning] = useState(false);
 
-                    try {
-                        const doc = await userRef.get();
+        const getPageFromHash = () => {
+        const hash = window.location.hash.replace('#', '') || 'home';
+        return hash;
+        };
 
-                        if (!doc.exists) {
-                        await userRef.set({
-                            email: u.email || '',
-                            displayName: u.displayName || null,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            isAdmin: false
-                        });
-                        }
-                        else {
-                        await userRef.update({
-                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        }
-                    } catch (err) {
-                        console.error('Ошибка при инициализации профиля пользователя:', err);
-                    }
-                    }
-                });
+        const navigate = (page) => {
+        if (page === currentPage) return;
 
-                return () => unsubscribe();
-                }, []);
-           
-            const navigate = (p) => {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                setPage(p);
-                localStorage.setItem('bipbup_last_page', p);
-                setIsMenuOpen(false);
-                window.dispatchEvent(new Event('page-change'));
-            };
-           
-            const renderPage = () => {
-                if (loading) return <div className="flex justify-center py-20 accent-text animate-pulse text-2xl">Загрузка...</div>;
-               
-                switch(page) {
-                    case 'home': return <Home navigate={navigate} />;
-                    case 'knowledge': return <KnowledgeBase />;
-                    case 'social': return <SocialLinks navigate={navigate} />;
-                    case 'PC': return <PC navigate={navigate} />;
-                    case 'player': return <Player />;
-                    case 'tools': return <ToolsPage />;
-                    case 'privacy': return <PrivacyPage />;
-                    case 'terms': return <TermsPage />;
-                    case 'login': return <Login navigate={navigate} />;
-                    case 'lk': return user ? <Profile user={user} navigate={navigate} /> : <Login navigate={navigate} />;
-                    default: return <ErrorPage code="404" text="Страница не найдена" navigate={navigate} />;
+        setIsTransitioning(true);
+
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            window.location.hash = page;
+            setCurrentPage(page);
+            localStorage.setItem('bipbup_last_page', page);
+            setIsMenuOpen(false);
+
+            setTimeout(() => setIsTransitioning(false), 300);
+        }, 180);
+        };
+
+        useEffect(() => {
+            const handleHashChange = () => {
+                const page = getPageFromHash();
+                if (page !== currentPage) {
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                        setCurrentPage(page);
+                        setTimeout(() => setIsTransitioning(false), 300);
+                    }, 180);
                 }
             };
 
-            return (
-                <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
-                    <header className="flex justify-between items-center py-6 md:py-10">
-                        <div
-                            onClick={() => navigate('home')}
-                            className="z-[1100] cursor-pointer flex items-center">
-                            <img
-                                src="images/logobip.png"
-                                alt="BIPBUP Logo"
-                                className="h-10 md:h-14 lg:h-16 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] lg:max-w-[320px] object-contain transition-transform duration-300 hover:scale-105"
-                            />
-                        </div>
-                        <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase items-center">
-                            <button onClick={() => navigate('home')} className={`nav-link ${page === 'home' ? 'text-[#00ff88]' : ''}`}>🏠 ГЛАВНАЯ</button>
-                            <button onClick={() => navigate('knowledge')} className={`nav-link ${page === 'knowledge' ? 'text-[#00ff88]' : ''}`}>⭐ БАЗА ЗНАНИЙ</button>
-                            <button onClick={() => navigate('player')} className={`nav-link ${page === 'player' ? 'text-[#00ff88]' : ''}`}>📼 ПЛЕЕРЫ</button>
-                            <button onClick={() => navigate('PC')} className={`nav-link ${page === 'PC' ? 'text-[#00ff88]' : ''}`}>🖥️ МОЙ ПК</button>
-                            <button onClick={() => navigate('social')} className={`nav-link ${page === 'social' ? 'text-[#00ff88]' : ''}`}>🔗 ССЫЛКИ</button>
-                            <button onClick={() => navigate('tools')} className={`nav-link ${page === 'tools' ? 'text-[#00ff88]' : ''}`}>🔧 ИНСТРУМЕНТЫ</button>
-                            {user ? (
-                                <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${page === 'lk' ? 'bg-[#00ff88] text-black' : ''}`}>🙍 АККАУНТ</button>
-                            ) : (
-                                <button onClick={() => navigate('login')} className="nav-link btn-login">🔑 Вход</button>
-                            )}
-                        </nav>
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-[1100] relative w-8 h-8">
-                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}></span>
-                            <span className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}></span>
-                        </button>
-                        {isMenuOpen && (
-                            <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300">
-                                <button onClick={() => navigate('home')} className={page === 'home' ? 'accent-text' : ''}>🏠 Главная</button>
-                                <button onClick={() => navigate('knowledge')} className={page === 'knowledge' ? 'accent-text' : ''}>⭐ База знаний</button>
-                                <button onClick={() => navigate('player')} className={page === 'player' ? 'accent-text' : ''}>📼 Плееры</button>
-                                <button onClick={() => navigate('PC')} className={page === 'PC' ? 'accent-text' : ''}>🖥️ Мой ПК</button>
-                                <button onClick={() => navigate('social')} className={page === 'social' ? 'accent-text' : ''}>🔗 Ссылки</button>
-                                <button onClick={() => navigate('tools')} className={page === 'tools' ? 'accent-text' : ''}>🔧 Инструменты</button>
-                                {user ? (
-                                    <button onClick={() => navigate('lk')} className="accent-text border border-[#00ff88] px-6 py-2 rounded-full">🙍 Аккаунт</button>
-                                ) : (
-                                    <button onClick={() => navigate('login')} className="accent-text">🔑 Вход</button>
-                                )}
-                            </div>
-                        )}
-                    </header>
-                    <main className="flex-grow">
-                        {renderPage()}
-                    </main>
-                    <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024–{new Date().getFullYear()} BIP BUP Media</div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <button onClick={() => navigate('privacy')} className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">📄 PRIVACY POLICY</button>
-                        </div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <button onClick={() => navigate('terms')} className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">📑 TERMS</button>
-                        </div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">💡 Developer</a>
-                        </div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://t.me/balenciaga_telegram" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">⚠️ BugHunt</a>
-                        </div>
-                        <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                            <a href="https://xqr4d.github.io/shortlink/" className="hover:text-[#00ff88] transition text-[9px] md:text-[10px]">💖 Created via shortlink</a>
-                        </div>
-                    </footer>
-                </div>
-            );
-        };
+            window.addEventListener('hashchange', handleHashChange);
+            return () => window.removeEventListener('hashchange', handleHashChange);
+        }, [currentPage]);
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        useEffect(() => {
+            const savedPage = localStorage.getItem('bipbup_last_page');
+            const initialPage = getPageFromHash() || savedPage || 'home';
+            setCurrentPage(initialPage);
+        }, []);
+
+        useEffect(() => {
+            const unsubscribe = auth.onAuthStateChanged(async (u) => {
+                setUser(u);
+                setLoading(false);
+
+                if (u) {
+                    const userRef = db.collection('users').doc(u.uid);
+                    try {
+                        const doc = await userRef.get();
+                        if (!doc.exists) {
+                            await userRef.set({
+                                email: u.email || '',
+                                displayName: u.displayName || null,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                isAdmin: false
+                            });
+                        } else {
+                            await userRef.update({ lastLogin: firebase.firestore.FieldValue.serverTimestamp() });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            });
+            return () => unsubscribe();
+        }, []);
+
+        useEffect(() => {
+            if (routes[currentPage]) {
+                document.title = routes[currentPage].title;
+            }
+        }, [currentPage]);
+
+        const renderPage = () => {
+            if (loading) {
+                return <div className="flex justify-center py-20 accent-text animate-pulse text-2xl">Загрузка...</div>;
+            }
+
+            if (!routes[currentPage]) {
+                return <ErrorPage 
+                    code="404" 
+                    text="Страница не найдена" 
+                    navigate={navigate} 
+                />;
+            }
+
+            const PageComponent = routes[currentPage].component;
+
+            return currentPage === 'lk' 
+                ? (user ? <PageComponent user={user} navigate={navigate} /> : <Login navigate={navigate} />)
+                : <PageComponent navigate={navigate} />;
+            };
+
+        return (
+            <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
+            <header className="flex justify-between items-center py-6 md:py-10">
+            <button 
+                id="theme-toggle" 
+                className="ml-4 p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+            >
+                <span id="theme-icon" className="text-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sun" aria-hidden="true" size="16" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </span>
+            </button>
+
+            <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase items-center tracking-widest">
+                <button onClick={() => navigate('home')} className={`nav-link ${currentPage === 'home' ? '' : ''}`}>🏠 ГЛАВНАЯ</button>
+                <button onClick={() => navigate('knowledge')} className={`nav-link ${currentPage === 'knowledge' ? '' : ''}`}>⭐ БАЗА ЗНАНИЙ</button>
+                <button onClick={() => navigate('player')} className={`nav-link ${currentPage === 'player' ? '' : ''}`}>📼 ПЛЕЕРЫ</button>
+                <button onClick={() => navigate('PC')} className={`nav-link ${currentPage === 'PC' ? '' : ''}`}>🖥️ МОЙ ПК</button>
+                <button onClick={() => navigate('social')} className={`nav-link ${currentPage === 'social' ? '' : ''}`}>🔗 ССЫЛКИ</button>
+                <button onClick={() => navigate('tools')} className={`nav-link ${currentPage === 'tools' ? '' : ''}`}>🔧 ИНСТРУМЕНТЫ</button>
+                
+                {user ? (
+                    <button onClick={() => navigate('lk')} className={`nav-link btn-login font-bold ${currentPage === 'lk' ? 'bg-- text--' : ''}`}>🙍 АККАУНТ</button>
+                ) : (
+                    <button onClick={() => navigate('login')} className="nav-link btn-login">🔑 Войти</button>
+                )}
+            </nav>
+
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-[1100] relative w-8 h-8 ml-2">
+                <span className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}></span>
+                <span className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}></span>
+            </button>
+
+            {isMenuOpen && (
+                <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300 z-[2500]">
+                    {Object.keys(routes)
+                        .filter(key => {
+                            if (key === 'login') return false;
+                            return true;
+                        })
+                        .map(key => {
+                            let label = '';
+                            let emoji = '';
+
+                            switch (key) {
+                                case 'home':      emoji = '🏠'; label = 'Главная'; break;
+                                case 'knowledge': emoji = '⭐'; label = 'База знаний'; break;
+                                case 'player':    emoji = '📼'; label = 'Плееры'; break;
+                                case 'PC':        emoji = '🖥️'; label = 'Мой ПК'; break;
+                                case 'social':    emoji = '🔗'; label = 'Ссылки'; break;
+                                case 'tools':     emoji = '🔧'; label = 'Инструменты'; break;
+                                
+                                case 'lk':
+                                case 'login':
+                                    if (user) {
+                                        emoji = '🙍';
+                                        label = 'Аккаунт';
+                                    } else {
+                                        emoji = '🔑';
+                                        label = 'Войти';
+                                    }
+                                    break;
+                            }
+
+                            return (
+                                <button
+                                    key={key}
+                                    onClick={() => navigate(key)}
+                                    className={currentPage === key ? 'white' : ''}
+                                >
+                                    {emoji} {label}
+                                </button>
+                            );
+                        })}
+                </div>
+            )}
+            </header>
+
+            <main className="flex-grow relative">
+                <div 
+                    key={currentPage}
+                    className={`page-transition ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+                >
+                    {renderPage()}
+                </div>
+            </main>
+
+            <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">© 2024–{new Date().getFullYear()} BIP BUP Media</div>
+                <button onClick={() => navigate('privacy')} className="hover:text-[#000000] opacity-40 transition text-[9px] md:text-[10px] uppercase font-bold tracking-widest">📄 PRIVACY POLICY</button>
+                <button onClick={() => navigate('terms')} className="hover:text-[#000000] opacity-40 transition text-[9px] md:text-[10px] uppercase font-bold tracking-widest">📑 TERMS</button>
+                <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
+                    <a href="https://xqr4d.github.io/XQR4D/" className="hover:text-[#000000] transition text-[9px] md:text-[10px]">💡 Developer</a>
+                </div>
+                <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
+                    <a href="https://t.me/balenciaga_telegram" className="hover:text-[#000000] transition text-[9px] md:text-[10px]">⚠️ BugHunt</a>
+                </div>
+                <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
+                    <a href="https://xqr4d.github.io/shortlink/" className="hover:text-[#000000] transition text-[9px] md:text-[10px]">💖 Created via shortlink</a>
+                </div>
+            </footer>
+        </div>
+    );
+};
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+    </script>
+    <script>
+        let themeInitialized = false;
+
+        function initTheme() {
+            if (themeInitialized) return;
+            themeInitialized = true;
+
+            const savedTheme = localStorage.getItem('bipbup-theme');
+            const isFirstVisit = !localStorage.getItem('bipbup-visited');
+
+            if (isFirstVisit) {
+                localStorage.setItem('bipbup-visited', 'true');
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('bipbup-theme', newTheme);
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('theme-icon');
+            if (!icon) return;
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        }
+
+        window.addEventListener('load', () => {
+            initTheme();
+            
+            setTimeout(() => {
+                const btn = document.getElementById('theme-toggle');
+                if (btn) {
+                    btn.addEventListener('click', toggleTheme);
+                }
+            }, 300);
+        });
     </script>
     <script>
         function initYandexMetrika() {
@@ -1965,90 +2286,6 @@ useEffect(() => {
 
             document.getElementById('cookie-accept')?.addEventListener('click', acceptCookies);
             document.getElementById('cookie-reject')?.addEventListener('click', rejectCookies);
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const canvas = document.getElementById('background-canvas');
-            const ctx = canvas.getContext('2d');
-           
-            let width, height;
-            let orbs = [];
-           
-            const colorPalette = [
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 },
-                { hex: '#00ff88', baseR: 0, baseG: 255, baseB: 136 }
-            ];
-            const orbCount = 5;
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-                initOrbs();
-            }
-            class Orb {
-                constructor() {
-                    this.setRandomValues();
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                }
-                setRandomValues() {
-                    this.radius = Math.random() * 300 + 200;
-                    this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                    this.vx = (Math.random() - 0.5) * 0.8;
-                    this.vy = (Math.random() - 0.5) * 0.8;
-                    this.sinOffset = Math.random() * Math.PI * 2;
-                    this.pulseSpeed = 0.02;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < -this.radius) this.vx *= -1;
-                    if (this.x > width + this.radius) this.vx *= -1;
-                    if (this.y < -this.radius) this.vy *= -1;
-                    if (this.y > height + this.radius) this.vy *= -1;
-                    this.sinOffset += this.pulseSpeed;
-                }
-                draw() {
-                    const currentRadius = this.radius + Math.sin(this.sinOffset) * 50;
-                    const gradient = ctx.createRadialGradient(
-                        this.x, this.y, 0,
-                        this.x, this.y, currentRadius
-                    );
-                    gradient.addColorStop(0, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0.35)`);
-                    gradient.addColorStop(0.5, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0.1)`);
-                    gradient.addColorStop(1, `rgba(${this.color.baseR}, ${this.color.baseG}, ${this.color.baseB}, 0)`);
-                    ctx.fillStyle = gradient;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-            function initOrbs() {
-                orbs = [];
-                for (let i = 0; i < orbCount; i++) {
-                    orbs.push(new Orb());
-                }
-            }
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-                ctx.globalCompositeOperation = 'screen';
-                for (let orb of orbs) {
-                    orb.update();
-                    orb.draw();
-                }
-                ctx.globalCompositeOperation = 'source-over';
-                requestAnimationFrame(animate);
-            }
-            window.addEventListener('resize', resize);
-            resize();
-            animate();
         });
     </script>
 </body>
