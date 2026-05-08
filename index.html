@@ -240,6 +240,34 @@
         border-radius: 9999px;
       }
 
+      @keyframes flipOut {
+        0% {
+          opacity: 1;
+          transform: translateY(0) skewY(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-40px) skewY(-4deg);
+        }
+      }
+      @keyframes flipIn {
+        0% {
+          opacity: 0;
+          transform: translateY(40px) skewY(4deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) skewY(0deg);
+        }
+      }
+      .hero-text-flip {
+        display: inline-block;
+        animation: flipIn 0.55s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      }
+      .hero-text-flip.out {
+        animation: flipOut 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      }
+
       .btn-primary {
         background: rgb(0, 0, 0);
         color: #ffffff;
@@ -1347,21 +1375,7 @@
           <div className="space-y-12 md:space-y-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
             <section className="relative py-10 md:py-24 flex items-center min-h-[65vh]">
               <div className="max-w-5xl mx-auto text-center px-4 w-full">
-                <h1
-                  className="font-black tracking-[-0.03em] leading-[0.85] 
-                                    text-[2.65rem] 
-                                    xs:text-[3.1rem]
-                                    sm:text-[3.9rem] 
-                                    md:text-[5.2rem] 
-                                    lg:text-[6.0rem] 
-                                    xl:text-[6.7rem]"
-                >
-                  ТВОЙ
-                  <br />
-                  ИГРОВОЙ
-                  <br />
-                  ПОМОЩНИК
-                </h1>
+                <HeroTitle />
 
                 <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
                   <button
@@ -1647,6 +1661,14 @@
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
                   КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ
                 </h3>
+                <a className="flex items-center gap-3 justify-center">
+                  <img
+                    style={{ height: '60px' }}
+                    src="images/mail.png"
+                    alt="Mail"
+                  />
+                  bipbupmedia@protonmail.com
+                </a>
                 <a href="https://t.me/bipbupmanager" target="_blank">
                   <img
                     style={{ height: '300px' }}
@@ -1674,7 +1696,7 @@
                     style={{ height: '300px' }}
                     src="images/settings.png"
                     alt="Settings"
-                    className="mx-auto rounded-2xl"
+                    className="mx-auto rounded-2xl glass-card"
                   />
                 </p>
               </div>
@@ -1682,15 +1704,15 @@
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
                   КОНФИГУРАЦИЯ ПК
                 </h3>
-                <p>Процессор — AMD Ryzen 9 7900X3D</p>
-                <p>ОЗУ — 32 GB DDR5</p>
-                <p>ГПУ — GeForce GTX 4070 SUPER 12GB</p>
-                <p>Материнская плата — ASUS B550 AORUS</p>
-                <p>Клавиатура — Logitech G413</p>
-                <p>Мышка — RAZER Abyssus 2014</p>
-                <p>Мауспад — SteelSeries QcK Mass</p>
-                <p>Наушники — HyperX Cloud Alpha S</p>
-                <p>Микрофон — AUDIO-TECHNICA AT2020</p>
+                <p>CPU — AMD Ryzen 9 7900X3D</p>
+                <p>Memory — 32 GB DDR5</p>
+                <p>GPU — GeForce GTX 4070 SUPER 12GB</p>
+                <p>Motherboard — ASUS B550 AORUS</p>
+                <p>Keyboard — Logitech G413</p>
+                <p>Mouse — RAZER Abyssus 2014</p>
+                <p>Mousepad — SteelSeries QcK Mass</p>
+                <p>Headphones — HyperX Cloud Alpha S</p>
+                <p>Microphone — AUDIO-TECHNICA AT2020</p>
               </div>
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
@@ -1704,8 +1726,8 @@
                     <img
                       style={{ height: '300px' }}
                       src="images/graphics.png"
-                      alt="QR-код для коммерческих предложений"
-                      className="mx-auto rounded-2xl"
+                      alt="graphicsnetwork"
+                      className="mx-auto rounded-2xl glass-card"
                     />
                   </a>
                 </p>
@@ -3477,6 +3499,53 @@
         lk: { title: 'Личный кабинет', component: Profile },
       };
 
+      const HERO_TEXTS = [
+        ['ТВОЙ', 'ИГРОВОЙ', 'ПОМОЩНИК'],
+        ['ПРОМОКОД', 'BIPBUP'],
+      ];
+
+      const HeroTitle = () => {
+        const { useState, useEffect, useRef } = React;
+        const [idx, setIdx] = React.useState(0);
+        const [phase, setPhase] = React.useState('in'); // 'in' | 'out'
+        const timerRef = React.useRef(null);
+
+        React.useEffect(() => {
+          // Показываем первый текст 4 секунды, потом переключаем
+          timerRef.current = setTimeout(function cycle() {
+            // Фаза выхода
+            setPhase('out');
+            setTimeout(() => {
+              setIdx((prev) => (prev + 1) % HERO_TEXTS.length);
+              setPhase('in');
+              // Следующий цикл через 4 секунды
+              timerRef.current = setTimeout(cycle, 4000);
+            }, 450);
+          }, 4000);
+          return () => clearTimeout(timerRef.current);
+        }, []);
+
+        const lines = HERO_TEXTS[idx];
+
+        return (
+          <h1 className="font-black tracking-[-0.03em] leading-[0.85] text-[2.65rem] xs:text-[3.1rem] sm:text-[3.9rem] md:text-[5.2rem] lg:text-[6.0rem] xl:text-[6.7rem]">
+            {lines.map((line, i) => (
+              <span key={idx + '-' + i} style={{ display: 'block' }}>
+                <span
+                  className={'hero-text-flip' + (phase === 'out' ? ' out' : '')}
+                  style={{
+                    animationDelay:
+                      phase === 'in' ? i * 0.08 + 's' : i * 0.05 + 's',
+                  }}
+                >
+                  {line}
+                </span>
+              </span>
+            ))}
+          </h1>
+        );
+      };
+
       const App = () => {
         const [currentPage, setCurrentPage] = useState('home');
         const [user, setUser] = useState(null);
@@ -3796,7 +3865,7 @@
               </div>
               <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
                 <a
-                  href="https://t.me/balenciaga_telegram"
+                  href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound: ${encodeURIComponent(s.title)}"
                   className="transition text-[9px] md:text-[10px]"
                 >
                   ⚠️ BugHunt
