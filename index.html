@@ -135,11 +135,6 @@
         border: none;
       }
 
-      [data-theme='dark'] .btn-primary {
-        background: rgb(0, 255, 136);
-        color: #000000;
-      }
-
       [data-theme='dark'] input {
         background: rgba(255, 255, 255, 0.06) !important;
         border-color: rgba(255, 255, 255, 0.15) !important;
@@ -147,6 +142,17 @@
       }
 
       [data-theme='dark'] input:focus {
+        border-color: var(--accent) !important;
+        background: rgba(0, 255, 136, 0.08) !important;
+      }
+
+      [data-theme='dark'] textarea {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+      }
+
+      [data-theme='dark'] textarea:focus {
         border-color: var(--accent) !important;
         background: rgba(0, 255, 136, 0.08) !important;
       }
@@ -243,29 +249,67 @@
       @keyframes flipOut {
         0% {
           opacity: 1;
-          transform: translateY(0) skewY(0deg);
+          transform: translateY(0) skewY(0deg) scale(1);
+          filter: blur(0px);
+        }
+        60% {
+          opacity: 0.3;
+          filter: blur(2px);
         }
         100% {
           opacity: 0;
-          transform: translateY(-40px) skewY(-4deg);
+          transform: translateY(-52px) skewY(-5deg) scale(0.96);
+          filter: blur(4px);
         }
       }
       @keyframes flipIn {
         0% {
           opacity: 0;
-          transform: translateY(40px) skewY(4deg);
+          transform: translateY(52px) skewY(5deg) scale(0.96);
+          filter: blur(4px);
+        }
+        60% {
+          opacity: 0.85;
+          filter: blur(1px);
         }
         100% {
           opacity: 1;
-          transform: translateY(0) skewY(0deg);
+          transform: translateY(0) skewY(0deg) scale(1);
+          filter: blur(0px);
         }
       }
       .hero-text-flip {
         display: inline-block;
-        animation: flipIn 0.55s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        animation: flipIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        will-change: transform, opacity, filter;
       }
       .hero-text-flip.out {
-        animation: flipOut 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        animation: flipOut 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+      }
+
+      @keyframes heroSectionIn {
+        0% {
+          opacity: 0;
+          transform: translateY(28px) scale(0.985);
+          filter: blur(6px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0px);
+        }
+      }
+      .hero-section-animate {
+        animation: heroSectionIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .hero-btn-animate {
+        animation: heroSectionIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+      }
+      .hero-disclaimer-animate {
+        animation: heroSectionIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+      }
+      .home-cards-animate {
+        animation: heroSectionIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
       }
 
       .btn-primary {
@@ -316,6 +360,23 @@
 
       input::placeholder {
         color: var(--text-secondary);
+      }
+
+      textarea {
+        background: var(--card-bg) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        border-radius: 16px !important;
+        outline: none !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        display: block;
+        transition: all 0.3s ease;
+      }
+
+      textarea:focus {
+        border-color: var(--accent) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
       }
 
       .error-page {
@@ -438,6 +499,16 @@
         .cookie-btn {
           width: 100%;
         }
+        .glass-card {
+          border-radius: 24px;
+        }
+        header {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .nav-link {
+          white-space: nowrap;
+        }
       }
 
       .page-transition {
@@ -465,6 +536,83 @@
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
         animation: modalFadeIn 0.25s cubic-bezier(0.23, 1, 0.32, 1) both;
+      }
+
+      .modal-overlay.notif-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+
+      @keyframes notifSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .notif-sheet {
+        width: 100%;
+        max-height: 85vh;
+        border-radius: 2rem 2rem 0 0;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-bottom: none;
+        box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.4);
+        animation: notifSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      [data-theme='dark'] .notif-sheet {
+        background: rgba(12, 12, 12, 0.98);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .notif-handle {
+        width: 36px;
+        height: 4px;
+        border-radius: 9999px;
+        background: var(--border);
+        margin: 14px auto 0;
+        flex-shrink: 0;
+        opacity: 0.5;
+      }
+
+      .notif-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .notif-body {
+        padding: 16px 20px 36px;
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      @media (min-width: 640px) {
+        .modal-overlay.notif-overlay {
+          align-items: center;
+          padding: 16px;
+        }
+        .notif-sheet {
+          max-width: 480px;
+          max-height: 80vh;
+          border-radius: 2.5rem;
+          border-bottom: 1px solid var(--border);
+          animation: modalSlideUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+        .notif-handle {
+          display: none;
+        }
       }
 
       @keyframes modalFadeIn {
@@ -530,6 +678,23 @@
         color: #ff4444;
         transform: scale(1.1);
       }
+
+      .news-post {
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .comment-thread {
+        border-left: 2px solid var(--border);
+      }
+
+      .reaction-btn {
+        transition: all 0.2s ease;
+      }
+
+      .reaction-btn.liked {
+        color: #00ff88;
+        transform: scale(1.1);
+      }
     </style>
   </head>
   <body>
@@ -581,6 +746,30 @@
         'ncVuGk6MDjMZv4hhRtIdM27w8iq2',
         'stat8qyHflOz44oVUDPTGfMsetV2',
       ];
+
+      const formatText = (text) => {
+        if (!text) return '';
+        return text
+          .trim()
+          .replace(/\n{3,}/g, '\n\n')
+          .replace(
+            /\[(.*?)\]\((.*?)\)/g,
+            '<a href="$2" target="_blank" class="text-accent underline hover:opacity-80 transition-opacity">$1</a>'
+          )
+          .replace(
+            /(?<!href=")(https?:\/\/[^\s]+)/g,
+            '<a href="$1" target="_blank" class="text-accent underline hover:opacity-80 transition-opacity">$1</a>'
+          )
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/(?<!\*)\*(?![*\s])(.*?)(?<![*\s])\*(?!\*)/g, '<em>$1</em>')
+          .replace(
+            /`(.*?)`/g,
+            '<code class="bg-white/10 px-1.5 py-0.5 rounded font-mono text-sm">$1</code>'
+          )
+          .split('\n')
+          .map((line) => line + '<br />')
+          .join('');
+      };
 
       const GTA5RP_SERVERS = [
         { n: 1, name: 'Downtown', id: '803' },
@@ -1066,7 +1255,6 @@
       const GrindCalculator = () => {
         const [rate, setRate] = useState('');
         const [hours, setHours] = useState('');
-        const [tax, setTax] = useState(0);
         const [vip, setVip] = useState(0);
         const [total, setTotal] = useState(0);
 
@@ -1075,9 +1263,8 @@
           const h = parseFloat(hours) || 0;
           let res = r * h;
           if (vip > 0) res = res * (1 + vip / 100);
-          if (tax > 0) res = res * (1 - tax / 100);
           setTotal(Math.floor(res));
-        }, [rate, hours, tax, vip]);
+        }, [rate, hours, vip]);
 
         return (
           <div className="space-y-8 animate-in fade-in duration-300">
@@ -1372,12 +1559,14 @@
 
       const Home = ({ navigate }) => {
         return (
-          <div className="space-y-12 md:space-y-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
+          <div className="space-y-12 md:space-y-20">
             <section className="relative py-10 md:py-24 flex items-center min-h-[65vh]">
               <div className="max-w-5xl mx-auto text-center px-4 w-full">
-                <HeroTitle />
+                <div className="hero-section-animate">
+                  <HeroTitle />
+                </div>
 
-                <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center hero-btn-animate">
                   <button
                     onClick={() => navigate('knowledge')}
                     className="btn-primary px-10 py-4 rounded-2xl text-[11px] uppercase tracking-widest font-bold"
@@ -1386,14 +1575,14 @@
                   </button>
                 </div>
 
-                <p className="mt-10 text-[9px] md:text-xs opacity-40 max-w-md mx-auto px-2">
+                <p className="mt-10 text-[9px] md:text-xs opacity-40 max-w-md mx-auto px-2 hero-disclaimer-animate">
                   Вся информация, размещённая на сайте, носит исключительно
                   ознакомительный характер и не является публичной офертой.
                 </p>
               </div>
             </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto px-4 home-cards-animate">
               {[
                 {
                   t: 'База знаний',
@@ -1793,7 +1982,7 @@
               let finalHinata = overrides.hinata_override;
               if (!finalHinata) {
                 finalHinata = localStorage.getItem('cached_hinata');
-                if (!finalhinata) {
+                if (!finalHinata) {
                   try {
                     const res = await fetch(
                       'https://api.github.com/repos/XQR4D/Hinata/releases/latest'
@@ -2134,6 +2323,623 @@
                 </div>
               )}
             </div>
+          </div>
+        );
+      };
+
+      const NewsPage = ({ navigate, user }) => {
+        const [posts, setPosts] = useState([]);
+        const [loading, setLoading] = useState(true);
+        const [showCreateModal, setShowCreateModal] = useState(false);
+        const [editingPost, setEditingPost] = useState(null);
+        const [newPost, setNewPost] = useState({
+          title: '',
+          content: '',
+          imageUrl: '',
+        });
+
+        const isAdmin = React.useMemo(
+          () => !!user && ADMINS.includes(user.uid),
+          [user]
+        );
+
+        useEffect(() => {
+          const unsub = db
+            .collection('news')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(
+              (snap) => {
+                const data = snap.docs.map((doc) => ({
+                  id: doc.id,
+                  ...doc.data(),
+                }));
+                setPosts(data);
+                setLoading(false);
+              },
+              (err) => console.error(err)
+            );
+          return () => unsub();
+        }, []);
+
+        const openEditor = (post = null) => {
+          if (post) {
+            setEditingPost(post);
+            setNewPost({
+              title: post.title || '',
+              content: post.content || '',
+              imageUrl: post.imageUrl || '',
+            });
+          } else {
+            setEditingPost(null);
+            setNewPost({ title: '', content: '', imageUrl: '' });
+          }
+          setShowCreateModal(true);
+        };
+
+        const savePost = async () => {
+          if (!newPost.title?.trim() || !newPost.content?.trim()) {
+            alert('Заголовок и текст обязательны');
+            return;
+          }
+
+          try {
+            const postData = {
+              title: newPost.title.trim(),
+              content: newPost.content.trim(),
+              imageUrl: newPost.imageUrl?.trim() || null,
+              authorUid: user?.uid,
+              authorName:
+                user?.displayName ||
+                user?.email?.split('@')[0] ||
+                'Администратор',
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+
+            if (editingPost) {
+              await db.collection('news').doc(editingPost.id).update(postData);
+              alert('Новость обновлена!');
+            } else {
+              await db.collection('news').add({
+                ...postData,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+              alert('Новость опубликована!');
+            }
+
+            setNewPost({ title: '', content: '', imageUrl: '' });
+            setShowCreateModal(false);
+            setEditingPost(null);
+          } catch (e) {
+            alert('Ошибка: ' + e.message);
+          }
+        };
+
+        return (
+          <div className="max-w-4xl mx-auto py-12 md:py-20 px-4 space-y-12">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter">
+                  Новости сайта
+                </h1>
+                <p className="opacity-60 mt-2">
+                  Делимся последними обновлениями на сайте.
+                  <br />
+                  <br />
+                </p>
+                <p className="opacity-60 mt-2">
+                  Обращаем ваше внимание, что данная ветка обсуждения находится
+                  под модерацией.
+                  <br />В случае нарушения{' '}
+                  <a href="https://telegra.ph/Rules-BIP-BUP-Chat-httpstme99uLwWeMDK85NTE6-12-01">
+                    правил
+                  </a>{' '}
+                  ваш аккаунт может быть удален.
+                </p>
+              </div>
+
+              {isAdmin && (
+                <button
+                  onClick={() => openEditor()}
+                  className="btn-primary px-8 py-4 rounded-xl text-[11px] uppercase tracking-widest"
+                >
+                  +
+                </button>
+              )}
+            </div>
+
+            {loading && (
+              <div className="text-center py-20">Загрузка новостей...</div>
+            )}
+
+            {!loading && posts.length === 0 && (
+              <div className="glass-card p-20 text-center rounded-3xl">
+                <p className="text-xl opacity-60">Пока нет новостей</p>
+              </div>
+            )}
+
+            <div className="space-y-12">
+              {posts.map((post) => (
+                <NewsPostCard
+                  key={post.id}
+                  post={post}
+                  user={user}
+                  isAdmin={isAdmin}
+                  openEditor={openEditor}
+                />
+              ))}
+            </div>
+
+            {showCreateModal &&
+              ReactDOM.createPortal(
+                <div
+                  className="modal-overlay"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  <div
+                    className="modal-sheet max-w-2xl w-full"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      className="modal-close"
+                      onClick={() => setShowCreateModal(false)}
+                    >
+                      ×
+                    </button>
+                    <h3 className="text-3xl font-black mb-8">
+                      {editingPost ? 'Редактировать запись' : 'Новая запись'}
+                    </h3>
+
+                    <input
+                      type="text"
+                      placeholder="Заголовок новости"
+                      value={newPost.title}
+                      onChange={(e) =>
+                        setNewPost({ ...newPost, title: e.target.value })
+                      }
+                      className="w-full text-2xl font-bold mb-6"
+                    />
+                    <textarea
+                      placeholder="Текст новости"
+                      value={newPost.content}
+                      onChange={(e) =>
+                        setNewPost({ ...newPost, content: e.target.value })
+                      }
+                      className="w-full h-64 p-5 rounded-2xl mb-6"
+                    />
+                    <input
+                      type="url"
+                      placeholder="Ссылка на изображение"
+                      value={newPost.imageUrl}
+                      onChange={(e) =>
+                        setNewPost({ ...newPost, imageUrl: e.target.value })
+                      }
+                      className="w-full mb-8"
+                    />
+                    <button
+                      onClick={savePost}
+                      className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest"
+                    >
+                      {editingPost ? 'СОХРАНИТЬ' : 'ОПУБЛИКОВАТЬ'}
+                    </button>
+                  </div>
+                </div>,
+                document.body
+              )}
+          </div>
+        );
+      };
+
+      const NewsPostCard = ({ post, user: propUser, isAdmin, openEditor }) => {
+        const [comments, setComments] = useState([]);
+        const [newComment, setNewComment] = useState('');
+        const [replyTo, setReplyTo] = useState(null);
+        const [showComments, setShowComments] = useState(false);
+        const [commentCount, setCommentCount] = useState(0);
+        const [postReactions, setPostReactions] = useState({});
+
+        const currentUser = propUser || auth.currentUser;
+
+        useEffect(() => {
+          const unsub = db
+            .collection('news')
+            .doc(post.id)
+            .onSnapshot((doc) => {
+              if (doc.exists) {
+                const data = doc.data();
+                setPostReactions({
+                  likes: data.reactions_likes || [],
+                  dislikes: data.reactions_dislikes || [],
+                  fire: data.reactions_fire || [],
+                  heart: data.reactions_heart || [],
+                  wow: data.reactions_wow || [],
+                });
+              }
+            });
+          return () => unsub();
+        }, [post.id]);
+
+        useEffect(() => {
+          const unsub = db
+            .collection('news')
+            .doc(post.id)
+            .collection('comments')
+            .orderBy('createdAt', 'asc')
+            .onSnapshot((snap) => {
+              setCommentCount(snap.size);
+              if (showComments) {
+                setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+              }
+            });
+          return () => unsub();
+        }, [post.id, showComments]);
+
+        const postComment = async () => {
+          if (!currentUser) {
+            alert('Пожалуйста, войдите в аккаунт');
+            return;
+          }
+          if (!newComment.trim()) return;
+
+          try {
+            await db
+              .collection('news')
+              .doc(post.id)
+              .collection('comments')
+              .add({
+                uid: currentUser.uid,
+                displayName:
+                  currentUser.displayName ||
+                  currentUser.email?.split('@')[0] ||
+                  'Пользователь',
+                avatar: currentUser.photoURL || null,
+                text: newComment.trim(),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                isAdmin: ADMINS.includes(currentUser.uid),
+                replyTo: replyTo ? replyTo.id : null,
+                upvotes: [],
+                downvotes: [],
+              });
+
+            setNewComment('');
+            setReplyTo(null);
+          } catch (e) {
+            console.error(e);
+            alert('Ошибка отправки комментария');
+          }
+        };
+
+        const commentTree = comments.reduce((acc, comment) => {
+          if (!comment.replyTo) {
+            acc.push({ ...comment, replies: [] });
+          } else {
+            const parent = acc.find((c) => c.id === comment.replyTo);
+            if (parent) parent.replies.push(comment);
+          }
+          return acc;
+        }, []);
+
+        const handlePostReaction = async (reactionKey) => {
+          if (!currentUser) return alert('Войдите, чтобы оставить реакцию');
+          const userId = currentUser.uid;
+          const postRef = db.collection('news').doc(post.id);
+          const field = `reactions_${reactionKey}`;
+
+          await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(postRef);
+            if (!doc.exists) return;
+            const current = doc.data()[field] || [];
+            if (current.includes(userId)) {
+              transaction.update(postRef, {
+                [field]: firebase.firestore.FieldValue.arrayRemove(userId),
+              });
+            } else {
+              transaction.update(postRef, {
+                [field]: firebase.firestore.FieldValue.arrayUnion(userId),
+              });
+            }
+          });
+        };
+
+        const handleVote = async (commentId, voteType) => {
+          if (!currentUser) return alert('Войдите, чтобы оценивать');
+
+          const userId = currentUser.uid;
+          const commentRef = db
+            .collection('news')
+            .doc(post.id)
+            .collection('comments')
+            .doc(commentId);
+
+          await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(commentRef);
+            if (!doc.exists) return;
+
+            const data = doc.data();
+            const upvotes = data.upvotes || [];
+            const downvotes = data.downvotes || [];
+
+            if (voteType === 'up') {
+              if (upvotes.includes(userId)) {
+                transaction.update(commentRef, {
+                  upvotes: firebase.firestore.FieldValue.arrayRemove(userId),
+                });
+              } else {
+                transaction.update(commentRef, {
+                  upvotes: firebase.firestore.FieldValue.arrayUnion(userId),
+                  downvotes: firebase.firestore.FieldValue.arrayRemove(userId),
+                });
+              }
+            } else {
+              if (downvotes.includes(userId)) {
+                transaction.update(commentRef, {
+                  downvotes: firebase.firestore.FieldValue.arrayRemove(userId),
+                });
+              } else {
+                transaction.update(commentRef, {
+                  downvotes: firebase.firestore.FieldValue.arrayUnion(userId),
+                  upvotes: firebase.firestore.FieldValue.arrayRemove(userId),
+                });
+              }
+            }
+          });
+        };
+
+        const uid = currentUser?.uid;
+
+        const POST_REACTIONS = [
+          { key: 'likes', emoji: '👍' },
+          { key: 'heart', emoji: '❤️' },
+          { key: 'fire', emoji: '🔥' },
+          { key: 'wow', emoji: '😮' },
+          { key: 'dislikes', emoji: '👎' },
+        ];
+
+        const CommentVoteBar = ({ comment }) => {
+          const up = comment.upvotes || [];
+          const down = comment.downvotes || [];
+          const hasUp = uid && up.includes(uid);
+          const hasDown = uid && down.includes(uid);
+          return (
+            <div className="flex items-center gap-3 mt-2 text-xs opacity-60">
+              <button
+                onClick={() => handleVote(comment.id, 'up')}
+                className={`reaction-btn flex items-center gap-1 hover:opacity-100 transition ${hasUp ? 'liked' : ''}`}
+              >
+                👍 {up.length > 0 && <span>{up.length}</span>}
+              </button>
+              <button
+                onClick={() => handleVote(comment.id, 'down')}
+                className={`reaction-btn flex items-center gap-1 hover:opacity-100 transition ${hasDown ? 'text-red-400' : ''}`}
+              >
+                👎 {down.length > 0 && <span>{down.length}</span>}
+              </button>
+            </div>
+          );
+        };
+
+        return (
+          <div className="glass-card rounded-3xl overflow-hidden">
+            <div className="p-8 md:p-10">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <div className="text-xs opacity-40">
+                    {post.createdAt?.toDate
+                      ? post.createdAt.toDate().toLocaleDateString('ru-RU', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })
+                      : 'Недавно'}
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter mt-1">
+                    {post.title}
+                  </h2>
+                </div>
+
+                {isAdmin && openEditor && (
+                  <div className="flex gap-4 text-2xl">
+                    <button
+                      onClick={() => openEditor(post)}
+                      className="hover:text-accent transition-colors"
+                      title="Редактировать"
+                    >
+                      📝
+                    </button>
+                    <button
+                      onClick={() =>
+                        confirm('Удалить новость навсегда?') &&
+                        db.collection('news').doc(post.id).delete()
+                      }
+                      className="hover:text-red-500 transition-colors"
+                      title="Удалить"
+                    >
+                      ❌
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {post.imageUrl && (
+                <img
+                  src={post.imageUrl}
+                  alt=""
+                  className="w-full rounded-2xl mb-8"
+                />
+              )}
+
+              <div
+                className="prose dark:prose-invert max-w-none text-sm leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: formatText(post.content) }}
+              />
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {POST_REACTIONS.map(({ key, emoji }) => {
+                  const arr = postReactions[key] || [];
+                  const active = uid && arr.includes(uid);
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => handlePostReaction(key)}
+                      className={`reaction-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-all
+                        ${
+                          active
+                            ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]'
+                            : 'border-[var(--border)] hover:border-[var(--accent)] opacity-60 hover:opacity-100'
+                        }`}
+                    >
+                      <span>{emoji}</span>
+                      {arr.length > 0 && (
+                        <span className="text-xs font-bold">{arr.length}</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => setShowComments(!showComments)}
+                className="mt-6 flex items-center gap-2 text-sm font-medium opacity-70 hover:opacity-100 transition-colors"
+              >
+                💭 Комментарии ({commentCount})
+              </button>
+            </div>
+
+            {showComments && (
+              <div className="border-t border-[var(--border)] p-8 bg-[var(--card-bg)] rounded-b-3xl">
+                {currentUser ? (
+                  <div className="mb-8">
+                    <textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder={
+                        replyTo
+                          ? `Ответить ${replyTo.displayName}...`
+                          : 'Напишите комментарий...'
+                      }
+                      className="w-full h-28 p-5 rounded-2xl border border-[var(--border)] focus:border-[var(--accent)] bg-[var(--card-bg)]"
+                    />
+                    <div className="flex justify-end gap-3 mt-4">
+                      {replyTo && (
+                        <button
+                          onClick={() => setReplyTo(null)}
+                          className="px-6 py-2 text-sm opacity-70"
+                        >
+                          Отмена
+                        </button>
+                      )}
+                      <button
+                        onClick={postComment}
+                        className="btn-primary px-8 py-4 rounded-xl text-[11px] uppercase tracking-widest"
+                      >
+                        Отправить
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 opacity-60">
+                    Войдите в аккаунт, чтобы комментировать
+                  </div>
+                )}
+
+                <div className="space-y-8">
+                  {commentTree.map((c) => (
+                    <div key={c.id}>
+                      <div className="flex gap-4">
+                        <div className="w-10 h-10 rounded-full overflow-hidden border border-[var(--border)] flex-shrink-0">
+                          {c.avatar ? (
+                            <img
+                              src={c.avatar}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white font-bold text-sm">
+                              {c.displayName?.[0] || '?'}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">
+                              {c.displayName}
+                            </span>
+                            {c.isAdmin && (
+                              <span className="text-[10px] px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full">
+                                АДМИН
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-[15px] leading-relaxed">
+                            {c.text}
+                          </p>
+                          <div className="mt-2 text-xs opacity-60 flex gap-4 items-center">
+                            <span>
+                              {c.createdAt?.toDate
+                                ? c.createdAt
+                                    .toDate()
+                                    .toLocaleDateString('ru-RU')
+                                : ''}
+                            </span>
+                            <button
+                              onClick={() => setReplyTo(c)}
+                              className="hover:text-[var(--accent)]"
+                            >
+                              Ответить
+                            </button>
+                          </div>
+                          <CommentVoteBar comment={c} />
+                        </div>
+                      </div>
+
+                      {c.replies && c.replies.length > 0 && (
+                        <div className="ml-14 mt-6 space-y-6 border-l-2 border-[var(--border)] pl-6">
+                          {c.replies.map((reply) => (
+                            <div key={reply.id} className="flex gap-4">
+                              <div className="w-8 h-8 rounded-full overflow-hidden border border-[var(--border)] flex-shrink-0">
+                                {reply.avatar ? (
+                                  <img
+                                    src={reply.avatar}
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white text-xs">
+                                    {reply.displayName?.[0]}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-semibold text-sm">
+                                    {reply.displayName}
+                                  </span>
+                                  {reply.isAdmin && (
+                                    <span className="text-[9px] px-1.5 py-px bg-red-500/20 text-red-400 rounded">
+                                      АДМИН
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[14.5px] leading-relaxed">
+                                  {reply.text}
+                                </p>
+                                <div className="text-xs opacity-50 mt-1">
+                                  {reply.createdAt?.toDate
+                                    ? reply.createdAt
+                                        .toDate()
+                                        .toLocaleDateString('ru-RU')
+                                    : ''}
+                                </div>
+                                <CommentVoteBar comment={reply} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         );
       };
@@ -3490,6 +4296,7 @@
         PC: { title: 'Мой ПК', component: PC },
         social: { title: 'Ссылки', component: SocialLinks },
         tools: { title: 'Инструменты', component: ToolsPage },
+        news: { title: 'Новости сайта', component: NewsPage },
         privacy: {
           title: 'Политика конфиденциальности',
           component: PrivacyPage,
@@ -3507,18 +4314,15 @@
       const HeroTitle = () => {
         const { useState, useEffect, useRef } = React;
         const [idx, setIdx] = React.useState(0);
-        const [phase, setPhase] = React.useState('in'); // 'in' | 'out'
+        const [phase, setPhase] = React.useState('in');
         const timerRef = React.useRef(null);
 
         React.useEffect(() => {
-          // Показываем первый текст 4 секунды, потом переключаем
           timerRef.current = setTimeout(function cycle() {
-            // Фаза выхода
             setPhase('out');
             setTimeout(() => {
               setIdx((prev) => (prev + 1) % HERO_TEXTS.length);
               setPhase('in');
-              // Следующий цикл через 4 секунды
               timerRef.current = setTimeout(cycle, 4000);
             }, 450);
           }, 4000);
@@ -3546,6 +4350,240 @@
         );
       };
 
+      const Notifications = ({ user }) => {
+        const [notifications, setNotifications] = useState([]);
+        const [showNotif, setShowNotif] = useState(false);
+        const [lastReadTimestamp, setLastReadTimestamp] = useState(null);
+        const isAdmin = user && ADMINS.includes(user.uid);
+        const panelRef = useRef(null);
+
+        useEffect(() => {
+          if (!user) return;
+
+          const unsub = db
+            .collection('notifications')
+            .orderBy('createdAt', 'desc')
+            .limit(30)
+            .onSnapshot(
+              (snap) => {
+                const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+                setNotifications(data);
+              },
+              (err) => console.error('Notifications error:', err)
+            );
+
+          db.collection('users')
+            .doc(user.uid)
+            .get()
+            .then((doc) => {
+              if (doc.exists && doc.data().lastReadNotifications) {
+                setLastReadTimestamp(doc.data().lastReadNotifications);
+              }
+            });
+
+          return () => unsub();
+        }, [user]);
+
+        useEffect(() => {
+          const handleClickOutside = (e) => {
+            if (panelRef.current && !panelRef.current.contains(e.target)) {
+              setShowNotif(false);
+            }
+          };
+          document.addEventListener('mousedown', handleClickOutside);
+          return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
+        }, []);
+
+        const openNotifications = () => {
+          const newState = !showNotif;
+          setShowNotif(newState);
+
+          if (newState && user) {
+            const now = firebase.firestore.FieldValue.serverTimestamp();
+            db.collection('users')
+              .doc(user.uid)
+              .set(
+                {
+                  lastReadNotifications: now,
+                },
+                { merge: true }
+              )
+              .then(() => {
+                setLastReadTimestamp(now);
+              });
+          }
+        };
+
+        const unreadCount = React.useMemo(() => {
+          if (!lastReadTimestamp) return notifications.length;
+
+          return notifications.filter((n) => {
+            if (!n.createdAt) return true;
+            const notificationTime = n.createdAt.toDate
+              ? n.createdAt.toDate()
+              : new Date(n.createdAt);
+            const lastReadTime = lastReadTimestamp.toDate
+              ? lastReadTimestamp.toDate()
+              : new Date(lastReadTimestamp);
+            return notificationTime > lastReadTime;
+          }).length;
+        }, [notifications, lastReadTimestamp]);
+
+        const sendNotification = async () => {
+          if (!isAdmin) return;
+          const text = prompt('Введите текст уведомления');
+          if (!text || !text.trim()) return;
+
+          try {
+            await db.collection('notifications').add({
+              text: text.trim(),
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              author: user.displayName || user.email || 'Админ',
+            });
+            alert('Уведомление успешно отправлено!');
+          } catch (e) {
+            alert('Ошибка: ' + e.message);
+          }
+        };
+
+        const formatNotifText = (text) => {
+          if (!text) return '';
+          return text.replace(
+            /(https?:\/\/[^\s]+)/g,
+            '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">$1</a>'
+          );
+        };
+
+        return (
+          <div className="relative">
+            <button
+              onClick={openNotifications}
+              className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all relative z-10"
+              title=""
+            >
+              🔔
+              {unreadCount > 0 && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-[10px] rounded-full flex items-center justify-center text-white font-bold">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </div>
+              )}
+            </button>
+
+            {showNotif &&
+              ReactDOM.createPortal(
+                <div
+                  className="modal-overlay notif-overlay"
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) setShowNotif(false);
+                  }}
+                >
+                  <div
+                    ref={panelRef}
+                    className="notif-sheet"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="notif-handle" />
+
+                    <div className="notif-header">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                          style={{
+                            background: 'var(--card-bg)',
+                            border: '1px solid var(--border)',
+                          }}
+                        >
+                          🔔
+                        </div>
+                        <div>
+                          <h4 className="font-black text-base tracking-tight leading-none">
+                            Уведомления
+                          </h4>
+                          {notifications.length > 0 && (
+                            <p className="text-[10px] opacity-40 uppercase tracking-widest mt-0.5">
+                              {notifications.length}{' '}
+                              {notifications.length === 1
+                                ? 'сообщение'
+                                : 'сообщений'}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {isAdmin && (
+                          <button
+                            onClick={sendNotification}
+                            className="btn-primary text-[11px] px-4 py-2 rounded-xl"
+                          >
+                            Дзынькнуть
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setShowNotif(false)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-lg leading-none transition-all"
+                          style={{
+                            background: 'var(--card-bg)',
+                            border: '1px solid var(--border)',
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="notif-body">
+                      {notifications.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 gap-4">
+                          <span className="text-4xl opacity-30">🔕</span>
+                          <p className="text-[11px] uppercase tracking-widest opacity-40 text-center">
+                            Пока нет уведомлений
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {notifications.map((n, idx) => (
+                            <div
+                              key={n.id}
+                              className="p-4 rounded-2xl"
+                              style={{
+                                background: 'var(--card-bg)',
+                                border: '1px solid var(--border)',
+                              }}
+                            >
+                              <div className="flex items-start gap-3">
+                                <span className="text-base mt-0.5 flex-shrink-0">
+                                  📢
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <p
+                                    className="text-[14px] leading-relaxed"
+                                    dangerouslySetInnerHTML={{
+                                      __html: formatNotifText(n.text),
+                                    }}
+                                  />
+                                  <p className="text-[10px] opacity-40 mt-2 uppercase tracking-wider">
+                                    {n.createdAt?.toDate
+                                      ? n.createdAt
+                                          .toDate()
+                                          .toLocaleString('ru-RU')
+                                      : ''}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>,
+                document.body
+              )}
+          </div>
+        );
+      };
+
       const App = () => {
         const [currentPage, setCurrentPage] = useState('home');
         const [user, setUser] = useState(null);
@@ -3560,16 +4598,13 @@
 
         const navigate = (page) => {
           if (page === currentPage) return;
-
           setIsTransitioning(true);
-
           setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'instant' });
             window.location.hash = page;
             setCurrentPage(page);
             localStorage.setItem('bipbup_last_page', page);
             setIsMenuOpen(false);
-
             setTimeout(() => setIsTransitioning(false), 300);
           }, 180);
         };
@@ -3660,13 +4695,80 @@
               <Login navigate={navigate} />
             )
           ) : (
-            <PageComponent navigate={navigate} />
+            <PageComponent user={user} navigate={navigate} />
           );
         };
 
         return (
           <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
             <header className="flex justify-between items-center py-6 md:py-10">
+              <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase items-center tracking-widest">
+                <button
+                  onClick={() => navigate('home')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'home' ? 'active' : ''}`}
+                >
+                  🏠 ГЛАВНАЯ
+                </button>
+                <button
+                  onClick={() => navigate('knowledge')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'knowledge' ? 'active' : ''}`}
+                >
+                  ⭐ БАЗА ЗНАНИЙ
+                </button>
+                <button
+                  onClick={() => navigate('player')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'player' ? 'active' : ''}`}
+                >
+                  📼 ПЛЕЕРЫ
+                </button>
+                <button
+                  onClick={() => navigate('PC')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'PC' ? 'active' : ''}`}
+                >
+                  🖥️ МОЙ ПК
+                </button>
+                <button
+                  onClick={() => navigate('social')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'social' ? 'active' : ''}`}
+                >
+                  🔗 ССЫЛКИ
+                </button>
+                <button
+                  onClick={() => navigate('tools')}
+                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'tools' ? 'active' : ''}`}
+                >
+                  🔧 ИНСТРУМЕНТЫ
+                </button>
+
+                {user ? (
+                  <button
+                    onClick={() => navigate('lk')}
+                    className="nav-link btn-login font-bold bg-- text--"
+                  >
+                    🙍 АККАУНТ
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate('login')}
+                    className="nav-link btn-login font-bold bg-- text--"
+                  >
+                    🔑 ВОЙТИ
+                  </button>
+                )}
+              </nav>
+
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden z-[1100] relative w-8 h-8 ml-2"
+              >
+                <span
+                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
+                ></span>
+                <span
+                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
+                ></span>
+              </button>
+
               <button
                 id="theme-toggle"
                 className="ml-4 p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
@@ -3700,72 +4802,11 @@
                 </span>
               </button>
 
-              <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase items-center tracking-widest">
-                <button
-                  onClick={() => navigate('home')}
-                  className={`nav-link ${currentPage === 'home' ? '' : ''}`}
-                >
-                  🏠 ГЛАВНАЯ
-                </button>
-                <button
-                  onClick={() => navigate('knowledge')}
-                  className={`nav-link ${currentPage === 'knowledge' ? '' : ''}`}
-                >
-                  ⭐ БАЗА ЗНАНИЙ
-                </button>
-                <button
-                  onClick={() => navigate('player')}
-                  className={`nav-link ${currentPage === 'player' ? '' : ''}`}
-                >
-                  📼 ПЛЕЕРЫ
-                </button>
-                <button
-                  onClick={() => navigate('PC')}
-                  className={`nav-link ${currentPage === 'PC' ? '' : ''}`}
-                >
-                  🖥️ МОЙ ПК
-                </button>
-                <button
-                  onClick={() => navigate('social')}
-                  className={`nav-link ${currentPage === 'social' ? '' : ''}`}
-                >
-                  🔗 ССЫЛКИ
-                </button>
-                <button
-                  onClick={() => navigate('tools')}
-                  className={`nav-link ${currentPage === 'tools' ? '' : ''}`}
-                >
-                  🔧 ИНСТРУМЕНТЫ
-                </button>
-
-                {user ? (
-                  <button
-                    onClick={() => navigate('lk')}
-                    className={`nav-link btn-login font-bold ${currentPage === 'lk' ? 'bg-- text--' : ''}`}
-                  >
-                    🙍 АККАУНТ
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => navigate('login')}
-                    className="nav-link btn-login"
-                  >
-                    🔑 Войти
-                  </button>
-                )}
-              </nav>
-
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden z-[1100] relative w-8 h-8 ml-2"
-              >
-                <span
-                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
-                ></span>
-                <span
-                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
-                ></span>
-              </button>
+              <Notifications
+                className="ml-4 p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+                user={user}
+                isAdmin={user && ADMINS.includes(user.uid)}
+              />
 
               {isMenuOpen && (
                 <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300 z-[2500]">
@@ -3918,12 +4959,7 @@
         updateThemeIcon();
       }
 
-      function updateThemeIcon() {
-        const icon = document.getElementById('theme-icon');
-        if (!icon) return;
-        const isDark =
-          document.documentElement.getAttribute('data-theme') === 'dark';
-      }
+      function updateThemeIcon() {}
 
       window.addEventListener('load', () => {
         initTheme();
