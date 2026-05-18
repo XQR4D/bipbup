@@ -1238,7 +1238,7 @@
               <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-[#000000] tracking-wider min-h-[60px] group-hover:scale-110 transition-transform">
                 {result || '...'}
               </div>
-              <p className="text-[8px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
+              <p className="text-[10px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
                 Нажми чтобы скопировать
               </p>
             </div>
@@ -1432,7 +1432,7 @@
                   {password || '...'}
                 </div>
                 {password && (
-                  <p className="text-[8px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
+                  <p className="text-[10px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
                     Нажми чтобы скопировать
                   </p>
                 )}
@@ -1698,15 +1698,6 @@
                 </h2>
                 <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">
                   Для упрощения игры в гос.структурах
-                </p>
-                <br></br>
-                <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">
-                  Как открыть памятку?
-                </p>
-                <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">
-                  {' '}
-                  ПКМ - Открыть в новой вкладке, или перейдите по ссылке под
-                  фото.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -2191,13 +2182,13 @@
               <div className="flex justify-between">
                 <button
                   onClick={() => setMode('login')}
-                  className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'login' ? '' : 'opacity-20'}`}
+                  className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'login' ? '' : 'opacity-20'}`}
                 >
                   Логин
                 </button>
                 <button
                   onClick={() => setMode('reg')}
-                  className={`text-[10px] uppercase font-bold tracking-widest transition ${mode === 'reg' ? '' : 'opacity-20'}`}
+                  className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'reg' ? '' : 'opacity-20'}`}
                 >
                   Регистрация
                 </button>
@@ -2209,7 +2200,7 @@
                   className="space-y-4 animate-in fade-in duration-300"
                 >
                   <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">
-                    Восстановление
+                    Восстановление доступа
                   </h3>
                   <input
                     type="email"
@@ -2267,7 +2258,7 @@
                       <div></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 text-[8px] uppercase tracking-[0.3em] opacity-40 font-bold">
+                      <span className="px-4 text-[10px] uppercase tracking-[0.3em] opacity-20 font-bold">
                         Войти с помощью
                       </span>
                     </div>
@@ -2869,7 +2860,7 @@
                               </span>
                             )}
                           </div>
-                          <p className="mt-1 text-[15px] leading-relaxed">
+                          <p className="mt-1 text-sm leading-relaxed">
                             {c.text}
                           </p>
                           <div className="mt-2 text-xs opacity-60 flex gap-4 items-center">
@@ -2919,7 +2910,7 @@
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-[14.5px] leading-relaxed">
+                                <p className="text-sm leading-relaxed">
                                   {reply.text}
                                 </p>
                                 <div className="text-xs opacity-50 mt-1">
@@ -2946,7 +2937,7 @@
 
       const PrivacyPage = () => (
         <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-          <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
+          <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
             ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
           </h1>
           <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
@@ -3456,7 +3447,7 @@
 
       const TermsPage = () => (
         <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-          <h1 className="text-1xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
+          <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-center mb-16 accent-text">
             ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ
           </h1>
           <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
@@ -3900,7 +3891,7 @@
                     onChange={uploadAvatar}
                   />
                   {isUploading && (
-                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#000000] text-black text-[8px] px-3 py-1 rounded-full font-bold animate-bounce">
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#000000] text-black text-[10px] px-3 py-1 rounded-full font-bold animate-bounce">
                       UP...
                     </div>
                   )}
@@ -4180,7 +4171,7 @@
                       </div>
                       <button
                         type="submit"
-                        className="btn-primary w-full py-5 rounded-2xl text-[13px] uppercase tracking-widest font-bold mt-6 shadow-lg hover:scale-[1.02] transition-transform"
+                        className="btn-primary w-full py-5 rounded-2xl text-[11px] uppercase tracking-widest font-bold mt-6 shadow-lg hover:scale-[1.02] transition-transform"
                       >
                         Отправить
                       </button>
@@ -4557,7 +4548,7 @@
                                 </span>
                                 <div className="flex-1 min-w-0">
                                   <p
-                                    className="text-[14px] leading-relaxed"
+                                    className="text-sm leading-relaxed"
                                     dangerouslySetInnerHTML={{
                                       __html: formatNotifText(n.text),
                                     }}
@@ -4700,9 +4691,48 @@
         };
 
         return (
-          <div className="min-h-screen flex flex-col max-w-6xl mx-auto px-4 md:px-6">
-            <header className="flex justify-between items-center py-6 md:py-10">
-              <nav className="hidden md:flex gap-10 text-[10px] font-medium uppercase items-center tracking-widest">
+          <div className="min-h-screen flex flex-col">
+            <header className="flex items-center py-6 md:py-10 gap-4 px-6 md:px-10 w-full">
+              <button
+                id="theme-toggle"
+                className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+              >
+                <span id="theme-icon" className="text-2xl">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    data-lucide="sun"
+                    aria-hidden="true"
+                    size="16"
+                    class="lucide lucide-sun"
+                  >
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2"></path>
+                    <path d="M12 20v2"></path>
+                    <path d="m4.93 4.93 1.41 1.41"></path>
+                    <path d="m17.66 17.66 1.41 1.41"></path>
+                    <path d="M2 12h2"></path>
+                    <path d="M20 12h2"></path>
+                    <path d="m6.34 17.66-1.41 1.41"></path>
+                    <path d="m19.07 4.93-1.41 1.41"></path>
+                  </svg>
+                </span>
+              </button>
+
+              <Notifications
+                className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+                user={user}
+                isAdmin={user && ADMINS.includes(user.uid)}
+              />
+
+              <nav className="hidden md:flex flex-1 justify-center gap-8 text-[10px] font-medium uppercase items-center tracking-widest">
                 <button
                   onClick={() => navigate('home')}
                   className={`nav-link flex items-center gap-1.5 ${currentPage === 'home' ? 'active' : ''}`}
@@ -4739,77 +4769,49 @@
                 >
                   🔧 ИНСТРУМЕНТЫ
                 </button>
+              </nav>
 
+              <div className="hidden md:flex items-center gap-2 shrink-0 ml-4">
                 {user ? (
                   <button
                     onClick={() => navigate('lk')}
-                    className="nav-link btn-login font-bold bg-- text--"
+                    className="nav-link btn-login font-bold text-[10px]"
                   >
                     🙍 АККАУНТ
                   </button>
                 ) : (
                   <button
                     onClick={() => navigate('login')}
-                    className="nav-link btn-login font-bold bg-- text--"
+                    className="nav-link btn-login font-bold text-[10px]"
                   >
                     🔑 ВОЙТИ
                   </button>
                 )}
-              </nav>
+              </div>
 
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden z-[1100] relative w-8 h-8 ml-2"
-              >
-                <span
-                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
-                ></span>
-                <span
-                  className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
-                ></span>
-              </button>
-
-              <button
-                id="theme-toggle"
-                className="ml-4 p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
-              >
-                <span id="theme-icon" className="text-2xl">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    data-lucide="sun"
-                    aria-hidden="true"
-                    size="16"
-                    class="lucide lucide-sun"
-                  >
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <path d="M12 2v2"></path>
-                    <path d="M12 20v2"></path>
-                    <path d="m4.93 4.93 1.41 1.41"></path>
-                    <path d="m17.66 17.66 1.41 1.41"></path>
-                    <path d="M2 12h2"></path>
-                    <path d="M20 12h2"></path>
-                    <path d="m6.34 17.66-1.41 1.41"></path>
-                    <path d="m19.07 4.93-1.41 1.41"></path>
-                  </svg>
-                </span>
-              </button>
-
-              <Notifications
-                className="ml-4 p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
-                user={user}
-                isAdmin={user && ADMINS.includes(user.uid)}
-              />
+              <div className="md:hidden flex items-center gap-2 ml-auto">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="z-[1100] relative w-8 h-8"
+                >
+                  <span
+                    className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
+                  ></span>
+                  <span
+                    className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
+                  ></span>
+                </button>
+              </div>
 
               {isMenuOpen && (
                 <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300 z-[2500]">
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="absolute top-6 right-6 w-10 h-10 rounded-full glass-card flex items-center justify-center text-xl hover:scale-110 transition-transform z-[2600]"
+                    aria-label="Закрыть меню"
+                  >
+                    ✕
+                  </button>
                   {Object.keys(routes)
                     .filter((key) => {
                       if (key === 'login') return false;
@@ -4871,7 +4873,7 @@
               )}
             </header>
 
-            <main className="flex-grow relative">
+            <main className="flex-grow relative max-w-6xl mx-auto w-full px-4 md:px-6">
               <div
                 key={currentPage}
                 className={`page-transition ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
@@ -4880,44 +4882,34 @@
               </div>
             </main>
 
-            <footer className="py-10 md:py-20 flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="text-[9px] md:text-[10px] opacity-30 uppercase tracking-[0.4em] text-center">
+            <footer className="py-10 md:py-20 flex flex-col md:flex-row items-center gap-6 w-full px-8 md:px-14">
+              <div className="text-[10px] opacity-30 uppercase tracking-[0.4em] md:mr-auto">
                 © 2024–{new Date().getFullYear()} BIP BUP Media
               </div>
-              <button
-                onClick={() => navigate('privacy')}
-                className="opacity-40 transition text-[9px] md:text-[10px] uppercase font-bold tracking-widest"
-              >
-                📄 PRIVACY POLICY
-              </button>
-              <button
-                onClick={() => navigate('terms')}
-                className="opacity-40 transition text-[9px] md:text-[10px] uppercase font-bold tracking-widest"
-              >
-                📑 TERMS
-              </button>
-              <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
+              <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] uppercase font-bold tracking-widest opacity-30">
+                <button
+                  onClick={() => navigate('privacy')}
+                  className="transition hover:opacity-70"
+                >
+                  PRIVACY POLICY
+                </button>
+                <button
+                  onClick={() => navigate('terms')}
+                  className="transition hover:opacity-70"
+                >
+                  TERMS
+                </button>
                 <a
                   href="https://xqr4d.github.io/XQR4D/"
-                  className="transition text-[9px] md:text-[10px]"
+                  className="transition hover:opacity-70"
                 >
-                  💡 Developer
+                  DEV
                 </a>
-              </div>
-              <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
                 <a
                   href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound: ${encodeURIComponent(s.title)}"
-                  className="transition text-[9px] md:text-[10px]"
+                  className="transition hover:opacity-70"
                 >
-                  ⚠️ BugHunt
-                </a>
-              </div>
-              <div className="flex gap-6 md:gap-8 opacity-40 text-[9px] uppercase font-bold tracking-widest">
-                <a
-                  href="https://xqr4d.github.io/shortlink/"
-                  className="transition text-[9px] md:text-[10px]"
-                >
-                  💖 Created via shortlink
+                  Report bug
                 </a>
               </div>
             </footer>
