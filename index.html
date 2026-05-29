@@ -511,6 +511,132 @@
         }
       }
 
+      .lang-switcher {
+        position: relative;
+        z-index: 1200;
+      }
+
+      .lang-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 14px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: 'Unbounded', sans-serif;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+        transition: all 0.25s ease;
+        white-space: nowrap;
+        user-select: none;
+      }
+
+      .lang-btn:hover {
+        background: rgba(128, 128, 128, 0.1);
+        border-color: var(--accent);
+      }
+
+      [data-theme='dark'] .lang-btn:hover {
+        background: rgba(0, 255, 136, 0.08);
+      }
+
+      .lang-btn .lang-arrow {
+        display: inline-block;
+        font-style: normal;
+        font-size: 9px;
+        transition: transform 0.25s ease;
+        opacity: 0.6;
+      }
+
+      .lang-btn.open .lang-arrow {
+        transform: rotate(180deg);
+      }
+
+      .lang-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        min-width: 160px;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 6px;
+        display: none;
+        flex-direction: column;
+        gap: 2px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      [data-theme='dark'] .lang-dropdown {
+        background: rgba(15, 15, 15, 0.97);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      }
+
+      .lang-switcher.open .lang-dropdown {
+        display: flex;
+        animation: langDropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      @keyframes langDropIn {
+        from {
+          opacity: 0;
+          transform: translateY(-6px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .lang-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        font-family: 'Unbounded', sans-serif;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        color: var(--text);
+        transition: all 0.2s ease;
+        text-align: left;
+        width: 100%;
+        white-space: nowrap;
+      }
+
+      .lang-option:hover {
+        background: rgba(128, 128, 128, 0.1);
+      }
+
+      [data-theme='dark'] .lang-option:hover {
+        background: rgba(0, 255, 136, 0.1);
+        color: #00ff88;
+      }
+
+      .lang-option.active {
+        color: var(--accent);
+        background: rgba(128, 128, 128, 0.08);
+      }
+
+      [data-theme='dark'] .lang-option.active {
+        background: rgba(0, 255, 136, 0.1);
+      }
+
+      .lang-option .lang-flag {
+        font-size: 16px;
+        line-height: 1;
+      }
+
       .page-transition {
         transition: all 0.45s cubic-bezier(0.32, 0.72, 0, 1);
         opacity: 1;
@@ -709,19 +835,11 @@
     ></noscript>
     <div id="cookie-banner">
       <div>
-        <h3 class="cookiez">🍪 Cookies!</h3>
-        <p>
-          Мы используем файлы cookie для улучшения работы сайта и аналитики.
-          <br />
-          Продолжая использовать сайт вы соглашаетесь с
-          <a href="#privacy">политикой конфиденциальности</a> и
-          <a href="#terms">условиями пользования</a>.
-        </p>
+        <h3 class="cookiez" id="cookie-title"></h3>
+        <p id="cookie-text"></p>
         <div class="cookie-buttons">
-          <button id="cookie-reject" class="cookie-btn reject">
-            Отклонить
-          </button>
-          <button id="cookie-accept" class="cookie-btn accept">Принять</button>
+          <button id="cookie-reject" class="cookie-btn reject"></button>
+          <button id="cookie-accept" class="cookie-btn accept"></button>
         </div>
       </div>
     </div>
@@ -818,20 +936,24 @@
         { n: 18, name: 'Orlando', id: '1405' },
       ];
 
-      const ErrorPage = ({ code, text, navigate }) => (
-        <div className="error-page">
-          <h1 className="text-9xl font-black accent-text mb-4">{code}</h1>
-          <p className="text-xl opacity-40 mb-10">{text}</p>
-          <button
-            onClick={() => navigate('home')}
-            className="btn-primary px-10 py-4 rounded-xl text-xs uppercase tracking-widest"
-          >
-            На главную
-          </button>
-        </div>
-      );
+      const ErrorPage = ({ code, text, navigate }) => {
+        const { t } = useLang();
+        return (
+          <div className="error-page">
+            <h1 className="text-9xl font-black accent-text mb-4">{code}</h1>
+            <p className="text-xl opacity-40 mb-10">{text}</p>
+            <button
+              onClick={() => navigate('home')}
+              className="btn-primary px-10 py-4 rounded-xl text-xs uppercase tracking-widest"
+            >
+              {t.goHome}
+            </button>
+          </div>
+        );
+      };
 
       const NicknameGenerator = () => {
+        const { t } = useLang();
         const [gender, setGender] = useState('male');
         const [nation, setNation] = useState('usa');
         const [result, setResult] = useState('');
@@ -1188,27 +1310,27 @@
         const copyToClipboard = () => {
           if (result) {
             navigator.clipboard.writeText(result);
-            alert('Никнейм скопирован!');
+            alert(t.nickCopied);
           }
         };
 
         return (
           <div className="text-center space-y-8 animate-in fade-in duration-300">
             <h3 className="text-2xl font-black tracking-tighter">
-              ГЕНЕРАТОР НИКОВ
+              {t.nickGenTitle}
             </h3>
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setGender('male')}
                 className={`p-4 rounded-xl border transition-all ${gender === 'male' ? 'bg-- text--' : 'border--/10 opacity-50'}`}
               >
-                МУЖСКОЙ
+                {t.genderMale}
               </button>
               <button
                 onClick={() => setGender('female')}
                 className={`p-4 rounded-xl border transition-all ${gender === 'female' ? 'bg-- text--' : 'border--/10 opacity-50'}`}
               >
-                ЖЕНСКИЙ
+                {t.genderFemale}
               </button>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
@@ -1239,20 +1361,21 @@
                 {result || '...'}
               </div>
               <p className="text-[10px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
-                Нажми чтобы скопировать
+                {t.clickToCopy}
               </p>
             </div>
             <button
               onClick={generate}
               className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest"
             >
-              Сгенерировать
+              {t.generate}
             </button>
           </div>
         );
       };
 
       const GrindCalculator = () => {
+        const { t } = useLang();
         const [rate, setRate] = useState('');
         const [hours, setHours] = useState('');
         const [vip, setVip] = useState(0);
@@ -1269,30 +1392,30 @@
         return (
           <div className="space-y-8 animate-in fade-in duration-300">
             <h3 className="text-2xl font-black tracking-tighter text-center">
-              КАЛЬКУЛЯТОР ЗАРАБОТКА
+              {t.grindTitle}
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  Получаемая сумма за час ($)
+                  {t.grindRate}
                 </label>
                 <input
                   type="number"
                   value={rate}
                   onChange={(e) => setRate(e.target.value)}
-                  placeholder="Например: 15000"
+                  placeholder={t.grindRateEx}
                   className="text-xl font-bold"
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  Количество часов
+                  {t.grindHours}
                 </label>
                 <input
                   type="number"
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
-                  placeholder="Например: 4"
+                  placeholder={t.grindHoursEx}
                   className="text-xl font-bold"
                 />
               </div>
@@ -1300,14 +1423,14 @@
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  VIP Бонус (%)
+                  {t.grindVip}
                 </label>
                 <select
                   value={vip}
                   onChange={(e) => setVip(Number(e.target.value))}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 outline-none"
                 >
-                  <option value="0">Нет VIP</option>
+                  <option value="0">{t.grindNoVip}</option>
                   <option value="15">Silver (+15%)</option>
                   <option value="25">Gold (+25%)</option>
                   <option value="35">Platinum (+35%)</option>
@@ -1316,7 +1439,7 @@
             </div>
             <div className="glass-card bg-[#000000]/10 border-[#000000]/30 p-8 rounded-2xl text-center space-y-2">
               <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                Итоговый заработок
+                {t.grindTotal}
               </div>
               <div className="text-4xl md:text-5xl font-black accent-text">
                 ${total.toLocaleString()}
@@ -1327,6 +1450,7 @@
       };
 
       const PasswordGenerator = () => {
+        const { t } = useLang();
         const [length, setLength] = useState(16);
         const [upper, setUpper] = useState(true);
         const [lower, setLower] = useState(true);
@@ -1342,7 +1466,7 @@
           if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
           if (chars === '') {
-            alert('Выберите хотя бы один тип символов');
+            alert(t.passNoChars);
             return;
           }
 
@@ -1356,19 +1480,19 @@
         const copy = () => {
           if (password) {
             navigator.clipboard.writeText(password);
-            alert('Пароль скопирован!');
+            alert(t.passCopied);
           }
         };
 
         return (
           <div className="text-center space-y-8 animate-in fade-in duration-300">
             <h3 className="text-2xl font-black tracking-tighter">
-              ГЕНЕРАТОР ПАРОЛЕЙ
+              {t.passTitle}
             </h3>
             <div className="space-y-6 max-w-md mx-auto">
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  Длина пароля
+                  {t.passLength}
                 </label>
                 <input
                   type="number"
@@ -1425,7 +1549,7 @@
                 onClick={generate}
                 className="btn-primary w-full py-5 rounded-2xl text-xs uppercase tracking-[0.3em] font-black"
               >
-                Сгенерировать
+                {t.generate}
               </button>
               <div onClick={copy} className="cursor-pointer group py-8">
                 <div className="text-2xl md:text-3xl font-bold break-all text-transparent bg-clip-text bg-gradient-to-r from-white to-[#000000] group-hover:scale-105 transition-transform">
@@ -1433,7 +1557,7 @@
                 </div>
                 {password && (
                   <p className="text-[10px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
-                    Нажми чтобы скопировать
+                    {t.clickToCopy}
                   </p>
                 )}
               </div>
@@ -1443,6 +1567,7 @@
       };
 
       const LevelCalculator = () => {
+        const { t } = useLang();
         const [currentLevel, setCurrentLevel] = useState(1);
         const [expPerPayday, setExpPerPayday] = useState(1);
         const [hasX2, setHasX2] = useState(false);
@@ -1465,13 +1590,13 @@
         return (
           <div className="space-y-8 animate-in fade-in duration-300">
             <h3 className="text-2xl font-black tracking-tighter text-center">
-              КАЛЬКУЛЯТОР УРОВНЕЙ
+              {t.levelTitle}
             </h3>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  Текущий уровень
+                  {t.levelCurrent}
                 </label>
                 <input
                   type="number"
@@ -1485,7 +1610,7 @@
 
               <div className="space-y-2">
                 <label className="text-[9px] uppercase opacity-40 font-bold tracking-widest">
-                  Опыт за один payday
+                  {t.levelExp}
                 </label>
                 <input
                   type="number"
@@ -1499,7 +1624,7 @@
 
             <div className="flex items-center justify-center gap-4 py-4">
               <label className="text-sm font-medium opacity-80">
-                Есть x2 на сервере?
+                {t.levelHasX2}
               </label>
               <input
                 type="checkbox"
@@ -1511,14 +1636,22 @@
 
             <div className="glass-card bg-[#000000]/10 border-[#000000]/30 p-8 rounded-2xl text-center space-y-4">
               <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                До следующего уровня
+                {t.levelResult}
               </div>
               <div className="text-4xl md:text-5xl font-black accent-text">
                 {expNeeded.toLocaleString()} exp
               </div>
-              <div className="text-xl opacity-80">≈ {paydaysToNext} payday</div>
+              <div className="text-xl opacity-80">
+                {(t.levelPaydays || '≈ {n} payday').replace(
+                  '{n}',
+                  paydaysToNext
+                )}
+              </div>
               <div className="text-xs opacity-60 mt-4">
-                (при {hasX2 ? 'x2' : 'x1'} опыте за payday)
+                {(t.levelNote || '(при {x} опыте за payday)').replace(
+                  '{x}',
+                  hasX2 ? 'x2' : 'x1'
+                )}
               </div>
             </div>
           </div>
@@ -1526,12 +1659,13 @@
       };
 
       const ToolsPage = () => {
+        const { t } = useLang();
         const [activeTool, setActiveTool] = useState('gen');
         const tools = [
-          { id: 'gen', name: 'RP Никнейм' },
-          { id: 'calc', name: 'Калькулятор заработка' },
-          { id: 'pass', name: 'Генератор паролей' },
-          { id: 'levelcalc', name: 'Калькулятор уровней' },
+          { id: 'gen', name: t.toolNickname },
+          { id: 'calc', name: t.toolCalc },
+          { id: 'pass', name: t.toolPass },
+          { id: 'levelcalc', name: t.toolLevel },
         ];
 
         return (
@@ -1558,6 +1692,12 @@
       };
 
       const Home = ({ navigate }) => {
+        const { t } = useLang();
+        const homeCards = [
+          { t: t.card1Title, d: t.card1Desc, href: '#knowledge' },
+          { t: t.card2Title, d: t.card2Desc, href: '#player' },
+          { t: t.card3Title, d: t.card3Desc, href: '#login' },
+        ];
         return (
           <div className="space-y-12 md:space-y-20">
             <section className="relative py-10 md:py-24 flex items-center min-h-[65vh]">
@@ -1571,35 +1711,18 @@
                     onClick={() => navigate('knowledge')}
                     className="btn-primary px-10 py-4 rounded-2xl text-[11px] uppercase tracking-widest font-bold"
                   >
-                    Перейти к памяткам
+                    {t.heroBtnKnowledge}
                   </button>
                 </div>
 
                 <p className="mt-10 text-[9px] md:text-xs opacity-40 max-w-md mx-auto px-2 hero-disclaimer-animate">
-                  Вся информация, размещённая на сайте, носит исключительно
-                  ознакомительный характер и не является публичной офертой.
+                  {t.heroDisclaimer}
                 </p>
               </div>
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto px-4 home-cards-animate">
-              {[
-                {
-                  t: 'База знаний',
-                  d: 'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.',
-                  href: '#knowledge',
-                },
-                {
-                  t: 'Плееры без замедлений',
-                  d: 'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Hinata.',
-                  href: '#player',
-                },
-                {
-                  t: 'Быстрая и удобная регистрация',
-                  d: 'Входите по почте, Google и Github аккаунту.',
-                  href: '#login',
-                },
-              ].map((c, i) => (
+              {homeCards.map((c, i) => (
                 <a key={i} href={c.href} className="block group">
                   <div
                     className="glass-card p-8 md:p-10 rounded-3xl h-full transition-all duration-300 
@@ -1623,6 +1746,7 @@
       };
 
       const KnowledgeBase = () => {
+        const { t } = useLang();
         const [pamyatki, setPamyatki] = useState([]);
         const [project, setProject] = useState('gta5rp');
 
@@ -1653,10 +1777,10 @@
             <div className="space-y-8 md:space-y-12">
               <div className="text-center space-y-4">
                 <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  ЗАКОНОДАТЕЛЬСТВО
+                  {t.legislation}
                 </h2>
                 <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">
-                  Выберите проект и кликните на нужный сервер
+                  {t.chooseProject}
                 </p>
               </div>
               <div className="flex justify-center gap-4 mb-8">
@@ -1694,10 +1818,10 @@
             <div className="space-y-8 md:space-y-12">
               <div className="text-center space-y-4">
                 <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  ПАМЯТКИ ОТ ИГРОКОВ
+                  {t.playerMemos}
                 </h2>
                 <p className="text-[10px] md:text-xs opacity-30 uppercase tracking-widest">
-                  Для упрощения игры в гос.структурах
+                  {t.memoSub}
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -1732,7 +1856,7 @@
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center gap-2 bg-black/5 hover:bg-black/10 border border-black/10 hover:border-[#000000]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#000000]"
                         >
-                          Открыть таблицу
+                          {t.openTable}
                           <span className="text-xs opacity-60">↗</span>
                         </a>
                       )}
@@ -1740,7 +1864,7 @@
                   ))
                 ) : (
                   <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">
-                    Загрузка памяток...
+                    {t.loadingMemos}
                   </p>
                 )}
               </div>
@@ -1750,12 +1874,13 @@
       };
 
       const SocialLinks = ({ navigate }) => {
+        const { t } = useLang();
         return (
           <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
             <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
               <div className="text-center">
                 <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  АКТУАЛЬНЫЕ ССЫЛКИ
+                  {t.actualLinks}
                 </h2>
               </div>
               <div className="flex flex-wrap justify-center gap-8 md:gap-12">
@@ -1839,7 +1964,7 @@
               </div>
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ
+                  {t.commercialOffers}
                 </h3>
                 <a className="flex flex-wrap items-center gap-3 justify-center">
                   <img
@@ -1864,12 +1989,13 @@
       };
 
       const PC = ({ navigate }) => {
+        const { t } = useLang();
         return (
           <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
             <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  НАСТРОЙКИ ИГРЫ
+                  {t.gameSettings}
                 </h3>
                 <p>
                   <img
@@ -1882,7 +2008,7 @@
               </div>
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  КОНФИГУРАЦИЯ ПК
+                  {t.pcConfig}
                 </h3>
                 <p>CPU — AMD Ryzen 9 7900X3D</p>
                 <p>Memory — 32 GB DDR5</p>
@@ -1896,7 +2022,7 @@
               </div>
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  МОЯ ГРАФИКА
+                  {t.myGraphics}
                 </h3>
                 <p>
                   <a
@@ -1918,6 +2044,7 @@
       };
 
       const Player = () => {
+        const { t } = useLang();
         const [activePlayer, setActivePlayer] = useState('hinata');
         const [vkUrl, setVkUrl] = useState('');
         const [ytUrl, setYtUrl] = useState('');
@@ -2041,7 +2168,7 @@
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               <div className="glass-card p-6 md:p-8 rounded-3xl space-y-6">
                 <h4 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-                  Выбор плеера
+                  {t.playerSelect}
                 </h4>
                 <div className="flex flex-wrap gap-3 md:gap-4">
                   {['youtube', 'vk', 'hinata'].map((p) => (
@@ -2074,7 +2201,7 @@
                     />
                   </a>
                   <div className="text-- text-lg md:text-xl font-black tracking-tighter">
-                    РОЛИКИ ОФФЛАЙН
+                    {t.videooffline}
                   </div>
                 </div>
               </div>
@@ -2093,7 +2220,7 @@
                     />
                   </a>
                   <div className="text-- text-lg md:text-xl font-black tracking-tighter">
-                    НАШ ПЛЕЕР
+                    {t.ourPlayer}
                   </div>
                 </div>
               </div>
@@ -2103,6 +2230,7 @@
       };
 
       const Login = ({ navigate }) => {
+        const { t } = useLang();
         const [mode, setMode] = useState('login');
         const [email, setEmail] = useState('');
         const [pass, setPass] = useState('');
@@ -2184,13 +2312,13 @@
                   onClick={() => setMode('login')}
                   className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'login' ? '' : 'opacity-20'}`}
                 >
-                  Логин
+                  {t.loginTab}
                 </button>
                 <button
                   onClick={() => setMode('reg')}
                   className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'reg' ? '' : 'opacity-20'}`}
                 >
-                  Регистрация
+                  {t.regTab}
                 </button>
               </div>
 
@@ -2200,7 +2328,7 @@
                   className="space-y-4 animate-in fade-in duration-300"
                 >
                   <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">
-                    Восстановление доступа
+                    {t.resetTitle}
                   </h3>
                   <input
                     type="email"
@@ -2210,11 +2338,11 @@
                     required
                   />
                   <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">
-                    Отправить ссылку
+                    {t.sendLink}
                   </button>
                   {resetSent && (
                     <p className="text-[9px] text-green-400 text-center animate-pulse">
-                      Проверьте почту!
+                      {t.checkEmail}
                     </p>
                   )}
                   <button
@@ -2222,7 +2350,7 @@
                     onClick={() => setMode('login')}
                     className="w-full text-[9px] opacity-40 uppercase"
                   >
-                    Назад
+                    {t.back}
                   </button>
                 </form>
               ) : (
@@ -2243,14 +2371,14 @@
                       required
                     />
                     <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      Войти
+                      {t.signIn}
                     </button>
                     <button
                       type="button"
                       onClick={() => setMode('reset')}
                       className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition"
                     >
-                      Забыли пароль?
+                      {t.forgotPass}
                     </button>
                   </form>
                   <div className="relative py-2">
@@ -2259,7 +2387,7 @@
                     </div>
                     <div className="relative flex justify-center">
                       <span className="px-4 text-[10px] uppercase tracking-[0.3em] opacity-20 font-bold">
-                        Войти с помощью
+                        {t.signInWith}
                       </span>
                     </div>
                   </div>
@@ -2319,6 +2447,7 @@
       };
 
       const NewsPage = ({ navigate, user }) => {
+        const { t } = useLang();
         const [posts, setPosts] = useState([]);
         const [loading, setLoading] = useState(true);
         const [showCreateModal, setShowCreateModal] = useState(false);
@@ -2380,9 +2509,7 @@
               imageUrl: newPost.imageUrl?.trim() || null,
               authorUid: user?.uid,
               authorName:
-                user?.displayName ||
-                user?.email?.split('@')[0] ||
-                'Администратор',
+                user?.displayName || user?.email?.split('@')[0] || 'Admin',
               updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             };
 
@@ -2410,21 +2537,17 @@
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
                 <h1 className="text-4xl md:text-5xl font-black tracking-tighter">
-                  Новости сайта
+                  {t.newsSiteTitle}
                 </h1>
                 <p className="opacity-60 mt-2">
-                  Делимся последними обновлениями на сайте.
+                  {t.newsSubtitle}
                   <br />
                   <br />
                 </p>
                 <p className="opacity-60 mt-2">
-                  Обращаем ваше внимание, что данная ветка обсуждения находится
-                  под модерацией.
-                  <br />В случае нарушения{' '}
-                  <a href="https://telegra.ph/Rules-BIP-BUP-Chat-httpstme99uLwWeMDK85NTE6-12-01">
-                    правил
-                  </a>{' '}
-                  ваш аккаунт может быть удален.
+                  {t.newsModNote}
+                  <br />
+                  {t.newsRulesNote}{' '}
                 </p>
               </div>
 
@@ -2439,12 +2562,12 @@
             </div>
 
             {loading && (
-              <div className="text-center py-20">Загрузка новостей...</div>
+              <div className="text-center py-20">{t.newsLoading}</div>
             )}
 
             {!loading && posts.length === 0 && (
               <div className="glass-card p-20 text-center rounded-3xl">
-                <p className="text-xl opacity-60">Пока нет новостей</p>
+                <p className="text-xl opacity-60">{t.newsEmpty}</p>
               </div>
             )}
 
@@ -2942,7 +3065,7 @@
           </h1>
           <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
             <p className="opacity-60 text-xs uppercase tracking-widest">
-              Последнее изменение: 14 февраля 2026 г.
+              Последнее изменение: 27 мая 2026 г.
             </p>
 
             <section className="space-y-4">
@@ -3452,7 +3575,7 @@
           </h1>
           <div className="glass-card p-8 md:p-12 rounded-3xl space-y-8 text-sm md:text-base leading-relaxed opacity-90">
             <p className="opacity-60 text-xs uppercase tracking-widest">
-              Последнее изменение: 14 февраля 2026 г.
+              Последнее изменение: 27 мая 2026 г.
             </p>
 
             <section className="space-y-4">
@@ -3616,6 +3739,7 @@
       );
 
       const Profile = ({ user, navigate }) => {
+        const { t } = useLang();
         const [isUploading, setIsUploading] = useState(false);
         const [avatar, setAvatar] = useState(user?.photoURL || '');
         const [moderationCount, setModerationCount] = useState(0);
@@ -3641,7 +3765,7 @@
                 const adminStatus =
                   data.isAdmin === true || ADMINS.includes(user.uid);
                 setIsAdmin(adminStatus);
-                setRole(adminStatus ? 'Администратор' : 'Пользователь');
+                setRole(adminStatus ? 'Admin' : 'User');
               }
             })
             .catch((err) => {
@@ -3906,7 +4030,7 @@
                   </p>
                   <div className="flex items-center gap-3 justify-center md:justify-start mt-1">
                     <span className="text-xs opacity-50 uppercase tracking-widest">
-                      Роль:
+                      {t.roleLabel}
                     </span>
                     <span
                       className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
@@ -3915,7 +4039,7 @@
                           : 'bg-gradient-to-r from-yellow-600/30 to-yellow-500/20 border border-yellow-400/40 shadow-sm'
                       }`}
                     >
-                      {isAdmin ? 'Администратор' : 'Пользователь'}
+                      {isAdmin ? t.roleAdmin : t.roleUser}
                     </span>
                   </div>
                   <div className="flex flex-wrap justify-center md:justify-start gap-3">
@@ -3923,14 +4047,14 @@
                       onClick={() => setShowModal('add')}
                       className="btn-primary  px-6 py-3 rounded-xl text-[11px] uppercase tracking-widest"
                     >
-                      Добавить памятку
+                      {t.addMemo}
                     </button>
                     {ADMINS.includes(user.uid) && (
                       <button
                         onClick={() => setShowModal('mod')}
                         className="glass-card px-6 py-3 rounded-xl text-[11px] uppercase tracking-widest font-bold"
                       >
-                        Ожидает модерацию ({moderationCount})
+                        {t.awaitingMod} ({moderationCount})
                       </button>
                     )}
                     <button
@@ -3939,7 +4063,7 @@
                       }
                       className="px-6 py-3 rounded-xl text-[11px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition"
                     >
-                      Выйти
+                      {t.signOut}
                     </button>
                   </div>
                 </div>
@@ -3948,20 +4072,16 @@
               {ADMINS.includes(user.uid) && (
                 <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
                   <h3 className="text-xl font-black tracking-tighter accent-text">
-                    РУЧНОЕ ПЕРЕОПРЕДЕЛЕНИЕ ССЫЛОК
+                    {t.adminOverrideTitle}
                   </h3>
                   <p className="text-[9px] uppercase opacity-30 font-bold">
-                    Если автоматическая подгрузка новых роликов не работает,
-                    укажите здесь прямые ссылки.
-                    <br />
-                    Оставьте поле пустым — будет использоваться автоопределение
-                    или кэш.
+                    {t.adminOverrideDesc}
                   </p>
 
                   <div className="grid md:grid-cols-1 gap-6">
                     <div className="space-y-2">
                       <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">
-                        YouTube embed
+                        YouTube Player
                       </label>
                       <input
                         type="url"
@@ -3973,7 +4093,7 @@
 
                     <div className="space-y-2">
                       <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">
-                        VK видео
+                        VK Video
                       </label>
                       <input
                         type="url"
@@ -3985,7 +4105,7 @@
 
                     <div className="space-y-2">
                       <label className="text-[9px] uppercase opacity-50 font-bold tracking-wider">
-                        Hinata player
+                        Hinata Player
                       </label>
                       <input
                         type="url"
@@ -4000,7 +4120,7 @@
                     onClick={saveVideoOverrides}
                     className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest"
                   >
-                    Сохранить переопределения
+                    {t.saveOverrides}
                   </button>
                 </div>
               )}
@@ -4008,85 +4128,83 @@
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
                   <h3 className="text-lg font-black tracking-tighter accent-text">
-                    НАСТРОЙКИ ПРОФИЛЯ
+                    {t.profileSettings}
                   </h3>
                   <form onSubmit={changeNickname} className="space-y-4">
                     <label className="text-[9px] uppercase opacity-30 font-bold">
-                      Изменить никнейм
+                      {t.changeNick}
                     </label>
                     <input
                       name="new_nickname"
                       type="text"
-                      placeholder="Новый никнейм"
+                      placeholder={t.newNickPlaceholder}
                       defaultValue={user.displayName || ''}
                     />
                     <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      Обновить имя
+                      {t.updateName}
                     </button>
                   </form>
                   <form onSubmit={changeEmail} className="space-y-4 pt-4">
                     <label className="text-[9px] uppercase opacity-30 font-bold">
-                      Сменить Email
+                      {t.changeEmail}
                     </label>
                     <input
                       name="new_email"
                       type="email"
-                      placeholder="Новый email"
+                      placeholder={t.newEmailPlaceholder}
                       required
                     />
                     <input
                       name="current_password_email"
                       type="password"
-                      placeholder="Текущий пароль"
+                      placeholder={t.currentPassPlaceholder}
                       required
                     />
                     <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      Сменить почту
+                      {t.changeEmailBtn}
                     </button>
                   </form>
                 </div>
                 <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8">
                   <h3 className="text-lg font-black tracking-tighter accent-text">
-                    БЕЗОПАСНОСТЬ
+                    {t.securityTitle}
                   </h3>
                   <form onSubmit={changePassword} className="space-y-4">
                     <label className="text-[9px] uppercase opacity-30 font-bold">
-                      Смена пароля
+                      {t.changePass}
                     </label>
                     <input
                       name="current_password"
                       type="password"
-                      placeholder="Текущий пароль"
+                      placeholder={t.currentPassPlaceholder}
                       required
                     />
                     <input
                       name="new_password"
                       type="password"
-                      placeholder="Новый пароль"
+                      placeholder={t.newPassPlaceholder}
                       required
                     />
                     <input
                       name="new_password_confirm"
                       type="password"
-                      placeholder="Повторите пароль"
+                      placeholder={t.confirmPassPlaceholder}
                       required
                     />
                     <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      Обновить пароль
+                      {t.updatePass}
                     </button>
                   </form>
                   <div className="pt-6">
                     <h3 className="text-lg font-black tracking-tighter text-red-500 mb-4">
-                      УДАЛЕНИЕ АККАУНТА
+                      {t.deleteAccount}
                     </h3>
-                    <p className="text-xs opacity-50 mb-4">
-                      Все данные будут удалены навсегда.
-                    </p>
+                    <p className="text-xs opacity-50 mb-4">{t.deleteDesc}</p>
                     <form onSubmit={deleteAccount} className="space-y-4">
                       <input
                         name="del_password"
                         type="password"
-                        placeholder="Текущий пароль"
+                        placeholder={t.currentPassPlaceholder}
                         required
                         className="border-red-500/30 focus:border-red-500"
                       />
@@ -4094,7 +4212,7 @@
                         type="submit"
                         className="w-full py-4 rounded-xl text-[11px] uppercase tracking-widest font-bold bg-red-600 hover:bg-red-700 text-white transition"
                       >
-                        Удалить аккаунт навсегда
+                        {t.deleteBtn}
                       </button>
                     </form>
                   </div>
@@ -4127,28 +4245,26 @@
                         <span className="text-3xl">📋</span>
                       </div>
                       <h3 className="text-3xl font-black tracking-tighter">
-                        НОВАЯ ПАМЯТКА
+                        {t.newMemoTitle}
                       </h3>
-                      <p className="text-sm opacity-60 mt-2">
-                        Добавьте памятку для сообщества
-                      </p>
+                      <p className="text-sm opacity-60 mt-2">{t.newMemoSub}</p>
                     </div>
 
                     <form onSubmit={submitPamyatka} className="space-y-6">
                       <div>
                         <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">
-                          Название памятки
+                          {t.memoNameLabel}
                         </label>
                         <input
                           name="p_title"
-                          placeholder="Например: Orlando"
+                          placeholder={t.memoNamePlaceholder}
                           required
                           className="w-full"
                         />
                       </div>
                       <div>
                         <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">
-                          Прямая ссылка на изображение
+                          {t.memoImgLabel}
                         </label>
                         <input
                           name="p_url"
@@ -4160,7 +4276,7 @@
                       </div>
                       <div>
                         <label className="text-[10px] uppercase tracking-widest opacity-60 block mb-2">
-                          Ссылка на таблицу (необязательно)
+                          {t.memoTableLabel}
                         </label>
                         <input
                           name="p_table_url"
@@ -4173,13 +4289,9 @@
                         type="submit"
                         className="btn-primary w-full py-5 rounded-2xl text-[11px] uppercase tracking-widest font-bold mt-6 shadow-lg hover:scale-[1.02] transition-transform"
                       >
-                        Отправить
+                        {t.submitMemo}
                       </button>
                     </form>
-
-                    <p className="text-center text-[10px] opacity-40 mt-6">
-                      После отправки памятка попадёт на проверку
-                    </p>
                   </div>
                 </div>,
                 document.body
@@ -4208,16 +4320,16 @@
 
                     <div className="mb-8">
                       <h3 className="text-2xl font-black tracking-tighter">
-                        🛡️ МОДЕРАЦИЯ
+                        {t.moderationTitle}
                       </h3>
                       <p className="text-[10px] uppercase tracking-widest opacity-40 mt-1">
-                        Памятки на проверке: {moderationCount}
+                        {t.moderationCount} {moderationCount}
                       </p>
                     </div>
 
                     {pendingPamyatki.length === 0 ? (
                       <p className="opacity-20 text-center py-16 uppercase text-xs tracking-widest">
-                        Нет памяток на модерации
+                        {t.moderationNone}
                       </p>
                     ) : (
                       <div className="space-y-6">
@@ -4233,7 +4345,7 @@
                                   {p.title}
                                 </h4>
                                 <p className="text-[9px] opacity-30 mt-1 uppercase">
-                                  От: {p.email}
+                                  {t.moderationBy} {p.email}
                                 </p>
                               </div>
                             </div>
@@ -4250,7 +4362,7 @@
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 hover:opacity-80 transition text-sm font-medium"
                               >
-                                Открыть таблицу{' '}
+                                {t.moderationTable}{' '}
                                 <span className="text-xs opacity-50">↗</span>
                               </a>
                             )}
@@ -4259,13 +4371,13 @@
                                 onClick={() => handleMod(p.id, 'approved')}
                                 className="btn-primary flex-1 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest"
                               >
-                                ✓ Принять
+                                {t.accept}
                               </button>
                               <button
                                 onClick={() => handleMod(p.id, 'reject')}
                                 className="bg-red-600 hover:bg-red-700 text-white flex-1 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest transition"
                               >
-                                ✕ Отклонить
+                                {t.reject}
                               </button>
                             </div>
                           </div>
@@ -4297,30 +4409,36 @@
         lk: { title: 'Личный кабинет', component: Profile },
       };
 
-      const HERO_TEXTS = [
-        ['ТВОЙ', 'ИГРОВОЙ', 'ПОМОЩНИК'],
-        ['ПРОМОКОД', 'BIPBUP'],
-      ];
-
       const HeroTitle = () => {
-        const { useState, useEffect, useRef } = React;
+        const { t } = useLang();
+        const HERO_TEXTS_LOCAL = t.heroTexts || HERO_TEXTS;
+        const {
+          useState: useStateH,
+          useEffect: useEffectH,
+          useRef: useRefH,
+        } = React;
         const [idx, setIdx] = React.useState(0);
         const [phase, setPhase] = React.useState('in');
         const timerRef = React.useRef(null);
 
         React.useEffect(() => {
+          setIdx(0);
+          setPhase('in');
+        }, [t]);
+
+        React.useEffect(() => {
           timerRef.current = setTimeout(function cycle() {
             setPhase('out');
             setTimeout(() => {
-              setIdx((prev) => (prev + 1) % HERO_TEXTS.length);
+              setIdx((prev) => (prev + 1) % HERO_TEXTS_LOCAL.length);
               setPhase('in');
               timerRef.current = setTimeout(cycle, 4000);
             }, 450);
           }, 4000);
           return () => clearTimeout(timerRef.current);
-        }, []);
+        }, [HERO_TEXTS_LOCAL]);
 
-        const lines = HERO_TEXTS[idx];
+        const lines = HERO_TEXTS_LOCAL[idx] || [];
 
         return (
           <h1 className="font-black tracking-[-0.03em] leading-[0.85] text-[2.65rem] xs:text-[3.1rem] sm:text-[3.9rem] md:text-[5.2rem] lg:text-[6.0rem] xl:text-[6.7rem]">
@@ -4342,6 +4460,7 @@
       };
 
       const Notifications = ({ user }) => {
+        const { t } = useLang();
         const [notifications, setNotifications] = useState([]);
         const [showNotif, setShowNotif] = useState(false);
         const [lastReadTimestamp, setLastReadTimestamp] = useState(null);
@@ -4489,7 +4608,7 @@
                         </div>
                         <div>
                           <h4 className="font-black text-base tracking-tight leading-none">
-                            Уведомления
+                            {t.notifTitle}
                           </h4>
                           {notifications.length > 0 && (
                             <p className="text-[10px] opacity-40 uppercase tracking-widest mt-0.5">
@@ -4507,7 +4626,7 @@
                             onClick={sendNotification}
                             className="btn-primary text-[11px] px-4 py-2 rounded-xl"
                           >
-                            Дзынькнуть
+                            {t.notifSend}
                           </button>
                         )}
                         <button
@@ -4528,7 +4647,7 @@
                         <div className="flex flex-col items-center justify-center py-16 gap-4">
                           <span className="text-4xl opacity-30">🔕</span>
                           <p className="text-[11px] uppercase tracking-widest opacity-40 text-center">
-                            Пока нет уведомлений
+                            {t.notifEmpty}
                           </p>
                         </div>
                       ) : (
@@ -4575,12 +4694,927 @@
         );
       };
 
+      const LANGUAGES = [
+        { code: 'ru', flag: '🇷🇺', label: 'Русский' },
+        { code: 'en', flag: '🇬🇧', label: 'English' },
+        { code: 'ja', flag: '🇯🇵', label: '日本語' },
+        { code: 'de', flag: '🇩🇪', label: 'Deutsch' },
+        { code: 'fr', flag: '🇫🇷', label: 'Français' },
+      ];
+
+      const LangContext = React.createContext({ lang: 'ru', t: {} });
+      const useLang = () => React.useContext(LangContext);
+
+      const TRANSLATIONS = {
+        ru: {
+          home: '🏠 ГЛАВНАЯ',
+          knowledge: '⭐ БАЗА ЗНАНИЙ',
+          player: '📼 ПЛЕЕРЫ',
+          PC: '🖥️ МОЙ ПК',
+          social: '🔗 ССЫЛКИ',
+          tools: '🔧 ИНСТРУМЕНТЫ',
+          account: '🙍 АККАУНТ',
+          login: '🔑 ВОЙТИ',
+          loading: 'Загрузка...',
+          notFound: 'Страница не найдена',
+          goHome: 'На главную',
+          cookieTitle: '🍪 Cookies!',
+          cookieText:
+            'Мы используем файлы cookie для улучшения работы сайта и аналитики.',
+          cookieAccept: 'Принять',
+          cookieReject: 'Отклонить',
+          privacyLink: 'политикой конфиденциальности',
+          termsLink: 'условиями пользования',
+          cookieMid: 'Продолжая использовать сайт вы соглашаетесь с',
+          cookieAnd: 'и',
+          heroBtnKnowledge: 'Перейти к памяткам',
+          heroDisclaimer:
+            'Вся информация, размещённая на сайте, носит исключительно ознакомительный характер и не является публичной офертой.',
+          card1Title: 'База знаний',
+          card1Desc:
+            'Полный реестр законодательных баз таких проектов как: Majestic RP, GTA 5 RP + кастомные памятки от пользователей.',
+          card2Title: 'Плееры без замедлений',
+          card2Desc:
+            'Смотрите новые видео без задержки, зависаний в разных плеерах. В случае блокировок у нас есть свой плеер Hinata.',
+          card3Title: 'Быстрая и удобная регистрация',
+          card3Desc: 'Входите по почте, Google и Github аккаунту.',
+          heroTexts: [
+            ['ТВОЙ', 'ИГРОВОЙ', 'ПОМОЩНИК'],
+            ['ПРОМОКОД', 'BIPBUP'],
+          ],
+          legislation: 'ЗАКОНОДАТЕЛЬСТВО',
+          chooseProject: 'Выберите проект и кликните на нужный сервер',
+          playerMemos: 'ПАМЯТКИ ОТ ИГРОКОВ',
+          memoSub: 'Для упрощения игры в гос.структурах',
+          openTable: 'Открыть таблицу',
+          loadingMemos: 'Загрузка памяток...',
+          playerSelect: 'Выбор плеера',
+          videoUnavailable: 'Видео недоступно',
+          ourPlayer: 'НАШ ПЛЕЕР',
+          videooffline: 'Ролики оффлайн',
+          actualLinks: 'АКТУАЛЬНЫЕ ССЫЛКИ',
+          commercialOffers: 'КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ',
+          gameSettings: 'НАСТРОЙКИ ИГРЫ',
+          pcConfig: 'КОНФИГУРАЦИЯ ПК',
+          myGraphics: 'МОЯ ГРАФИКА',
+          toolNickname: 'RP Никнейм',
+          toolCalc: 'Калькулятор заработка',
+          toolPass: 'Генератор паролей',
+          toolLevel: 'Калькулятор уровней',
+          nickGenTitle: 'ГЕНЕРАТОР НИКОВ',
+          genderMale: 'МУЖСКОЙ',
+          genderFemale: 'ЖЕНСКИЙ',
+          clickToCopy: 'Нажми чтобы скопировать',
+          generate: 'Сгенерировать',
+          nickCopied: 'Никнейм скопирован!',
+          grindTitle: 'КАЛЬКУЛЯТОР ЗАРАБОТКА',
+          grindRate: 'Получаемая сумма за час ($)',
+          grindHours: 'Количество часов',
+          grindVip: 'VIP Бонус (%)',
+          grindNoVip: 'Нет VIP',
+          grindTotal: 'Итоговый заработок',
+          grindRateEx: 'Например: 15000',
+          grindHoursEx: 'Например: 4',
+          passTitle: 'ГЕНЕРАТОР ПАРОЛЕЙ',
+          passLength: 'Длина пароля',
+          passCopied: 'Пароль скопирован!',
+          passNoChars: 'Выберите хотя бы один тип символов',
+          levelTitle: 'КАЛЬКУЛЯТОР УРОВНЕЙ',
+          levelCurrent: 'Текущий уровень',
+          levelExp: 'Опыт за один payday',
+          levelHasX2: 'Есть x2 на сервере?',
+          levelResult: 'До следующего уровня',
+          levelPaydays: '≈ {n} payday',
+          levelNote: '(при {x} опыте за payday)',
+          loginTab: 'Логин',
+          regTab: 'Регистрация',
+          resetTitle: 'Восстановление доступа',
+          sendLink: 'Отправить ссылку',
+          checkEmail: 'Проверьте почту!',
+          back: 'Назад',
+          signIn: 'Войти',
+          signInWith: 'Войти с помощью',
+          forgotPass: 'Забыли пароль?',
+          changeAvatar: 'Сменить',
+          roleLabel: 'Роль:',
+          roleAdmin: 'Администратор',
+          roleUser: 'Пользователь',
+          addMemo: 'Добавить памятку',
+          awaitingMod: 'Ожидает модерацию',
+          signOut: 'Выйти',
+          adminOverrideTitle: 'РУЧНОЕ ПЕРЕОПРЕДЕЛЕНИЕ ССЫЛОК',
+          adminOverrideDesc:
+            'Если автоматическая подгрузка новых роликов не работает, укажите здесь прямые ссылки.\nОставьте поле пустым — будет использоваться автоопределение или кэш.',
+          saveOverrides: 'Сохранить переопределения',
+          profileSettings: 'НАСТРОЙКИ ПРОФИЛЯ',
+          changeNick: 'Изменить никнейм',
+          newNickPlaceholder: 'Новый никнейм',
+          updateName: 'Обновить имя',
+          changeEmail: 'Сменить Email',
+          newEmailPlaceholder: 'Новый email',
+          currentPassPlaceholder: 'Текущий пароль',
+          changeEmailBtn: 'Сменить почту',
+          securityTitle: 'БЕЗОПАСНОСТЬ',
+          changePass: 'Смена пароля',
+          newPassPlaceholder: 'Новый пароль',
+          confirmPassPlaceholder: 'Повторите пароль',
+          updatePass: 'Обновить пароль',
+          deleteAccount: 'УДАЛЕНИЕ АККАУНТА',
+          deleteDesc: 'Все данные будут удалены навсегда.',
+          deleteBtn: 'Удалить аккаунт навсегда',
+          newMemoTitle: 'НОВАЯ ПАМЯТКА',
+          newMemoSub: 'Добавьте памятку для сообщества',
+          memoNameLabel: 'Название памятки',
+          memoNamePlaceholder: 'Например: Orlando',
+          memoImgLabel: 'Прямая ссылка на изображение',
+          memoTableLabel: 'Ссылка на таблицу (необязательно)',
+          submitMemo: 'ОТПРАВИТЬ НА МОДЕРАЦИЮ',
+          moderationTitle: 'МОДЕРАЦИЯ ПАМЯТОК',
+          moderationCount: 'Памяток ожидающих проверку:',
+          moderationBy: 'От:',
+          moderationTable: 'Открыть таблицу',
+          moderationNone: 'Нет памяток на модерации',
+          accept: '✓ Принять',
+          reject: '✕ Отклонить',
+          newsSiteTitle: 'Новости сайта',
+          newsSubtitle: 'Делимся последними обновлениями на сайте.',
+          newsModNote:
+            'Обращаем ваше внимание, что данная ветка обсуждения находится под модерацией.',
+          newsRulesNote:
+            'В случае нарушения правил ваш аккаунт может быть удален.',
+          newsLoading: 'Загрузка новостей...',
+          newsEmpty: 'Пока нет новостей',
+          editPost: 'Редактировать запись',
+          newPost: 'Новая запись',
+          postTitlePlaceholder: 'Заголовок новости',
+          postContentPlaceholder: 'Текст новости',
+          postImagePlaceholder: 'Ссылка на изображение',
+          publishBtn: 'ОПУБЛИКОВАТЬ',
+          saveBtn: 'СОХРАНИТЬ',
+          dateRecently: 'Недавно',
+          commentsLabel: '💭 Комментарии',
+          loginToComment: 'Войдите в аккаунт, чтобы комментировать',
+          replyPlaceholder: 'Ответить {name}...',
+          commentPlaceholder: 'Напишите комментарий...',
+          cancel: 'Отмена',
+          send: 'Отправить',
+          loginToReact: 'Войдите, чтобы оставить реакцию',
+          loginToVote: 'Войдите, чтобы оценивать',
+          loginPlease: 'Пожалуйста, войдите в аккаунт',
+          notifTitle: 'Уведомления',
+          notifEmpty: 'Уведомлений пока нет',
+          notifSend: 'Отправить уведомление',
+          notifPrompt: 'Введите текст уведомления',
+          notifSent: 'Уведомление успешно отправлено!',
+          privacyPolicy: 'PRIVACY POLICY',
+          terms: 'TERMS',
+          dev: 'DEV',
+          reportBug: 'Report bug',
+        },
+
+        en: {
+          home: '🏠 HOME',
+          knowledge: '⭐ KNOWLEDGE BASE',
+          player: '📼 PLAYERS',
+          PC: '🖥️ MY PC',
+          social: '🔗 LINKS',
+          tools: '🔧 TOOLS',
+          account: '🙍 ACCOUNT',
+          login: '🔑 LOG IN',
+          loading: 'Loading...',
+          notFound: 'Page not found',
+          goHome: 'Go home',
+          cookieTitle: '🍪 Cookies!',
+          cookieText: 'We use cookies to improve the site and analytics.',
+          cookieAccept: 'Accept',
+          cookieReject: 'Reject',
+          privacyLink: 'privacy policy',
+          termsLink: 'terms of service',
+          cookieMid: 'By continuing to use the site you agree to our',
+          cookieAnd: 'and',
+          heroBtnKnowledge: 'Go to memos',
+          heroDisclaimer:
+            'All information on this site is for informational purposes only and does not constitute a public offer.',
+          card1Title: 'Knowledge Base',
+          card1Desc:
+            'Full registry of legislative bases for projects: Majestic RP, GTA 5 RP + custom memos from users.',
+          card2Title: 'Players without slowdowns',
+          card2Desc:
+            'Watch new videos without delays or freezes in various players. If blocked, we have our own Hinata player.',
+          card3Title: 'Quick & easy registration',
+          card3Desc: 'Log in with email, Google or Github.',
+          heroTexts: [
+            ['YOUR', 'GAMING', 'ASSISTANT'],
+            ['PROMO', 'BIPBUP'],
+          ],
+          legislation: 'LEGISLATION',
+          chooseProject: 'Select a project and click on the server you need',
+          playerMemos: 'MEMOS FROM PLAYERS',
+          memoSub: 'To simplify gameplay in government structures',
+          openTable: 'Open table',
+          loadingMemos: 'Loading memos...',
+          playerSelect: 'Choose player',
+          videoUnavailable: 'Video unavailable',
+          ourPlayer: 'OUR PLAYER',
+          videooffline: 'VIDEO OFFLINE',
+          actualLinks: 'CURRENT LINKS',
+          commercialOffers: 'COMMERCIAL OFFERS',
+          gameSettings: 'GAME SETTINGS',
+          pcConfig: 'PC CONFIGURATION',
+          myGraphics: 'MY GRAPHICS',
+          toolNickname: 'RP Nickname',
+          toolCalc: 'Income Calculator',
+          toolPass: 'Password Generator',
+          toolLevel: 'Level Calculator',
+          nickGenTitle: 'NICKNAME GENERATOR',
+          genderMale: 'MALE',
+          genderFemale: 'FEMALE',
+          clickToCopy: 'Click to copy',
+          generate: 'Generate',
+          nickCopied: 'Nickname copied!',
+          grindTitle: 'INCOME CALCULATOR',
+          grindRate: 'Earnings per hour ($)',
+          grindHours: 'Number of hours',
+          grindVip: 'VIP Bonus (%)',
+          grindNoVip: 'No VIP',
+          grindTotal: 'Total earnings',
+          grindRateEx: 'e.g. 15000',
+          grindHoursEx: 'e.g. 4',
+          passTitle: 'PASSWORD GENERATOR',
+          passLength: 'Password length',
+          passCopied: 'Password copied!',
+          passNoChars: 'Select at least one character type',
+          levelTitle: 'LEVEL CALCULATOR',
+          levelCurrent: 'Current level',
+          levelExp: 'XP per payday',
+          levelHasX2: 'x2 active on server?',
+          levelResult: 'To next level',
+          levelPaydays: '≈ {n} payday',
+          levelNote: '(with {x} XP per payday)',
+          loginTab: 'Login',
+          regTab: 'Register',
+          resetTitle: 'Password Recovery',
+          sendLink: 'Send link',
+          checkEmail: 'Check your email!',
+          back: 'Back',
+          signIn: 'Sign In',
+          signInWith: 'Sign in with',
+          forgotPass: 'Forgot password?',
+          changeAvatar: 'Change',
+          roleLabel: 'Role:',
+          roleAdmin: 'Administrator',
+          roleUser: 'User',
+          addMemo: 'Add memo',
+          awaitingMod: 'Awaiting moderation',
+          signOut: 'Sign out',
+          adminOverrideTitle: 'MANUAL URL OVERRIDE',
+          adminOverrideDesc:
+            'If automatic video loading fails, set direct URLs here.\nLeave empty to use auto-detection or cache.',
+          saveOverrides: 'Save overrides',
+          profileSettings: 'PROFILE SETTINGS',
+          changeNick: 'Change nickname',
+          newNickPlaceholder: 'New nickname',
+          updateName: 'Update name',
+          changeEmail: 'Change Email',
+          newEmailPlaceholder: 'New email',
+          currentPassPlaceholder: 'Current password',
+          changeEmailBtn: 'Change email',
+          securityTitle: 'SECURITY',
+          changePass: 'Change password',
+          newPassPlaceholder: 'New password',
+          confirmPassPlaceholder: 'Confirm password',
+          updatePass: 'Update password',
+          deleteAccount: 'DELETE ACCOUNT',
+          deleteDesc: 'All data will be permanently deleted.',
+          deleteBtn: 'Delete account permanently',
+          newMemoTitle: 'NEW MEMO',
+          newMemoSub: 'Add a memo for the community',
+          memoNameLabel: 'Memo name',
+          memoNamePlaceholder: 'e.g. Orlando',
+          memoImgLabel: 'Direct image link',
+          memoTableLabel: 'Table link (optional)',
+          submitMemo: 'SUBMIT FOR MODERATION',
+          moderationTitle: 'MEMO MODERATION',
+          moderationBy: 'By:',
+          moderationCount: 'Memo on waiting moderation:',
+          moderationTable: 'Open Table',
+          moderationNone: 'Memo on moderation none',
+          accept: '✓ Accept',
+          reject: '✕ Reject',
+          newsSiteTitle: 'Site news',
+          newsSubtitle: 'Sharing the latest site updates.',
+          newsModNote: 'Please note this discussion thread is moderated.',
+          newsRulesNote: 'Violating the rules may result in account deletion.',
+          newsLoading: 'Loading news...',
+          newsEmpty: 'No news yet',
+          editPost: 'Edit post',
+          newPost: 'New post',
+          postTitlePlaceholder: 'Post title',
+          postContentPlaceholder: 'Post content',
+          postImagePlaceholder: 'Image URL',
+          publishBtn: 'PUBLISH',
+          saveBtn: 'SAVE',
+          dateRecently: 'Recently',
+          commentsLabel: '💭 Comments',
+          loginToComment: 'Log in to leave a comment',
+          replyPlaceholder: 'Reply to {name}...',
+          commentPlaceholder: 'Write a comment...',
+          cancel: 'Cancel',
+          send: 'Send',
+          loginToReact: 'Log in to react',
+          loginToVote: 'Log in to vote',
+          loginPlease: 'Please log in',
+          notifTitle: 'Notifications',
+          notifEmpty: 'No notifications yet',
+          notifSend: 'Send notification',
+          notifPrompt: 'Enter notification text',
+          notifSent: 'Notification sent successfully!',
+          privacyPolicy: 'PRIVACY POLICY',
+          terms: 'TERMS',
+          dev: 'DEV',
+          reportBug: 'Report bug',
+        },
+
+        ja: {
+          home: '🏠 ホーム',
+          knowledge: '⭐ ナレッジベース',
+          player: '📼 プレイヤー',
+          PC: '🖥️ マイPC',
+          social: '🔗 リンク',
+          tools: '🔧 ツール',
+          account: '🙍 アカウント',
+          login: '🔑 ログイン',
+          loading: '読み込み中...',
+          notFound: 'ページが見つかりません',
+          goHome: 'ホームへ',
+          cookieTitle: '🍪 Cookie!',
+          cookieText: 'サイトの改善と分析のためにCookieを使用しています。',
+          cookieAccept: '承認',
+          cookieReject: '拒否',
+          privacyLink: 'プライバシーポリシー',
+          termsLink: '利用規約',
+          cookieMid: 'サイトを使用することで同意したものとみなします：',
+          cookieAnd: 'および',
+          heroBtnKnowledge: 'メモへ進む',
+          heroDisclaimer:
+            'このサイトの情報はすべて参考目的のみであり、公開オファーではありません。',
+          card1Title: 'ナレッジベース',
+          card1Desc:
+            'Majestic RP、GTA 5 RPなどのプロジェクトの法律データベース + ユーザーによるカスタムメモ。',
+          card2Title: '遅延なしプレイヤー',
+          card2Desc:
+            '様々なプレイヤーで遅延・フリーズなしに新しい動画を視聴。ブロックされた場合は独自のHinataプレイヤーがあります。',
+          card3Title: '簡単・迅速な登録',
+          card3Desc: 'メール、Google、Githubアカウントでログイン。',
+          heroTexts: [
+            ['あなたの', 'ゲーミング', 'アシスタント'],
+            ['プロモ', 'BIPBUP'],
+          ],
+          legislation: '法律',
+          chooseProject: 'プロジェクトを選択してサーバーをクリック',
+          playerMemos: 'プレイヤーからのメモ',
+          memoSub: '政府機関でのゲームプレイを簡単に',
+          openTable: '表を開く',
+          loadingMemos: 'メモを読み込み中...',
+          playerSelect: 'プレイヤー選択',
+          videoUnavailable: '動画が利用できません',
+          ourPlayer: '当社のプレイヤー',
+          videooffline: 'オフライン用のローラー',
+          actualLinks: '現在のリンク',
+          commercialOffers: '商業提案',
+          gameSettings: 'ゲーム設定',
+          pcConfig: 'PC構成',
+          myGraphics: '私のグラフィックス',
+          toolNickname: 'RPニックネーム',
+          toolCalc: '収入計算機',
+          toolPass: 'パスワード生成器',
+          toolLevel: 'レベル計算機',
+          nickGenTitle: 'ニックネーム生成器',
+          genderMale: '男性',
+          genderFemale: '女性',
+          clickToCopy: 'クリックでコピー',
+          generate: '生成',
+          nickCopied: 'コピーしました！',
+          grindTitle: '収入計算機',
+          grindRate: '1時間の収入 ($)',
+          grindHours: '時間数',
+          grindVip: 'VIPボーナス (%)',
+          grindNoVip: 'VIPなし',
+          grindTotal: '合計収入',
+          grindRateEx: '例: 15000',
+          grindHoursEx: '例: 4',
+          passTitle: 'パスワード生成器',
+          passLength: 'パスワードの長さ',
+          passCopied: 'コピーしました！',
+          passNoChars: '少なくとも1つの文字タイプを選択してください',
+          levelTitle: 'レベル計算機',
+          levelCurrent: '現在のレベル',
+          levelExp: 'paydayあたりのXP',
+          levelHasX2: 'サーバーでx2が有効？',
+          levelResult: '次のレベルまで',
+          levelPaydays: '≈ {n} payday',
+          levelNote: '(paydayあたり {x} XP)',
+          loginTab: 'ログイン',
+          regTab: '登録',
+          resetTitle: 'パスワードの回復',
+          sendLink: 'リンクを送る',
+          checkEmail: 'メールを確認してください！',
+          back: '戻る',
+          signIn: 'ログイン',
+          signInWith: 'でログイン',
+          forgotPass: 'パスワードを忘れた？',
+          changeAvatar: '変更',
+          roleLabel: '役割:',
+          roleAdmin: '管理者',
+          roleUser: 'ユーザー',
+          addMemo: 'メモを追加',
+          awaitingMod: 'モデレーション待ち',
+          signOut: 'ログアウト',
+          adminOverrideTitle: 'URLの手動上書き',
+          adminOverrideDesc:
+            '自動読み込みが失敗した場合、直接URLを設定してください。\n空白のままにすると自動検出またはキャッシュを使用します。',
+          saveOverrides: '設定を保存',
+          profileSettings: 'プロフィール設定',
+          changeNick: 'ニックネームを変更',
+          newNickPlaceholder: '新しいニックネーム',
+          updateName: '名前を更新',
+          changeEmail: 'メールを変更',
+          newEmailPlaceholder: '新しいメール',
+          currentPassPlaceholder: '現在のパスワード',
+          changeEmailBtn: 'メールを変更',
+          securityTitle: 'セキュリティ',
+          changePass: 'パスワードを変更',
+          newPassPlaceholder: '新しいパスワード',
+          confirmPassPlaceholder: 'パスワードを確認',
+          updatePass: 'パスワードを更新',
+          deleteAccount: 'アカウントを削除',
+          deleteDesc: 'すべてのデータが永久に削除されます。',
+          deleteBtn: 'アカウントを永久に削除',
+          newMemoTitle: '新しいメモ',
+          newMemoSub: 'コミュニティにメモを追加',
+          memoNameLabel: 'メモ名',
+          memoNamePlaceholder: '例: Orlando',
+          memoImgLabel: '画像への直接リンク',
+          memoTableLabel: '表のリンク（任意）',
+          submitMemo: 'モデレーションに送信',
+          moderationTitle: 'メモのモデレーション',
+          moderationBy: '著者：',
+          moderationCount: '待機中のモデレーターに関するメモ：',
+          moderationTable: 'テーブルを開く',
+          moderationNone: '節度に関するメモ：なし',
+          accept: '✓ 承認',
+          reject: '✕ 拒否',
+          newsSiteTitle: 'サイトニュース',
+          newsSubtitle: '最新のサイト更新をお届けします。',
+          newsModNote: 'このスレッドはモデレートされています。',
+          newsRulesNote:
+            'ルール違反はアカウント削除につながる可能性があります。',
+          newsLoading: 'ニュースを読み込み中...',
+          newsEmpty: 'まだニュースはありません',
+          editPost: '投稿を編集',
+          newPost: '新しい投稿',
+          postTitlePlaceholder: '投稿タイトル',
+          postContentPlaceholder: '投稿内容',
+          postImagePlaceholder: '画像URL',
+          publishBtn: '公開',
+          saveBtn: '保存',
+          dateRecently: '最近',
+          commentsLabel: '💭 コメント',
+          loginToComment: 'コメントするにはログインしてください',
+          replyPlaceholder: '{name}に返信...',
+          commentPlaceholder: 'コメントを書く...',
+          cancel: 'キャンセル',
+          send: '送信',
+          loginToReact: 'リアクションするにはログイン',
+          loginToVote: '評価するにはログイン',
+          loginPlease: 'ログインしてください',
+          notifTitle: '通知',
+          notifEmpty: 'まだ通知はありません',
+          notifSend: '通知を送信',
+          notifPrompt: '通知テキストを入力',
+          notifSent: '通知が正常に送信されました！',
+          privacyPolicy: 'PRIVACY POLICY',
+          terms: 'TERMS',
+          dev: 'DEV',
+          reportBug: 'Report bug',
+        },
+
+        de: {
+          home: '🏠 STARTSEITE',
+          knowledge: '⭐ WISSENSBASIS',
+          player: '📼 PLAYERS',
+          PC: '🖥️ MEIN PC',
+          social: '🔗 LINKS',
+          tools: '🔧 WERKZEUGE',
+          account: '🙍 KONTO',
+          login: '🔑 ANMELDEN',
+          loading: 'Laden...',
+          notFound: 'Seite nicht gefunden',
+          goHome: 'Zur Startseite',
+          cookieTitle: '🍪 Cookies!',
+          cookieText:
+            'Wir verwenden Cookies zur Verbesserung der Website und für Analysen.',
+          cookieAccept: 'Akzeptieren',
+          cookieReject: 'Ablehnen',
+          privacyLink: 'Datenschutzrichtlinie',
+          termsLink: 'Nutzungsbedingungen',
+          cookieMid: 'Durch die weitere Nutzung stimmen Sie zu:',
+          cookieAnd: 'und',
+          heroBtnKnowledge: 'Zu den Memos',
+          heroDisclaimer:
+            'Alle Informationen auf dieser Website dienen nur zu Informationszwecken und stellen kein öffentliches Angebot dar.',
+          card1Title: 'Wissensbasis',
+          card1Desc:
+            'Vollständiges Register der gesetzlichen Grundlagen für Majestic RP, GTA 5 RP + benutzerdefinierte Memos.',
+          card2Title: 'Player ohne Verlangsamungen',
+          card2Desc:
+            'Videos ohne Verzögerungen und Hänger ansehen. Bei Blockierungen haben wir unseren eigenen Hinata-Player.',
+          card3Title: 'Schnelle & einfache Registrierung',
+          card3Desc: 'Per E-Mail, Google oder Github anmelden.',
+          heroTexts: [
+            ['DEIN', 'GAMING', 'ASSISTENT'],
+            ['PROMO', 'BIPBUP'],
+          ],
+          legislation: 'GESETZE',
+          chooseProject: 'Projekt wählen und Server anklicken',
+          playerMemos: 'MEMOS VON SPIELERN',
+          memoSub: 'Zur Vereinfachung im Staatsdienst',
+          openTable: 'Tabelle öffnen',
+          loadingMemos: 'Memos werden geladen...',
+          playerSelect: 'Player wählen',
+          videoUnavailable: 'Video nicht verfügbar',
+          ourPlayer: 'UNSER PLAYER',
+          videooffline: 'VIDEOS DIE OFFLINE',
+          actualLinks: 'AKTUELLE LINKS',
+          commercialOffers: 'GESCHÄFTSANFRAGEN',
+          gameSettings: 'SPIELEINSTELLUNGEN',
+          pcConfig: 'PC-KONFIGURATION',
+          myGraphics: 'MEINE GRAFIK',
+          toolNickname: 'RP-Spitzname',
+          toolCalc: 'Einkommensrechner',
+          toolPass: 'Passwortgenerator',
+          toolLevel: 'Level-Rechner',
+          nickGenTitle: 'SPITZNAMEN-GENERATOR',
+          genderMale: 'MÄNNLICH',
+          genderFemale: 'WEIBLICH',
+          clickToCopy: 'Klicken zum Kopieren',
+          generate: 'Generieren',
+          nickCopied: 'Spitzname kopiert!',
+          grindTitle: 'EINKOMMENSRECHNER',
+          grindRate: 'Verdienst pro Stunde ($)',
+          grindHours: 'Anzahl Stunden',
+          grindVip: 'VIP-Bonus (%)',
+          grindNoVip: 'Kein VIP',
+          grindTotal: 'Gesamtverdienst',
+          grindRateEx: 'z.B. 15000',
+          grindHoursEx: 'z.B. 4',
+          passTitle: 'PASSWORTGENERATOR',
+          passLength: 'Passwortlänge',
+          passCopied: 'Passwort kopiert!',
+          passNoChars: 'Mindestens einen Zeichentyp auswählen',
+          levelTitle: 'LEVEL-RECHNER',
+          levelCurrent: 'Aktuelles Level',
+          levelExp: 'EP pro Zahltag',
+          levelHasX2: 'x2 auf dem Server aktiv?',
+          levelResult: 'Bis zum nächsten Level',
+          levelPaydays: '≈ {n} Zahltage',
+          levelNote: '(bei {x} EP pro Zahltag)',
+          loginTab: 'Anmelden',
+          regTab: 'Registrieren',
+          resetTitle: 'Passwort wiederherstellen',
+          sendLink: 'Link senden',
+          checkEmail: 'E-Mail prüfen!',
+          back: 'Zurück',
+          signIn: 'Einloggen',
+          signInWith: 'Einloggen mit',
+          forgotPass: 'Passwort vergessen?',
+          changeAvatar: 'Ändern',
+          roleLabel: 'Rolle:',
+          roleAdmin: 'Administrator',
+          roleUser: 'Benutzer',
+          addMemo: 'Memo hinzufügen',
+          awaitingMod: 'Wartet auf Moderation',
+          signOut: 'Abmelden',
+          adminOverrideTitle: 'MANUELLE URL-ÜBERSCHREIBUNG',
+          adminOverrideDesc:
+            'Falls das automatische Laden fehlschlägt, direkte URLs eingeben.\nFeld leer lassen für Auto-Erkennung oder Cache.',
+          saveOverrides: 'Überschreibungen speichern',
+          profileSettings: 'PROFILEINSTELLUNGEN',
+          changeNick: 'Spitzname ändern',
+          newNickPlaceholder: 'Neuer Spitzname',
+          updateName: 'Namen aktualisieren',
+          changeEmail: 'E-Mail ändern',
+          newEmailPlaceholder: 'Neue E-Mail',
+          currentPassPlaceholder: 'Aktuelles Passwort',
+          changeEmailBtn: 'E-Mail ändern',
+          securityTitle: 'SICHERHEIT',
+          changePass: 'Passwort ändern',
+          newPassPlaceholder: 'Neues Passwort',
+          confirmPassPlaceholder: 'Passwort wiederholen',
+          updatePass: 'Passwort aktualisieren',
+          deleteAccount: 'KONTO LÖSCHEN',
+          deleteDesc: 'Alle Daten werden dauerhaft gelöscht.',
+          deleteBtn: 'Konto dauerhaft löschen',
+          newMemoTitle: 'NEUES MEMO',
+          newMemoSub: 'Memo für die Community hinzufügen',
+          memoNameLabel: 'Memo-Name',
+          memoNamePlaceholder: 'z.B. Orlando',
+          memoImgLabel: 'Direkter Bild-Link',
+          memoTableLabel: 'Tabellen-Link (optional)',
+          submitMemo: 'ZUR MODERATION EINREICHEN',
+          moderationTitle: 'MEMO-MODERATION',
+          moderationBy: 'Von:',
+          moderationCount: 'Memorandum zur Wartezeit bei der Moderation:',
+          moderationTable: 'Öffnen Sie die Tabelle',
+          moderationNone: 'Memorandum zur Mäßigung – Keine Einträge',
+          accept: '✓ Annehmen',
+          reject: '✕ Ablehnen',
+          newsSiteTitle: 'Site-Neuigkeiten',
+          newsSubtitle: 'Die neuesten Site-Updates.',
+          newsModNote: 'Bitte beachten: Dieser Thread wird moderiert.',
+          newsRulesNote: 'Regelverstoß kann zur Kontolöschung führen.',
+          newsLoading: 'Neuigkeiten werden geladen...',
+          newsEmpty: 'Noch keine Neuigkeiten',
+          editPost: 'Beitrag bearbeiten',
+          newPost: 'Neuer Beitrag',
+          postTitlePlaceholder: 'Beitragstitel',
+          postContentPlaceholder: 'Beitragsinhalt',
+          postImagePlaceholder: 'Bild-URL',
+          publishBtn: 'VERÖFFENTLICHEN',
+          saveBtn: 'SPEICHERN',
+          dateRecently: 'Kürzlich',
+          commentsLabel: '💭 Kommentare',
+          loginToComment: 'Einloggen zum Kommentieren',
+          replyPlaceholder: 'Antworten an {name}...',
+          commentPlaceholder: 'Kommentar schreiben...',
+          cancel: 'Abbrechen',
+          send: 'Senden',
+          loginToReact: 'Einloggen zum Reagieren',
+          loginToVote: 'Einloggen zum Bewerten',
+          loginPlease: 'Bitte einloggen',
+          notifTitle: 'Benachrichtigungen',
+          notifEmpty: 'Noch keine Benachrichtigungen',
+          notifSend: 'Benachrichtigung senden',
+          notifPrompt: 'Benachrichtigungstext eingeben',
+          notifSent: 'Benachrichtigung erfolgreich gesendet!',
+          privacyPolicy: 'DATENSCHUTZ',
+          terms: 'NUTZUNGSBEDINGUNGEN',
+          dev: 'DEV',
+          reportBug: 'Bug melden',
+        },
+
+        fr: {
+          home: '🏠 ACCUEIL',
+          knowledge: '⭐ BASE DE CONNAISSANCE',
+          player: '📼 LECTEURS',
+          PC: '🖥️ MON PC',
+          social: '🔗 LIENS',
+          tools: '🔧 OUTILS',
+          account: '🙍 COMPTE',
+          login: '🔑 CONNEXION',
+          loading: 'Chargement...',
+          notFound: 'Page introuvable',
+          goHome: 'Accueil',
+          cookieTitle: '🍪 Cookies !',
+          cookieText:
+            'Nous utilisons des cookies pour améliorer le site et les analyses.',
+          cookieAccept: 'Accepter',
+          cookieReject: 'Refuser',
+          privacyLink: 'politique de confidentialité',
+          termsLink: "conditions d'utilisation",
+          cookieMid: 'En continuant à utiliser le site, vous acceptez notre',
+          cookieAnd: 'et',
+          heroBtnKnowledge: 'Accéder aux mémos',
+          heroDisclaimer:
+            'Toutes les informations sur ce site sont à titre informatif uniquement et ne constituent pas une offre publique.',
+          card1Title: 'Base de connaissance',
+          card1Desc:
+            'Registre complet des bases législatives pour Majestic RP, GTA 5 RP + mémos personnalisés des utilisateurs.',
+          card2Title: 'Lecteurs sans ralentissements',
+          card2Desc:
+            'Regardez de nouvelles vidéos sans délai ni gel. En cas de blocage, nous avons notre propre lecteur Hinata.',
+          card3Title: 'Inscription rapide et facile',
+          card3Desc: 'Connectez-vous par e-mail, Google ou Github.',
+          heroTexts: [
+            ['VOTRE', 'ASSISTANT', 'GAMING'],
+            ['PROMO', 'BIPBUP'],
+          ],
+          legislation: 'LÉGISLATION',
+          chooseProject: 'Choisissez un projet et cliquez sur le serveur',
+          playerMemos: 'MÉMOS DES JOUEURS',
+          memoSub:
+            'Pour simplifier le jeu dans les structures gouvernementales',
+          openTable: 'Ouvrir le tableau',
+          loadingMemos: 'Chargement des mémos...',
+          playerSelect: 'Choisir le lecteur',
+          videoUnavailable: 'Vidéo non disponible',
+          ourPlayer: 'NOTRE LECTEUR',
+          videooffline: 'VIDÉO HORS LIGNE',
+          actualLinks: 'LIENS ACTUELS',
+          commercialOffers: 'OFFRES COMMERCIALES',
+          gameSettings: 'PARAMÈTRES DU JEU',
+          pcConfig: 'CONFIGURATION PC',
+          myGraphics: 'MES GRAPHISMES',
+          toolNickname: 'Pseudo RP',
+          toolCalc: 'Calculateur de revenus',
+          toolPass: 'Générateur de mots de passe',
+          toolLevel: 'Calculateur de niveau',
+          nickGenTitle: 'GÉNÉRATEUR DE PSEUDOS',
+          genderMale: 'MASCULIN',
+          genderFemale: 'FÉMININ',
+          clickToCopy: 'Cliquer pour copier',
+          generate: 'Générer',
+          nickCopied: 'Pseudo copié !',
+          grindTitle: 'CALCULATEUR DE REVENUS',
+          grindRate: 'Revenus par heure ($)',
+          grindHours: "Nombre d'heures",
+          grindVip: 'Bonus VIP (%)',
+          grindNoVip: 'Pas de VIP',
+          grindTotal: 'Revenus totaux',
+          grindRateEx: 'ex: 15000',
+          grindHoursEx: 'ex: 4',
+          passTitle: 'GÉNÉRATEUR DE MOTS DE PASSE',
+          passLength: 'Longueur du mot de passe',
+          passCopied: 'Mot de passe copié !',
+          passNoChars: 'Sélectionnez au moins un type de caractère',
+          levelTitle: 'CALCULATEUR DE NIVEAU',
+          levelCurrent: 'Niveau actuel',
+          levelExp: 'XP par payday',
+          levelHasX2: 'x2 actif sur le serveur ?',
+          levelResult: "Jusqu'au prochain niveau",
+          levelPaydays: '≈ {n} payday',
+          levelNote: '(avec {x} XP par payday)',
+          loginTab: 'Connexion',
+          regTab: 'Inscription',
+          resetTitle: 'Récupération du mot de passe',
+          sendLink: 'Envoyer le lien',
+          checkEmail: 'Vérifiez votre e-mail !',
+          back: 'Retour',
+          signIn: 'Se connecter',
+          signInWith: 'Se connecter avec',
+          forgotPass: 'Mot de passe oublié ?',
+          changeAvatar: 'Changer',
+          roleLabel: 'Rôle :',
+          roleAdmin: 'Administrateur',
+          roleUser: 'Utilisateur',
+          addMemo: 'Ajouter un mémo',
+          awaitingMod: 'En attente de modération',
+          signOut: 'Déconnexion',
+          adminOverrideTitle: 'REMPLACEMENT MANUEL DES URLS',
+          adminOverrideDesc:
+            "Si le chargement automatique échoue, entrez des URLs directes.\nLaisser vide pour l'auto-détection ou le cache.",
+          saveOverrides: 'Sauvegarder',
+          profileSettings: 'PARAMÈTRES DU PROFIL',
+          changeNick: 'Changer le pseudo',
+          newNickPlaceholder: 'Nouveau pseudo',
+          updateName: 'Mettre à jour',
+          changeEmail: "Changer l'e-mail",
+          newEmailPlaceholder: 'Nouvel e-mail',
+          currentPassPlaceholder: 'Mot de passe actuel',
+          changeEmailBtn: "Changer l'e-mail",
+          securityTitle: 'SÉCURITÉ',
+          changePass: 'Changer le mot de passe',
+          newPassPlaceholder: 'Nouveau mot de passe',
+          confirmPassPlaceholder: 'Confirmer le mot de passe',
+          updatePass: 'Mettre à jour',
+          deleteAccount: 'SUPPRIMER LE COMPTE',
+          deleteDesc: 'Toutes les données seront définitivement supprimées.',
+          deleteBtn: 'Supprimer définitivement',
+          newMemoTitle: 'NOUVEAU MÉMO',
+          newMemoSub: 'Ajouter un mémo pour la communauté',
+          memoNameLabel: 'Nom du mémo',
+          memoNamePlaceholder: 'ex. Orlando',
+          memoImgLabel: "Lien direct vers l'image",
+          memoTableLabel: 'Lien du tableau (facultatif)',
+          submitMemo: 'SOUMETTRE À LA MODÉRATION',
+          moderationTitle: 'MODÉRATION DES MÉMOS',
+          moderationBy: 'Par:',
+          moderationCount:
+            'Mémo sur la modération des messages en attente de validation:',
+          moderationTable: 'Ouvrir la table',
+          moderationNone: 'Mémo sur la modération : rien à signaler.',
+          accept: '✓ Accepter',
+          reject: '✕ Rejeter',
+          newsSiteTitle: 'Actualités du site',
+          newsSubtitle: 'Les dernières mises à jour du site.',
+          newsModNote: 'Ce fil de discussion est modéré.',
+          newsRulesNote:
+            'Le non-respect des règles peut entraîner la suppression du compte.',
+          newsLoading: 'Chargement des actualités...',
+          newsEmpty: "Pas encore d'actualités",
+          editPost: 'Modifier',
+          newPost: 'Nouveau post',
+          postTitlePlaceholder: 'Titre du post',
+          postContentPlaceholder: 'Contenu du post',
+          postImagePlaceholder: "URL de l'image",
+          publishBtn: 'PUBLIER',
+          saveBtn: 'ENREGISTRER',
+          dateRecently: 'Récemment',
+          commentsLabel: '💭 Commentaires',
+          loginToComment: 'Connectez-vous pour commenter',
+          replyPlaceholder: 'Répondre à {name}...',
+          commentPlaceholder: 'Écrire un commentaire...',
+          cancel: 'Annuler',
+          send: 'Envoyer',
+          loginToReact: 'Connectez-vous pour réagir',
+          loginToVote: 'Connectez-vous pour voter',
+          loginPlease: 'Veuillez vous connecter',
+          notifTitle: 'Notifications',
+          notifEmpty: 'Pas encore de notifications',
+          notifSend: 'Envoyer une notification',
+          notifPrompt: 'Entrez le texte de la notification',
+          notifSent: 'Notification envoyée avec succès !',
+          privacyPolicy: 'CONFIDENTIALITÉ',
+          terms: 'CONDITIONS',
+          dev: 'DEV',
+          reportBug: 'Signaler un bug',
+        },
+      };
+
+      const NAV_LABELS = TRANSLATIONS;
+
+      const LangSwitcher = ({ lang, setLang }) => {
+        const [open, setOpen] = React.useState(false);
+        const ref = React.useRef(null);
+        const current = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
+
+        React.useEffect(() => {
+          const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+          };
+          document.addEventListener('mousedown', handleClickOutside);
+          return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
+        }, []);
+
+        const handleSelect = (code) => {
+          setLang(code);
+          localStorage.setItem('bipbup-lang', code);
+          document.documentElement.lang = code;
+          setOpen(false);
+        };
+
+        return (
+          <div ref={ref} className={`lang-switcher${open ? ' open' : ''}`}>
+            <button
+              className={`lang-btn${open ? ' open' : ''}`}
+              onClick={() => setOpen((o) => !o)}
+              aria-label="Выбор языка"
+            >
+              <span>{current.flag}</span>
+              <span>{current.code.toUpperCase()}</span>
+              <i className="lang-arrow">▼</i>
+            </button>
+            <div className="lang-dropdown">
+              {LANGUAGES.map((l) => (
+                <button
+                  key={l.code}
+                  className={`lang-option${lang === l.code ? ' active' : ''}`}
+                  onClick={() => handleSelect(l.code)}
+                >
+                  <span className="lang-flag">{l.flag}</span>
+                  <span>{l.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      };
+
       const App = () => {
         const [currentPage, setCurrentPage] = useState('home');
         const [user, setUser] = useState(null);
         const [loading, setLoading] = useState(true);
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const [isTransitioning, setIsTransitioning] = useState(false);
+
+        const [lang, setLang] = useState(() => {
+          return localStorage.getItem('bipbup-lang') || 'ru';
+        });
+        const t = TRANSLATIONS[lang] || TRANSLATIONS['ru'];
+
+        useEffect(() => {
+          const tr = TRANSLATIONS[lang] || TRANSLATIONS['ru'];
+          const titleEl = document.getElementById('cookie-title');
+          const textEl = document.getElementById('cookie-text');
+          const acceptEl = document.getElementById('cookie-accept');
+          const rejectEl = document.getElementById('cookie-reject');
+          if (titleEl) titleEl.textContent = tr.cookieTitle;
+          if (textEl)
+            textEl.innerHTML =
+              tr.cookieText +
+              '<br />' +
+              tr.cookieMid +
+              ' <a href="#privacy" style="color:#df6d93;text-decoration:none;font-weight:500">' +
+              tr.privacyLink +
+              '</a> ' +
+              tr.cookieAnd +
+              ' <a href="#terms" style="color:#df6d93;text-decoration:none;font-weight:500">' +
+              tr.termsLink +
+              '</a>.';
+          if (acceptEl) acceptEl.textContent = tr.cookieAccept;
+          if (rejectEl) rejectEl.textContent = tr.cookieReject;
+        }, [lang]);
 
         const getPageFromHash = () => {
           const hash = window.location.hash.replace('#', '') || 'home';
@@ -4662,18 +5696,14 @@
           if (loading) {
             return (
               <div className="flex justify-center py-20 accent-text animate-pulse text-2xl">
-                Загрузка...
+                {t.loading}
               </div>
             );
           }
 
           if (!routes[currentPage]) {
             return (
-              <ErrorPage
-                code="404"
-                text="Страница не найдена"
-                navigate={navigate}
-              />
+              <ErrorPage code="404" text={t.notFound} navigate={navigate} />
             );
           }
 
@@ -4691,229 +5721,208 @@
         };
 
         return (
-          <div className="min-h-screen flex flex-col">
-            <header className="flex items-center py-6 md:py-10 gap-4 px-6 md:px-10 w-full">
-              <button
-                id="theme-toggle"
-                className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
-              >
-                <span id="theme-icon" className="text-2xl">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    data-lucide="sun"
-                    aria-hidden="true"
-                    size="16"
-                    class="lucide lucide-sun"
-                  >
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <path d="M12 2v2"></path>
-                    <path d="M12 20v2"></path>
-                    <path d="m4.93 4.93 1.41 1.41"></path>
-                    <path d="m17.66 17.66 1.41 1.41"></path>
-                    <path d="M2 12h2"></path>
-                    <path d="M20 12h2"></path>
-                    <path d="m6.34 17.66-1.41 1.41"></path>
-                    <path d="m19.07 4.93-1.41 1.41"></path>
-                  </svg>
-                </span>
-              </button>
+          <LangContext.Provider value={{ lang, t }}>
+            <div className="min-h-screen flex flex-col">
+              <header className="flex items-center py-6 md:py-10 gap-4 px-6 md:px-10 w-full">
+                <button
+                  id="theme-toggle"
+                  className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+                >
+                  <span id="theme-icon" className="text-2xl">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      data-lucide="sun"
+                      aria-hidden="true"
+                      size="16"
+                      class="lucide lucide-sun"
+                    >
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <path d="M12 2v2"></path>
+                      <path d="M12 20v2"></path>
+                      <path d="m4.93 4.93 1.41 1.41"></path>
+                      <path d="m17.66 17.66 1.41 1.41"></path>
+                      <path d="M2 12h2"></path>
+                      <path d="M20 12h2"></path>
+                      <path d="m6.34 17.66-1.41 1.41"></path>
+                      <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                  </span>
+                </button>
 
-              <Notifications
-                className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
-                user={user}
-                isAdmin={user && ADMINS.includes(user.uid)}
-              />
+                <Notifications
+                  className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+                  user={user}
+                  isAdmin={user && ADMINS.includes(user.uid)}
+                />
 
-              <nav className="hidden md:flex flex-1 justify-center gap-8 text-[10px] font-medium uppercase items-center tracking-widest">
-                <button
-                  onClick={() => navigate('home')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'home' ? 'active' : ''}`}
-                >
-                  🏠 ГЛАВНАЯ
-                </button>
-                <button
-                  onClick={() => navigate('knowledge')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'knowledge' ? 'active' : ''}`}
-                >
-                  ⭐ БАЗА ЗНАНИЙ
-                </button>
-                <button
-                  onClick={() => navigate('player')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'player' ? 'active' : ''}`}
-                >
-                  📼 ПЛЕЕРЫ
-                </button>
-                <button
-                  onClick={() => navigate('PC')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'PC' ? 'active' : ''}`}
-                >
-                  🖥️ МОЙ ПК
-                </button>
-                <button
-                  onClick={() => navigate('social')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'social' ? 'active' : ''}`}
-                >
-                  🔗 ССЫЛКИ
-                </button>
-                <button
-                  onClick={() => navigate('tools')}
-                  className={`nav-link flex items-center gap-1.5 ${currentPage === 'tools' ? 'active' : ''}`}
-                >
-                  🔧 ИНСТРУМЕНТЫ
-                </button>
-              </nav>
-
-              <div className="hidden md:flex items-center gap-2 shrink-0 ml-4">
-                {user ? (
+                <nav className="hidden md:flex flex-1 justify-center gap-8 text-[10px] font-medium uppercase items-center tracking-widest">
                   <button
-                    onClick={() => navigate('lk')}
-                    className="nav-link btn-login font-bold text-[10px]"
+                    onClick={() => navigate('home')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'home' ? 'active' : ''}`}
                   >
-                    🙍 АККАУНТ
+                    {t.home}
                   </button>
-                ) : (
                   <button
-                    onClick={() => navigate('login')}
-                    className="nav-link btn-login font-bold text-[10px]"
+                    onClick={() => navigate('knowledge')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'knowledge' ? 'active' : ''}`}
                   >
-                    🔑 ВОЙТИ
+                    {t.knowledge}
                   </button>
-                )}
-              </div>
-
-              <div className="md:hidden flex items-center gap-2 ml-auto">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="z-[1100] relative w-8 h-8"
-                >
-                  <span
-                    className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
-                  ></span>
-                  <span
-                    className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
-                  ></span>
-                </button>
-              </div>
-
-              {isMenuOpen && (
-                <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300 z-[2500]">
                   <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="absolute top-6 right-6 w-10 h-10 rounded-full glass-card flex items-center justify-center text-xl hover:scale-110 transition-transform z-[2600]"
-                    aria-label="Закрыть меню"
+                    onClick={() => navigate('player')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'player' ? 'active' : ''}`}
                   >
-                    ✕
+                    {t.player}
                   </button>
-                  {Object.keys(routes)
-                    .filter((key) => {
-                      if (key === 'login') return false;
-                      return true;
-                    })
-                    .map((key) => {
-                      let label = '';
-                      let emoji = '';
+                  <button
+                    onClick={() => navigate('PC')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'PC' ? 'active' : ''}`}
+                  >
+                    {t.PC}
+                  </button>
+                  <button
+                    onClick={() => navigate('social')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'social' ? 'active' : ''}`}
+                  >
+                    {t.social}
+                  </button>
+                  <button
+                    onClick={() => navigate('tools')}
+                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'tools' ? 'active' : ''}`}
+                  >
+                    {t.tools}
+                  </button>
+                </nav>
 
-                      switch (key) {
-                        case 'home':
-                          emoji = '🏠';
-                          label = 'Главная';
-                          break;
-                        case 'knowledge':
-                          emoji = '⭐';
-                          label = 'База знаний';
-                          break;
-                        case 'player':
-                          emoji = '📼';
-                          label = 'Плееры';
-                          break;
-                        case 'PC':
-                          emoji = '🖥️';
-                          label = 'Мой ПК';
-                          break;
-                        case 'social':
-                          emoji = '🔗';
-                          label = 'Ссылки';
-                          break;
-                        case 'tools':
-                          emoji = '🔧';
-                          label = 'Инструменты';
-                          break;
-
-                        case 'lk':
-                        case 'login':
-                          if (user) {
-                            emoji = '🙍';
-                            label = 'Аккаунт';
-                          } else {
-                            emoji = '🔑';
-                            label = 'Войти';
-                          }
-                          break;
-                      }
-
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => navigate(key)}
-                          className={currentPage === key ? 'white' : ''}
-                        >
-                          {emoji} {label}
-                        </button>
-                      );
-                    })}
+                <div className="hidden md:flex items-center gap-2 shrink-0 ml-4">
+                  <LangSwitcher lang={lang} setLang={setLang} />
+                  {user ? (
+                    <button
+                      onClick={() => navigate('lk')}
+                      className="nav-link btn-login font-bold text-[10px]"
+                    >
+                      {t.account}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => navigate('login')}
+                      className="nav-link btn-login font-bold text-[10px]"
+                    >
+                      {t.login}
+                    </button>
+                  )}
                 </div>
-              )}
-            </header>
 
-            <main className="flex-grow relative max-w-6xl mx-auto w-full px-4 md:px-6">
-              <div
-                key={currentPage}
-                className={`page-transition ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
-              >
-                {renderPage()}
-              </div>
-            </main>
+                <div className="md:hidden flex items-center gap-2 ml-auto">
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="z-[1100] relative w-8 h-8"
+                  >
+                    <span
+                      className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 top-4' : 'top-3'}`}
+                    ></span>
+                    <span
+                      className={`absolute block w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 top-4' : 'top-5'}`}
+                    ></span>
+                  </button>
+                </div>
 
-            <footer className="py-10 md:py-20 flex flex-col md:flex-row items-center gap-6 w-full px-8 md:px-14">
-              <div className="text-[10px] opacity-30 uppercase tracking-[0.4em] md:mr-auto">
-                © 2024–{new Date().getFullYear()} BIP BUP Media
-              </div>
-              <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] uppercase font-bold tracking-widest opacity-30">
-                <button
-                  onClick={() => navigate('privacy')}
-                  className="transition hover:opacity-70"
+                {isMenuOpen && (
+                  <div className="fixed inset-0 mobile-nav flex flex-col items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest animate-in fade-in zoom-in duration-300 z-[2500]">
+                    <button
+                      onClick={() => setIsMenuOpen(false)}
+                      className="absolute top-6 right-6 w-10 h-10 rounded-full glass-card flex items-center justify-center text-xl hover:scale-110 transition-transform z-[2600]"
+                      aria-label="Закрыть меню"
+                    >
+                      ✕
+                    </button>
+                    {Object.keys(routes)
+                      .filter((key) => {
+                        if (key === 'login') return false;
+                        if (key === 'news') return false;
+                        if (key === 'privacy') return false;
+                        if (key === 'terms') return false;
+                        return true;
+                      })
+                      .map((key) => {
+                        const navKeyMap = {
+                          home: t.home,
+                          knowledge: t.knowledge,
+                          player: t.player,
+                          PC: t.PC,
+                          social: t.social,
+                          tools: t.tools,
+                          lk: user ? t.account : t.login,
+                        };
+                        const fullLabel = navKeyMap[key] || key;
+
+                        return (
+                          <button
+                            key={key}
+                            onClick={() => navigate(key)}
+                            className={currentPage === key ? 'white' : ''}
+                          >
+                            {fullLabel}
+                          </button>
+                        );
+                      })}
+                    <div style={{ marginTop: '8px' }}>
+                      <LangSwitcher lang={lang} setLang={setLang} />
+                    </div>
+                  </div>
+                )}
+              </header>
+
+              <main className="flex-grow relative max-w-6xl mx-auto w-full px-4 md:px-6">
+                <div
+                  key={currentPage}
+                  className={`page-transition ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
                 >
-                  PRIVACY POLICY
-                </button>
-                <button
-                  onClick={() => navigate('terms')}
-                  className="transition hover:opacity-70"
-                >
-                  TERMS
-                </button>
-                <a
-                  href="https://xqr4d.github.io/XQR4D/"
-                  className="transition hover:opacity-70"
-                >
-                  DEV
-                </a>
-                <a
-                  href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound: ${encodeURIComponent(s.title)}"
-                  className="transition hover:opacity-70"
-                >
-                  Report bug
-                </a>
-              </div>
-            </footer>
-          </div>
+                  {renderPage()}
+                </div>
+              </main>
+
+              <footer className="py-10 md:py-20 flex flex-col md:flex-row items-center gap-6 w-full px-8 md:px-14">
+                <div className="text-[10px] opacity-30 uppercase tracking-[0.4em] md:mr-auto">
+                  © 2024–{new Date().getFullYear()} BIP BUP Media
+                </div>
+                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] uppercase font-bold tracking-widest opacity-30">
+                  <button
+                    onClick={() => navigate('privacy')}
+                    className="transition hover:opacity-70"
+                  >
+                    PRIVACY POLICY
+                  </button>
+                  <button
+                    onClick={() => navigate('terms')}
+                    className="transition hover:opacity-70"
+                  >
+                    TERMS
+                  </button>
+                  <a
+                    href="https://xqr4d.github.io/XQR4D/"
+                    className="transition hover:opacity-70"
+                  >
+                    DEV
+                  </a>
+                  <a
+                    href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound: ${encodeURIComponent(s.title)}"
+                    className="transition hover:opacity-70"
+                  >
+                    Report bug
+                  </a>
+                </div>
+              </footer>
+            </div>
+          </LangContext.Provider>
         );
       };
 
