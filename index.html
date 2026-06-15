@@ -9,8 +9,8 @@
     />
     <meta name="yandex-verification" content="6d28322ca114d8df" />
     <title>BIPBUP</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" />
@@ -511,6 +511,106 @@
         }
       }
 
+      .nav-pill {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        padding: 6px 10px;
+        border-radius: 9999px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: rgba(245, 245, 247, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.08),
+          0 1px 3px rgba(0, 0, 0, 0.02);
+        animation: pillFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      @keyframes pillFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-12px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      [data-theme='dark'] .nav-pill {
+        background: rgba(12, 12, 12, 0.85);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow:
+          0 4px 32px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      .nav-pill-indicator {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        height: calc(100% - 10px);
+        border-radius: 9999px;
+        background: var(--text);
+        opacity: 0.12;
+        pointer-events: none;
+        transition:
+          left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        will-change: left, width;
+      }
+
+      [data-theme='dark'] .nav-pill-indicator {
+        background: var(--accent);
+        opacity: 0.15;
+      }
+
+      .nav-pill .nav-link {
+        padding: 6px 14px;
+        border-radius: 9999px;
+        transition: color 0.25s ease;
+        white-space: nowrap;
+        letter-spacing: 0.1em;
+        position: relative;
+        color: var(--text);
+      }
+
+      html:not([data-theme='dark']) .nav-pill .nav-link {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      .nav-pill .nav-link.active {
+        color: var(--accent);
+      }
+
+      [data-theme='light'] .nav-pill .nav-link.active {
+        color: #000;
+      }
+
+      .nav-pill .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 9999px;
+        transform: translateX(-50%);
+        transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .nav-pill .nav-link.active::after {
+        width: 60%;
+      }
+
+      [data-theme='light'] .nav-pill .nav-link.active::after {
+        background: #000;
+      }
+
       .lang-switcher {
         position: relative;
         z-index: 1200;
@@ -635,6 +735,45 @@
       .lang-option .lang-flag {
         font-size: 16px;
         line-height: 1;
+      }
+
+      .theme-toggle-btn {
+        background: rgba(245, 245, 247, 0.85) !important;
+        color: rgba(0, 0, 0, 0.6) !important;
+      }
+
+      .theme-toggle-btn:hover {
+        background: rgba(0, 0, 0, 0.1) !important;
+      }
+
+      [data-theme='dark'] .theme-toggle-btn {
+        background: transparent !important;
+        color: var(--text) !important;
+        box-shadow: none !important;
+      }
+
+      [data-theme='dark'] .theme-toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+
+      .notifications-btn {
+        background: rgba(245, 245, 247, 0.85) !important;
+        color: rgba(0, 0, 0, 0.6) !important;
+      }
+
+      .notifications-btn:hover {
+        background: rgba(0, 0, 0, 0.1) !important;
+      }
+
+      [data-theme='dark'] .notifications-btn {
+        background: transparent !important;
+        border-color: transparent !important;
+        color: var(--text) !important;
+        box-shadow: none !important;
+      }
+
+      [data-theme='dark'] .notifications-btn:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
       }
 
       .page-transition {
@@ -934,7 +1073,7 @@
         { n: 16, name: 'Denver', id: '1276' },
         { n: 17, name: 'Portland', id: '1338' },
         { n: 18, name: 'Orlando', id: '1405' },
-        { n: 19, name: 'Memphis', id: '1462' },
+        { n: 19, name: 'Memphis', id: '1471' },
       ];
 
       const ErrorPage = ({ code, text, navigate }) => {
@@ -1892,7 +2031,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/vk.webp"
+                    src="assets/images/vk.webp"
                     alt="VK"
                   />
                 </a>
@@ -1903,7 +2042,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/vkrezerv.webp"
+                    src="assets/images/vkrezerv.webp"
                     alt="VK"
                   />
                 </a>
@@ -1914,7 +2053,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/tg.png"
+                    src="assets/images/tg.png"
                     alt="Telegram канал"
                   />
                 </a>
@@ -1925,7 +2064,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/tgchat.png"
+                    src="assets/images/tgchat.png"
                     alt="Telegram чат"
                   />
                 </a>
@@ -1936,7 +2075,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/ds.png"
+                    src="assets/images/ds.png"
                     alt="Discord"
                   />
                 </a>
@@ -1947,7 +2086,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/twitch.png"
+                    src="assets/images/twitch.png"
                     alt="Twitch"
                   />
                 </a>
@@ -1958,7 +2097,7 @@
                 >
                   <img
                     style={{ height: '60px' }}
-                    src="images/yt.png"
+                    src="assets/images/yt.png"
                     alt="YouTube"
                   />
                 </a>
@@ -1969,8 +2108,8 @@
                 </h3>
                 <a className="flex flex-wrap items-center gap-3 justify-center">
                   <img
-                    style={{ height: '60px' }}
-                    src="images/mail.png"
+                    style={{ height: '40px' }}
+                    src="assets/images/email.png"
                     alt="Mail"
                   />
                   bipbupmedia@protonmail.com
@@ -1978,7 +2117,7 @@
                 <a href="https://t.me/bipbupmanager" target="_blank">
                   <img
                     style={{ height: '300px' }}
-                    src="images/qrcodecomm.png"
+                    src="assets/images/qrcodecomm.png"
                     alt="QR-код для коммерческих предложений"
                     className="mx-auto rounded-2xl"
                   />
@@ -2001,7 +2140,7 @@
                 <p>
                   <img
                     style={{ height: '300px' }}
-                    src="images/settings.png"
+                    src="assets/images/settings.png"
                     alt="Settings"
                     className="mx-auto rounded-2xl glass-card"
                   />
@@ -2032,7 +2171,7 @@
                   >
                     <img
                       style={{ height: '300px' }}
-                      src="images/graphics.png"
+                      src="assets/images/graphics.png"
                       alt="graphicsnetwork"
                       className="mx-auto rounded-2xl glass-card"
                     />
@@ -2197,7 +2336,7 @@
                   >
                     <img
                       style={{ height: '60px' }}
-                      src="images/tg.png"
+                      src="assets/images/tg.png"
                       alt="Telegram канал"
                     />
                   </a>
@@ -2216,7 +2355,7 @@
                   >
                     <img
                       style={{ height: '60px' }}
-                      src="images/play.png"
+                      src="assets/images/play.png"
                       alt="Hinata"
                     />
                   </a>
@@ -2235,8 +2374,28 @@
         const [mode, setMode] = useState('login');
         const [email, setEmail] = useState('');
         const [pass, setPass] = useState('');
+        const [showPass, setShowPass] = useState(false);
         const [resetSent, setResetSent] = useState(false);
         const recaptchaRef = useRef(null);
+
+        const passwordValidations = [
+          {
+            label: t.passLengthreg || 'Не менее 8 символов',
+            test: pass.length >= 8,
+          },
+          {
+            label: t.passUpper || 'Хотя бы одна английская заглавная буква',
+            test: /[A-Z]/.test(pass),
+          },
+          {
+            label: t.passDigit || 'Хотя бы одна цифра',
+            test: /[0-9]/.test(pass),
+          },
+          {
+            label: t.passSpec || 'Спец. символ (!@#$%^&*)',
+            test: /[^A-Za-z0-9]/.test(pass),
+          },
+        ];
 
         useEffect(() => {
           window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -2311,14 +2470,50 @@
               <div className="flex justify-between">
                 <button
                   onClick={() => setMode('login')}
-                  className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'login' ? '' : 'opacity-20'}`}
+                  className={`nav-link btn-login flex items-center gap-2 font-bold text-[10px] transition ${mode === 'login' ? '' : 'opacity-20'}`}
                 >
+                  <svg
+                    xmlns="http://w3.org"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    className="lucide lucide-log-in"
+                  >
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                  </svg>
                   {t.loginTab}
                 </button>
+
                 <button
                   onClick={() => setMode('reg')}
-                  className={`nav-link btn-login font-bold text-[10px] transition ${mode === 'reg' ? '' : 'opacity-20'}`}
+                  className={`nav-link btn-login flex items-center gap-2 font-bold text-[10px] transition ${mode === 'reg' ? '' : 'opacity-20'}`}
                 >
+                  <svg
+                    xmlns="http://w3.org"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    className="lucide lucide-user-plus"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" y1="8" x2="19" y2="14"></line>
+                    <line x1="22" y1="11" x2="16" y2="11"></line>
+                  </svg>
                   {t.regTab}
                 </button>
               </div>
@@ -2364,23 +2559,110 @@
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
-                    <input
-                      type="password"
-                      placeholder="Password"
-                      className="w-full"
-                      onChange={(e) => setPass(e.target.value)}
-                      required
-                    />
+
+                    <div className="relative flex items-center">
+                      <input
+                        type={showPass ? 'text' : 'password'}
+                        placeholder="Password"
+                        className="w-full pr-12"
+                        onChange={(e) => setPass(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPass(!showPass)}
+                        className="absolute right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        aria-label={
+                          showPass ? 'Скрыть пароль' : 'Показать пароль'
+                        }
+                      >
+                        {showPass ? (
+                          <svg
+                            xmlns="http://w3.org"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                            <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                            <line x1="2" y1="2" x2="22" y2="22"></line>
+                          </svg>
+                        ) : (
+                          <svg
+                            xmlns="http://w3.org"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+
+                    {mode === 'reg' && (
+                      <div className="p-4 bg-black/5 dark:bg-white/5 rounded-2xl space-y-2 border border-black/10 dark:border-white/10">
+                        <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
+                          {t.safetypass}
+                        </p>
+                        <ul className="space-y-1.5">
+                          {passwordValidations.map((item, index) => (
+                            <li
+                              key={index}
+                              className={`flex items-center space-x-2 text-[10px] transition-all ${
+                                item.test
+                                  ? 'text-green-500 dark:text-green-400 opacity-100 font-medium'
+                                  : 'opacity-30'
+                              }`}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                                className={`transition-transform ${item.test ? 'scale-100' : 'scale-75'}`}
+                              >
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                              </svg>
+                              <span>{item.label}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
                     <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      {t.signIn}
+                      {mode === 'login'
+                        ? t.signIn
+                        : t.signUp || 'Зарегистрироваться'}
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setMode('reset')}
-                      className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition"
-                    >
-                      {t.forgotPass}
-                    </button>
+                    {mode === 'login' && (
+                      <button
+                        type="button"
+                        onClick={() => setMode('reset')}
+                        className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition"
+                      >
+                        {t.forgotPass}
+                      </button>
+                    )}
                   </form>
                   <div className="relative py-2">
                     <div className="absolute inset-0 flex items-center">
@@ -3990,7 +4272,7 @@
                   className="relative group cursor-pointer"
                   onClick={() => fileInput.current.click()}
                 >
-                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 transition-all duration-500 shadow-2xl">
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden transition-all duration-500 shadow-2xl">
                     {avatar ? (
                       <img
                         src={avatar}
@@ -4460,6 +4742,56 @@
         );
       };
 
+      const NAV_ITEMS = [
+        { key: 'home', labelKey: 'home' },
+        { key: 'knowledge', labelKey: 'knowledge' },
+        { key: 'player', labelKey: 'player' },
+        { key: 'PC', labelKey: 'PC' },
+        { key: 'social', labelKey: 'social' },
+        { key: 'tools', labelKey: 'tools' },
+      ];
+
+      const NavPill = ({ currentPage, navigate, t }) => {
+        const pillRef = useRef(null);
+        const indicatorRef = useRef(null);
+
+        const updateIndicator = () => {
+          if (!pillRef.current || !indicatorRef.current) return;
+          const activeBtn = pillRef.current.querySelector('.nav-link.active');
+          if (!activeBtn) {
+            indicatorRef.current.style.width = '0px';
+            return;
+          }
+          const pillRect = pillRef.current.getBoundingClientRect();
+          const btnRect = activeBtn.getBoundingClientRect();
+          indicatorRef.current.style.left = btnRect.left - pillRect.left + 'px';
+          indicatorRef.current.style.width = btnRect.width + 'px';
+        };
+
+        useEffect(() => {
+          const raf = requestAnimationFrame(updateIndicator);
+          return () => cancelAnimationFrame(raf);
+        }, [currentPage]);
+
+        return (
+          <div
+            ref={pillRef}
+            className="nav-pill text-[10px] font-medium uppercase"
+          >
+            <div ref={indicatorRef} className="nav-pill-indicator" />
+            {NAV_ITEMS.map(({ key, labelKey }) => (
+              <button
+                key={key}
+                onClick={() => navigate(key)}
+                className={`nav-link ${currentPage === key ? 'active' : ''}`}
+              >
+                {t[labelKey]}
+              </button>
+            ))}
+          </div>
+        );
+      };
+
       const Notifications = ({ user }) => {
         const { t } = useLang();
         const [notifications, setNotifications] = useState([]);
@@ -4570,10 +4902,26 @@
           <div className="relative">
             <button
               onClick={openNotifications}
-              className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all relative z-10"
-              title=""
+              className="p-3 rounded-2xl transition-all relative z-10 notifications-btn"
+              title="Уведомления"
             >
-              🔔
+              <svg
+                xmlns="http://w3.org"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                className="lucide lucide-bell"
+              >
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+              </svg>
+
               {unreadCount > 0 && (
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-[10px] rounded-full flex items-center justify-center text-white font-bold">
                   {unreadCount > 9 ? '9+' : unreadCount}
@@ -4598,15 +4946,6 @@
 
                     <div className="notif-header">
                       <div className="flex items-center gap-3">
-                        <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-                          style={{
-                            background: 'var(--card-bg)',
-                            border: '1px solid var(--border)',
-                          }}
-                        >
-                          🔔
-                        </div>
                         <div>
                           <h4 className="font-black text-base tracking-tight leading-none">
                             {t.notifTitle}
@@ -4708,14 +5047,14 @@
 
       const TRANSLATIONS = {
         ru: {
-          home: '🏠 ГЛАВНАЯ',
-          knowledge: '⭐ БАЗА ЗНАНИЙ',
-          player: '📼 ПЛЕЕРЫ',
-          PC: '🖥️ МОЙ ПК',
-          social: '🔗 ССЫЛКИ',
-          tools: '🔧 ИНСТРУМЕНТЫ',
-          account: '🙍 АККАУНТ',
-          login: '🔑 ВОЙТИ',
+          home: 'ГЛАВНАЯ',
+          knowledge: 'БАЗА ЗНАНИЙ',
+          player: 'ПЛЕЕРЫ',
+          PC: 'МОЙ ПК',
+          social: 'ССЫЛКИ',
+          tools: 'ИНСТРУМЕНТЫ',
+          account: 'АККАУНТ',
+          login: 'ВОЙТИ',
           loading: 'Загрузка...',
           notFound: 'Страница не найдена',
           goHome: 'На главную',
@@ -4791,12 +5130,17 @@
           regTab: 'Регистрация',
           resetTitle: 'Восстановление доступа',
           sendLink: 'Отправить ссылку',
+          safetypass: 'Надежность пароля',
           checkEmail: 'Проверьте почту!',
           back: 'Назад',
           signIn: 'Войти',
           signInWith: 'Войти с помощью',
           forgotPass: 'Забыли пароль?',
           changeAvatar: 'Сменить',
+          passLengthreg: 'Не менее 8 символов',
+          passUpper: 'Хотя бы одна английская заглавная буква',
+          passDigit: 'Хотя бы одна цифра',
+          passSpec: 'Спец. символ (!@#$%^&*)',
           roleLabel: 'Роль:',
           roleAdmin: 'Администратор',
           roleUser: 'Пользователь',
@@ -4874,14 +5218,14 @@
         },
 
         en: {
-          home: '🏠 HOME',
-          knowledge: '⭐ KNOWLEDGE BASE',
-          player: '📼 PLAYERS',
-          PC: '🖥️ MY PC',
-          social: '🔗 LINKS',
-          tools: '🔧 TOOLS',
-          account: '🙍 ACCOUNT',
-          login: '🔑 LOG IN',
+          home: 'HOME',
+          knowledge: 'KNOWLEDGE BASE',
+          player: 'PLAYERS',
+          PC: 'MY PC',
+          social: 'LINKS',
+          tools: 'TOOLS',
+          account: 'ACCOUNT',
+          login: 'LOG IN',
           loading: 'Loading...',
           notFound: 'Page not found',
           goHome: 'Go home',
@@ -4923,6 +5267,10 @@
           gameSettings: 'GAME SETTINGS',
           pcConfig: 'PC CONFIGURATION',
           myGraphics: 'MY GRAPHICS',
+          passLengthreg: 'At least 8 characters',
+          passUpper: 'At least one English uppercase letter',
+          passDigit: 'At least one digit',
+          passSpec: 'Special character (!@#$%^&*)',
           toolNickname: 'RP Nickname',
           toolCalc: 'Income Calculator',
           toolPass: 'Password Generator',
@@ -4956,6 +5304,7 @@
           regTab: 'Register',
           resetTitle: 'Password Recovery',
           sendLink: 'Send link',
+          safetypass: 'Password strength',
           checkEmail: 'Check your email!',
           back: 'Back',
           signIn: 'Sign In',
@@ -5037,14 +5386,14 @@
         },
 
         ja: {
-          home: '🏠 ホーム',
-          knowledge: '⭐ ナレッジベース',
-          player: '📼 プレイヤー',
-          PC: '🖥️ マイPC',
-          social: '🔗 リンク',
-          tools: '🔧 ツール',
-          account: '🙍 アカウント',
-          login: '🔑 ログイン',
+          home: 'ホーム',
+          knowledge: 'ナレッジベース',
+          player: 'プレイヤー',
+          PC: 'マイPC',
+          social: 'リンク',
+          tools: 'ツール',
+          account: 'アカウント',
+          login: 'ログイン',
           loading: '読み込み中...',
           notFound: 'ページが見つかりません',
           goHome: 'ホームへ',
@@ -5119,6 +5468,7 @@
           regTab: '登録',
           resetTitle: 'パスワードの回復',
           sendLink: 'リンクを送る',
+          safetypass: 'パスワードの強度',
           checkEmail: 'メールを確認してください！',
           back: '戻る',
           signIn: 'ログイン',
@@ -5156,6 +5506,10 @@
           memoNameLabel: 'メモ名',
           memoNamePlaceholder: '例: Orlando',
           memoImgLabel: '画像への直接リンク',
+          passLengthreg: '8文字以上',
+          passUpper: '英大文字を少なくとも1文字以上',
+          passDigit: '数字を少なくとも1文字以上',
+          passSpec: '特殊文字 (!@#$%^&*)',
           memoTableLabel: '表のリンク（任意）',
           submitMemo: 'モデレーションに送信',
           moderationTitle: 'メモのモデレーション',
@@ -5201,14 +5555,14 @@
         },
 
         de: {
-          home: '🏠 STARTSEITE',
-          knowledge: '⭐ WISSENSBASIS',
-          player: '📼 PLAYERS',
-          PC: '🖥️ MEIN PC',
-          social: '🔗 LINKS',
-          tools: '🔧 WERKZEUGE',
-          account: '🙍 KONTO',
-          login: '🔑 ANMELDEN',
+          home: 'STARTSEITE',
+          knowledge: 'WISSENSBASIS',
+          player: 'PLAYERS',
+          PC: 'MEIN PC',
+          social: 'LINKS',
+          tools: 'WERKZEUGE',
+          account: 'KONTO',
+          login: 'ANMELDEN',
           loading: 'Laden...',
           notFound: 'Seite nicht gefunden',
           goHome: 'Zur Startseite',
@@ -5260,6 +5614,10 @@
           genderFemale: 'WEIBLICH',
           clickToCopy: 'Klicken zum Kopieren',
           generate: 'Generieren',
+          passLengthreg: 'Mindestens 8 Zeichen',
+          passUpper: 'Mindestens ein englischer Großbuchstabe',
+          passDigit: 'Mindestens eine Ziffer',
+          passSpec: 'Sonderzeichen (!@#$%^&*)',
           nickCopied: 'Spitzname kopiert!',
           grindTitle: 'EINKOMMENSRECHNER',
           grindRate: 'Verdienst pro Stunde ($)',
@@ -5284,6 +5642,7 @@
           regTab: 'Registrieren',
           resetTitle: 'Passwort wiederherstellen',
           sendLink: 'Link senden',
+          safetypass: 'Passwortsicherheit',
           checkEmail: 'E-Mail prüfen!',
           back: 'Zurück',
           signIn: 'Einloggen',
@@ -5365,14 +5724,14 @@
         },
 
         fr: {
-          home: '🏠 ACCUEIL',
-          knowledge: '⭐ BASE DE CONNAISSANCE',
-          player: '📼 LECTEURS',
-          PC: '🖥️ MON PC',
-          social: '🔗 LIENS',
-          tools: '🔧 OUTILS',
-          account: '🙍 COMPTE',
-          login: '🔑 CONNEXION',
+          home: 'ACCUEIL',
+          knowledge: 'BASE DE CONNAISSANCE',
+          player: 'LECTEURS',
+          PC: 'MON PC',
+          social: 'LIENS',
+          tools: 'OUTILS',
+          account: 'COMPTE',
+          login: 'CONNEXION',
           loading: 'Chargement...',
           notFound: 'Page introuvable',
           goHome: 'Accueil',
@@ -5416,6 +5775,10 @@
           gameSettings: 'PARAMÈTRES DU JEU',
           pcConfig: 'CONFIGURATION PC',
           myGraphics: 'MES GRAPHISMES',
+          passLengthreg: 'Au moins 8 caractères',
+          passUpper: 'Au moins une lettre majuscule anglaise',
+          passDigit: 'Au moins un chiffre',
+          passSpec: 'Caractère spécial (!@#$%^&*)',
           toolNickname: 'Pseudo RP',
           toolCalc: 'Calculateur de revenus',
           toolPass: 'Générateur de mots de passe',
@@ -5449,6 +5812,7 @@
           regTab: 'Inscription',
           resetTitle: 'Récupération du mot de passe',
           sendLink: 'Envoyer le lien',
+          safetypass: 'Force du mot de passe',
           checkEmail: 'Vérifiez votre e-mail !',
           back: 'Retour',
           signIn: 'Se connecter',
@@ -5727,11 +6091,14 @@
               <header className="flex items-center py-6 md:py-10 gap-4 px-6 md:px-10 w-full">
                 <button
                   id="theme-toggle"
-                  className="p-3 rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all z-[1100]"
+                  className="p-3 rounded-2xl transition-all z-[1100] theme-toggle-btn"
                 >
-                  <span id="theme-icon" className="text-2xl">
+                  <span
+                    id="theme-icon"
+                    className="text-2xl flex items-center justify-center"
+                  >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns="http://w3.org"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -5740,20 +6107,16 @@
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      data-lucide="sun"
+                      data-lucide="moon-star"
                       aria-hidden="true"
                       size="16"
-                      class="lucide lucide-sun"
+                      className="lucide lucide-moon-star"
                     >
-                      <circle cx="12" cy="12" r="4"></circle>
-                      <path d="M12 2v2"></path>
-                      <path d="M12 20v2"></path>
-                      <path d="m4.93 4.93 1.41 1.41"></path>
-                      <path d="m17.66 17.66 1.41 1.41"></path>
-                      <path d="M2 12h2"></path>
-                      <path d="M20 12h2"></path>
-                      <path d="m6.34 17.66-1.41 1.41"></path>
-                      <path d="m19.07 4.93-1.41 1.41"></path>
+                      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                      <path d="M20 3v4"></path>
+                      <path d="M22 5h-4"></path>
+                      <path d="M16 8v2"></path>
+                      <path d="M17 9h-2"></path>
                     </svg>
                   </span>
                 </button>
@@ -5764,43 +6127,12 @@
                   isAdmin={user && ADMINS.includes(user.uid)}
                 />
 
-                <nav className="hidden md:flex flex-1 justify-center gap-8 text-[10px] font-medium uppercase items-center tracking-widest">
-                  <button
-                    onClick={() => navigate('home')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'home' ? 'active' : ''}`}
-                  >
-                    {t.home}
-                  </button>
-                  <button
-                    onClick={() => navigate('knowledge')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'knowledge' ? 'active' : ''}`}
-                  >
-                    {t.knowledge}
-                  </button>
-                  <button
-                    onClick={() => navigate('player')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'player' ? 'active' : ''}`}
-                  >
-                    {t.player}
-                  </button>
-                  <button
-                    onClick={() => navigate('PC')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'PC' ? 'active' : ''}`}
-                  >
-                    {t.PC}
-                  </button>
-                  <button
-                    onClick={() => navigate('social')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'social' ? 'active' : ''}`}
-                  >
-                    {t.social}
-                  </button>
-                  <button
-                    onClick={() => navigate('tools')}
-                    className={`nav-link flex items-center gap-1.5 ${currentPage === 'tools' ? 'active' : ''}`}
-                  >
-                    {t.tools}
-                  </button>
+                <nav className="hidden md:flex flex-1 justify-center">
+                  <NavPill
+                    currentPage={currentPage}
+                    navigate={navigate}
+                    t={t}
+                  />
                 </nav>
 
                 <div className="hidden md:flex items-center gap-2 shrink-0 ml-4">
