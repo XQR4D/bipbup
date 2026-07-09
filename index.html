@@ -967,6 +967,30 @@
         color: #00ff88;
         transform: scale(1.1);
       }
+
+      .social-img {
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        filter: brightness(0.85);
+      }
+
+      [data-theme='light'] .social-img {
+        filter: brightness(0.3) contrast(1.2);
+      }
+
+      [data-theme='dark'] .social-img {
+        filter: brightness(0.95);
+      }
+
+      .social-icon:hover .social-img {
+        transform: scale(1.15) translateY(-2px);
+        filter: brightness(1.1) !important;
+      }
+
+      @media (max-width: 640px) {
+        .social-icon {
+          padding: 4px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1838,6 +1862,118 @@
         );
       };
 
+      const NewsSlider = ({ navigate }) => {
+        const { t } = useLang();
+        const [news, setNews] = useState([]);
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+        useEffect(() => {
+          const unsubscribe = db
+            .collection('news')
+            .orderBy('createdAt', 'desc')
+            .limit(5)
+            .onSnapshot((snapshot) => {
+              setNews(
+                snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+              );
+            });
+
+          return () => unsubscribe();
+        }, []);
+
+        // Автопрокрутка
+        useEffect(() => {
+          if (!isAutoPlaying || news.length === 0) return;
+
+          const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % news.length);
+          }, 5000);
+
+          return () => clearInterval(interval);
+        }, [isAutoPlaying, news.length]);
+
+        if (news.length === 0) return null;
+
+        const current = news[currentIndex];
+
+        return (
+          <div className="max-w-5xl mx-auto px-4 py-12">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
+                {t.LastNews}
+              </h2>
+              <p className="opacity-50 text-sm mt-1">{t.LastNewsDesc}</p>
+            </div>
+
+            <div
+              className="glass-card rounded-3xl overflow-hidden relative cursor-pointer group"
+              onClick={() => navigate('news')}
+            >
+              {current.imageUrl && (
+                <img
+                  src={current.imageUrl}
+                  alt={current.title}
+                  className="w-full h-80 md:h-96 object-cover"
+                />
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                <div className="text-white">
+                  <div className="text-xs uppercase tracking-widest opacity-70 mb-3">
+                    {current.createdAt?.toDate
+                      ? current.createdAt.toDate().toLocaleDateString('ru-RU')
+                      : ''}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black leading-tight mb-4 group-hover:text-[#00ff88] transition-colors">
+                    {current.title}
+                  </h3>
+                  <p className="line-clamp-2 opacity-90 text-base">
+                    {current.content?.replace(/<[^>]+>/g, '').slice(0, 180)}...
+                  </p>
+                </div>
+              </div>
+
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {news.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentIndex(idx);
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${idx === currentIndex ? 'bg-white scale-125' : 'bg-white/40'}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(
+                    (prev) => (prev - 1 + news.length) % news.length
+                  );
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+              >
+                ←
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex((prev) => (prev + 1) % news.length);
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        );
+      };
+
       const Home = ({ navigate }) => {
         const { t } = useLang();
         const homeCards = [
@@ -1867,7 +2003,6 @@
                 </p>
               </div>
             </section>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto px-4 home-cards-animate">
               {homeCards.map((c, i) => (
                 <a key={i} href={c.href} className="block group">
@@ -1888,6 +2023,7 @@
                 </a>
               ))}
             </div>
+            <NewsSlider navigate={navigate} />
           </div>
         );
       };
@@ -2027,99 +2163,35 @@
             <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
               <div className="text-center">
                 <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
-                  {t.actualLinks}
+                  {t.ourProjects}
                 </h2>
-              </div>
-              <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-                <a
-                  href="https://vk.com/bipbupyoutube"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
+                <br />
+                <a href="https://xqr4d.github.io/Hinata/" target="_blank">
                   <img
-                    style={{ height: '60px' }}
-                    src="assets/images/vk.webp"
-                    alt="VK"
+                    style={{ height: '70px' }}
+                    src="assets/images/hinata.png"
+                    alt="Hinata"
+                    className="mx-auto rounded-2xl"
                   />
                 </a>
-                <a
-                  href="https://vk.com/club233266973"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
+                <a href="https://xqr4d.github.io/Pomodoro/" target="_blank">
                   <img
-                    style={{ height: '60px' }}
-                    src="assets/images/vkrezerv.webp"
-                    alt="VK"
+                    style={{ height: '70px' }}
+                    src="assets/images/pomodoro.png"
+                    alt="Pomodoro Timer"
+                    className="mx-auto rounded-2xl"
                   />
                 </a>
-                <a
-                  href="https://t.me/bipbupyoutube"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
+                <a href="https://xqr4d.github.io/shortlink/" target="_blank">
                   <img
-                    style={{ height: '60px' }}
-                    src="assets/images/tg.png"
-                    alt="Telegram канал"
-                  />
-                </a>
-                <a
-                  href="https://t.me/+99uLwWeMDK85NTE6"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
-                  <img
-                    style={{ height: '60px' }}
-                    src="assets/images/tgchat.png"
-                    alt="Telegram чат"
-                  />
-                </a>
-                <a
-                  href="https://discord.gg/r99jwjKVQ3"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
-                  <img
-                    style={{ height: '60px' }}
-                    src="assets/images/ds.png"
-                    alt="Discord"
-                  />
-                </a>
-                <a
-                  href="https://www.twitch.tv/bipbup_ya"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
-                  <img
-                    style={{ height: '60px' }}
-                    src="assets/images/twitch.png"
-                    alt="Twitch"
-                  />
-                </a>
-                <a
-                  href="https://www.youtube.com/c/BIPBUP/videos"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
-                  <img
-                    style={{ height: '60px' }}
-                    src="assets/images/yt.png"
-                    alt="YouTube"
-                  />
-                </a>
-                <a
-                  href="https://www.tiktok.com/@bipbup_yt"
-                  target="_blank"
-                  className="hover:scale-110 transition-transform"
-                >
-                  <img
-                    style={{ height: '60px' }}
-                    src="assets/images/tt.png"
-                    alt="YouTube"
+                    style={{ height: '70px' }}
+                    src="assets/images/shortlink.png"
+                    alt="Short Link"
+                    className="mx-auto rounded-2xl"
                   />
                 </a>
               </div>
+
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
                   {t.commercialOffers}
@@ -2168,15 +2240,32 @@
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
                   {t.pcConfig}
                 </h3>
-                <p>CPU — AMD Ryzen 9 7900X3D</p>
-                <p>Memory — 32 GB DDR5</p>
-                <p>GPU — GeForce GTX 4070 SUPER 12GB</p>
-                <p>Motherboard — ASUS B550 AORUS</p>
-                <p>Keyboard — Logitech G413</p>
-                <p>Mouse — RAZER Abyssus 2014</p>
-                <p>Mousepad — SteelSeries QcK Mass</p>
-                <p>Headphones — HyperX Cloud Alpha S</p>
-                <p>Microphone — AUDIO-TECHNICA AT2020</p>
+                <a
+                  href="https://www.dns-shop.ru/conf/94ab7d9fd1e5370b/"
+                  target="_blank"
+                  className="hover:scale-110 transition-transform"
+                >
+                  <br />
+                  <img
+                    style={{ height: '70px' }}
+                    src="assets/images/dns.png"
+                    alt="DNS"
+                    className="mx-auto rounded-2xl glass-card"
+                  />
+                </a>
+                <a
+                  href="https://pcpartpicker.com/list/RGt6Bv"
+                  target="_blank"
+                  className="hover:scale-110 transition-transform"
+                >
+                  <br />
+                  <img
+                    style={{ height: '70px' }}
+                    src="assets/images/pcpp.svg"
+                    alt="PCPP"
+                    className="mx-auto rounded-2xl glass-card"
+                  />
+                </a>
               </div>
               <div className="space-y-8 text-center">
                 <h3 className="text-2xl md:text-3xl font-black tracking-tighter">
@@ -4694,20 +4783,20 @@
       };
 
       const routes = {
-        home: { title: 'Главная', component: Home },
-        knowledge: { title: 'База знаний', component: KnowledgeBase },
-        player: { title: 'Плееры', component: Player },
-        PC: { title: 'Мой ПК', component: PC },
-        social: { title: 'Ссылки', component: SocialLinks },
-        tools: { title: 'Инструменты', component: ToolsPage },
-        news: { title: 'Новости сайта', component: NewsPage },
+        home: { title: 'Home', component: Home },
+        knowledge: { title: 'Knowledge', component: KnowledgeBase },
+        player: { title: 'Players', component: Player },
+        PC: { title: 'My PC', component: PC },
+        social: { title: 'Links', component: SocialLinks },
+        tools: { title: 'Tools', component: ToolsPage },
+        news: { title: 'NewsPage', component: NewsPage },
         privacy: {
-          title: 'Политика конфиденциальности',
+          title: 'Privacy Policy',
           component: PrivacyPage,
         },
-        terms: { title: 'Пользовательское соглашение', component: TermsPage },
-        login: { title: 'Вход', component: Login },
-        lk: { title: 'Личный кабинет', component: Profile },
+        terms: { title: 'Terms of Service', component: TermsPage },
+        login: { title: 'Authorization', component: Login },
+        lk: { title: 'Personal Cabinet', component: Profile },
       };
 
       const HeroTitle = () => {
@@ -5101,6 +5190,8 @@
             ['ПРОМОКОД', 'BIPBUP'],
           ],
           legislation: 'ЗАКОНОДАТЕЛЬСТВО',
+          LastNewsDesc: 'Скрольте чтобы увидеть все новости',
+          LastNews: 'ПОСЛЕДНИЕ НОВОСТИ САЙТА',
           chooseProject: 'Выберите проект и кликните на нужный сервер',
           playerMemos: 'ПАМЯТКИ ОТ ИГРОКОВ',
           memoSub: 'Для упрощения игры в гос.структурах',
@@ -5110,7 +5201,7 @@
           videoUnavailable: 'Видео недоступно',
           ourPlayer: 'НАШ ПЛЕЕР',
           videooffline: 'РОЛИКИ ОФФЛАЙН',
-          actualLinks: 'АКТУАЛЬНЫЕ ССЫЛКИ',
+          ourProjects: 'НАШИ ПРОЕКТЫ',
           commercialOffers: 'КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ',
           gameSettings: 'НАСТРОЙКИ ИГРЫ',
           pcConfig: 'КОНФИГУРАЦИЯ ПК',
@@ -5271,6 +5362,8 @@
             ['PROMO', 'BIPBUP'],
           ],
           legislation: 'LEGISLATION',
+          LastNewsDesc: 'Scroll to see all news',
+          LastNews: 'LAST NEWS FROM THE SITE',
           chooseProject: 'Select a project and click on the server you need',
           playerMemos: 'MEMOS FROM PLAYERS',
           memoSub: 'To simplify gameplay in government structures',
@@ -5280,7 +5373,7 @@
           videoUnavailable: 'Video unavailable',
           ourPlayer: 'OUR PLAYER',
           videooffline: 'VIDEO OFFLINE',
-          actualLinks: 'CURRENT LINKS',
+          ourProjects: 'OUR PROJECTS',
           commercialOffers: 'COMMERCIAL OFFERS',
           gameSettings: 'GAME SETTINGS',
           pcConfig: 'PC CONFIGURATION',
@@ -5439,6 +5532,8 @@
             ['プロモ', 'BIPBUP'],
           ],
           legislation: '法律',
+          LastNewsDesc: 'スクロールしてすべてのニュースを表示',
+          LastNews: '最近のニュース',
           chooseProject: 'プロジェクトを選択してサーバーをクリック',
           playerMemos: 'プレイヤーからのメモ',
           memoSub: '政府機関でのゲームプレイを簡単に',
@@ -5448,7 +5543,7 @@
           videoUnavailable: '動画が利用できません',
           ourPlayer: '当社のプレイヤー',
           videooffline: 'オフライン用のローラー',
-          actualLinks: '現在のリンク',
+          ourProjects: '私たちのプロジェクト',
           commercialOffers: '商業提案',
           gameSettings: 'ゲーム設定',
           pcConfig: 'PC構成',
@@ -5609,6 +5704,8 @@
             ['PROMO', 'BIPBUP'],
           ],
           legislation: 'GESETZE',
+          LastNewsDesc: 'Scrollen Sie, um alle Nachrichten zu sehen',
+          LastNews: 'LETZTE NEUIGKEITEN',
           chooseProject: 'Projekt wählen und Server anklicken',
           playerMemos: 'MEMOS VON SPIELERN',
           memoSub: 'Zur Vereinfachung im Staatsdienst',
@@ -5618,7 +5715,7 @@
           videoUnavailable: 'Video nicht verfügbar',
           ourPlayer: 'UNSER PLAYER',
           videooffline: 'VIDEOS DIE OFFLINE',
-          actualLinks: 'AKTUELLE LINKS',
+          ourProjects: 'UNSERE PROJEKTE',
           commercialOffers: 'GESCHÄFTSANFRAGEN',
           gameSettings: 'SPIELEINSTELLUNGEN',
           pcConfig: 'PC-KONFIGURATION',
@@ -5778,6 +5875,8 @@
             ['PROMO', 'BIPBUP'],
           ],
           legislation: 'LÉGISLATION',
+          LastNewsDesc: 'Scroll pour voir toutes les nouvelles',
+          LastNews: 'DERNIÈRES NOUVELLES DU SITE',
           chooseProject: 'Choisissez un projet et cliquez sur le serveur',
           playerMemos: 'MÉMOS DES JOUEURS',
           memoSub:
@@ -5788,7 +5887,7 @@
           videoUnavailable: 'Vidéo non disponible',
           ourPlayer: 'NOTRE LECTEUR',
           videooffline: 'VIDÉO HORS LIGNE',
-          actualLinks: 'LIENS ACTUELS',
+          ourProjects: 'NOS PROJECTS',
           commercialOffers: 'OFFRES COMMERCIALES',
           gameSettings: 'PARAMÈTRES DU JEU',
           pcConfig: 'CONFIGURATION PC',
@@ -6241,11 +6340,105 @@
                 </div>
               </main>
 
-              <footer className="py-10 md:py-20 flex flex-col md:flex-row items-center gap-6 w-full px-8 md:px-14">
-                <div className="text-[10px] opacity-30 uppercase tracking-[0.4em] md:mr-auto">
-                  © 2024–{new Date().getFullYear()} BIP BUP Media
+              <footer className="py-10 md:py-20 flex flex-col items-center gap-8 w-full px-8 md:px-14 ">
+                <div className="flex flex-col items-center gap-6 w-full max-w-4xl">
+                  <div className="text-[10px] opacity-40 uppercase tracking-[0.4em] text-center">
+                    © 2024–{new Date().getFullYear()} BIP BUP Media
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-8 max-w-[320px] md:max-w-none">
+                    <a
+                      href="https://vk.com/bipbupyoutube"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/vk.webp"
+                        alt="VK"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://vk.com/club233266973"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/vkrezerv.webp"
+                        alt="VK"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://t.me/bipbupyoutube"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/tg.png"
+                        alt="TG"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://t.me/+99uLwWeMDK85NTE6"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/tgchat.png"
+                        alt="TG Chat"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://discord.gg/r99jwjKVQ3"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/ds.png"
+                        alt="Discord"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://www.twitch.tv/bipbup_ya"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/twitch.png"
+                        alt="Twitch"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/c/BIPBUP/videos"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/yt.png"
+                        alt="YouTube"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                    <a
+                      href="https://www.tiktok.com/@bipbup_yt"
+                      target="_blank"
+                      className="social-icon group"
+                    >
+                      <img
+                        src="assets/images/tt.png"
+                        alt="TikTok"
+                        className="h-8 w-8 md:h-9 md:w-9 social-img"
+                      />
+                    </a>
+                  </div>
                 </div>
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] uppercase font-bold tracking-widest opacity-30">
+
+                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] uppercase font-bold tracking-widest opacity-30 pt-4 w-full max-w-4xl">
                   <button
                     onClick={() => navigate('privacy')}
                     className="transition hover:opacity-70"
@@ -6265,10 +6458,10 @@
                     DEV
                   </a>
                   <a
-                    href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound: ${encodeURIComponent(s.title)}"
+                    href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound"
                     className="transition hover:opacity-70"
                   >
-                    Report bug
+                    REPORT BUG
                   </a>
                 </div>
               </footer>
