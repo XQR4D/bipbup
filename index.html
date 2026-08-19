@@ -1084,7 +1084,6 @@
         { n: 22, name: 'Milton', id: '1912' },
         { n: 23, name: 'La Puerta', id: '1984' },
         { n: 24, name: 'Senora', id: '2059' },
-        { n: 25, name: '?', id: '0' },
       ];
 
       const MAJESTIC_SERVERS = [
@@ -1107,7 +1106,11 @@
         { n: 17, name: 'Portland', id: '1338' },
         { n: 18, name: 'Orlando', id: '1405' },
         { n: 19, name: 'Memphis', id: '1471' },
-        { n: 20, name: '?', id: '0' },
+      ];
+
+      const RUSSIA_ONLINE_SERVERS = [
+        { n: 1, name: 'Арбатский (ожидается)', id: '' },
+        { n: 2, name: 'Тверской (ожидается)', id: '' },
       ];
 
       const ErrorPage = ({ code, text, navigate }) => {
@@ -1885,7 +1888,6 @@
           return () => unsubscribe();
         }, []);
 
-        // Автопрокрутка
         useEffect(() => {
           if (!isAutoPlaying || news.length === 0) return;
 
@@ -2052,11 +2054,17 @@
         }, []);
 
         const currentServers =
-          project === 'gta5rp' ? GTA5RP_SERVERS : MAJESTIC_SERVERS;
+          project === 'gta5rp'
+            ? GTA5RP_SERVERS
+            : project === 'majestic'
+              ? MAJESTIC_SERVERS
+              : RUSSIA_ONLINE_SERVERS;
         const forumUrl =
           project === 'gta5rp'
             ? 'https://forum.gta5rp.com/forums/zakonodatelnaja-baza.'
-            : 'https://forum.majestic-rp.ru/forums/zakonodatelstvo.';
+            : project === 'majestic'
+              ? 'https://forum.majestic-rp.ru/forums/zakonodatelstvo.'
+              : 'https://forum.russia.online/forums/zakonodatelstvo.';
 
         return (
           <div className="space-y-12 md:space-y-16 animate-in fade-in duration-500">
@@ -2081,6 +2089,12 @@
                   className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'majestic' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
                 >
                   Majestic RP
+                </button>
+                <button
+                  onClick={() => setProject('russiaonline')}
+                  className={`px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold transition-all duration-300 ${project === 'russiaonline' ? 'btn-primary' : 'glass-card hover:border-accent'}`}
+                >
+                  Россия Онлайн
                 </button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
@@ -2193,6 +2207,27 @@
                     className="mx-auto rounded-2xl"
                   />
                 </a>
+                <br />
+                <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
+                  {t.playwithme}
+                </h2>
+                <br />
+                <a href="https://russia.online/bipbup" target="_blank">
+                  <img
+                    style={{ height: '70px' }}
+                    src="assets/images/ruonline.svg"
+                    alt="Russia Online"
+                    className="mx-auto rounded-2xl"
+                  />
+                </a>
+                <a href="https://gta5rp.com/ref/bipbup" target="_blank">
+                  <img
+                    style={{ height: '70px' }}
+                    src="assets/images/gta5rp.png"
+                    alt="GTA 5 RP"
+                    className="mx-auto rounded-2xl"
+                  />
+                </a>
               </div>
 
               <div className="space-y-8 text-center">
@@ -2276,7 +2311,7 @@
                 </h3>
                 <p>
                   <a
-                    href="https://ntw.graphics/library/graphics-mods/california-refined"
+                    href="https://ntw.graphics/library/graphics-mods/vice-ii"
                     target="_blank"
                   >
                     <img
@@ -5205,6 +5240,7 @@
           ourPlayer: 'НАШ ПЛЕЕР',
           videooffline: 'РОЛИКИ ОФФЛАЙН',
           ourProjects: 'НАШИ ПРОЕКТЫ',
+          playwithme: 'ИГРАЙ ВМЕСТЕ СО МНОЙ',
           commercialOffers: 'КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ',
           gameSettings: 'НАСТРОЙКИ ИГРЫ',
           pcConfig: 'КОНФИГУРАЦИЯ ПК',
@@ -5377,6 +5413,7 @@
           ourPlayer: 'OUR PLAYER',
           videooffline: 'VIDEO OFFLINE',
           ourProjects: 'OUR PROJECTS',
+          playwithme: 'PLAY WITH ME',
           commercialOffers: 'COMMERCIAL OFFERS',
           gameSettings: 'GAME SETTINGS',
           pcConfig: 'PC CONFIGURATION',
@@ -5547,6 +5584,7 @@
           ourPlayer: '当社のプレイヤー',
           videooffline: 'オフライン用のローラー',
           ourProjects: '私たちのプロジェクト',
+          playwithme: '私と一緒に遊ぶ',
           commercialOffers: '商業提案',
           gameSettings: 'ゲーム設定',
           pcConfig: 'PC構成',
@@ -5719,6 +5757,7 @@
           ourPlayer: 'UNSER PLAYER',
           videooffline: 'VIDEOS DIE OFFLINE',
           ourProjects: 'UNSERE PROJEKTE',
+          playwithme: 'SPIELE MIT MIR',
           commercialOffers: 'GESCHÄFTSANFRAGEN',
           gameSettings: 'SPIELEINSTELLUNGEN',
           pcConfig: 'PC-KONFIGURATION',
@@ -5891,6 +5930,7 @@
           ourPlayer: 'NOTRE LECTEUR',
           videooffline: 'VIDÉO HORS LIGNE',
           ourProjects: 'NOS PROJECTS',
+          playwithme: 'JOUER AVEC MOI',
           commercialOffers: 'OFFRES COMMERCIALES',
           gameSettings: 'PARAMÈTRES DU JEU',
           pcConfig: 'CONFIGURATION PC',
