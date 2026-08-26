@@ -15,18 +15,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-    <link rel="preconnect" href="https://mc.yandex.ru" />
     <link
       href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap"
       rel="stylesheet"
     />
-    <script type="importmap">
-      {
-        "imports": {
-          "react/jsx-runtime": "data:text/javascript,export const jsx = (type, props, key) => React.createElement(type, { ...props, key }); export const jsxs = jsx; export const Fragment = React.Fragment;"
-        }
-      }
-    </script>
     <script
       src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"
       defer
@@ -1066,24 +1058,18 @@
         { n: 4, name: 'Blackberry', id: '262' },
         { n: 5, name: 'Insquad', id: '336' },
         { n: 6, name: 'Sunrise', id: '412' },
-        { n: 7, name: 'Rainbow', id: '464' },
-        { n: 8, name: 'Richman', id: '530' },
-        { n: 9, name: 'Eclipse', id: '600' },
-        { n: 10, name: 'LaMesa', id: '651' },
-        { n: 11, name: 'Burton', id: '861' },
-        { n: 12, name: 'Rockford', id: '910' },
-        { n: 13, name: 'Alta', id: '1013' },
-        { n: 14, name: 'Del Perro', id: '1163' },
-        { n: 15, name: 'Davis', id: '1268' },
-        { n: 16, name: 'Harmony', id: '1369' },
-        { n: 17, name: 'Redwood', id: '1468' },
-        { n: 18, name: 'Hawick', id: '1535' },
-        { n: 19, name: 'Grapeseed', id: '1644' },
-        { n: 20, name: 'Murrieta', id: '1732' },
-        { n: 21, name: 'Vespucci', id: '1821' },
-        { n: 22, name: 'Milton', id: '1912' },
-        { n: 23, name: 'La Puerta', id: '1984' },
-        { n: 24, name: 'Senora', id: '2059' },
+        { n: 7, name: 'Richman', id: '530' },
+        { n: 8, name: 'Eclipse', id: '600' },
+        { n: 9, name: 'LaMesa', id: '651' },
+        { n: 10, name: 'Burton', id: '861' },
+        { n: 11, name: 'Rockford', id: '910' },
+        { n: 12, name: 'Alta', id: '1013' },
+        { n: 13, name: 'Redwood', id: '1468' },
+        { n: 14, name: 'Grapeseed', id: '1644' },
+        { n: 15, name: 'Murrieta', id: '1732' },
+        { n: 16, name: 'Milton', id: '1912' },
+        { n: 17, name: 'La Puerta', id: '1984' },
+        { n: 18, name: 'Chiliad (Ожидается)', id: '' },
       ];
 
       const MAJESTIC_SERVERS = [
@@ -2189,6 +2175,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/hinata.png"
                     alt="Hinata"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2197,6 +2185,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/pomodoro.png"
                     alt="Pomodoro Timer"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2205,6 +2195,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/shortlink.png"
                     alt="Short Link"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2218,6 +2210,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/ruonline.svg"
                     alt="Russia Online"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2226,6 +2220,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/gta5rp.png"
                     alt="GTA 5 RP"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2240,6 +2236,8 @@
                     style={{ height: '40px' }}
                     src="assets/images/email.png"
                     alt="Mail"
+                    loading="lazy"
+                    decoding="async"
                   />
                   bipbupmedia@protonmail.com
                 </a>
@@ -2248,6 +2246,8 @@
                     style={{ height: '300px' }}
                     src="assets/images/qrcodecomm.png"
                     alt="QR-код для коммерческих предложений"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl"
                   />
                 </a>
@@ -2271,6 +2271,8 @@
                     style={{ height: '300px' }}
                     src="assets/images/settings.png"
                     alt="Settings"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl glass-card"
                   />
                 </p>
@@ -2289,6 +2291,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/dns.png"
                     alt="DNS"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl glass-card"
                   />
                 </a>
@@ -2302,6 +2306,8 @@
                     style={{ height: '70px' }}
                     src="assets/images/pcpp.svg"
                     alt="PCPP"
+                    loading="lazy"
+                    decoding="async"
                     className="mx-auto rounded-2xl glass-card"
                   />
                 </a>
@@ -2319,6 +2325,8 @@
                       style={{ height: '300px' }}
                       src="assets/images/graphics.png"
                       alt="graphicsnetwork"
+                      loading="lazy"
+                      decoding="async"
                       className="mx-auto rounded-2xl glass-card"
                     />
                   </a>
@@ -2484,6 +2492,8 @@
                       style={{ height: '60px' }}
                       src="assets/images/tg.png"
                       alt="Telegram канал"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </a>
                   <div className="text-- text-lg md:text-xl font-black tracking-tighter">
@@ -2503,6 +2513,8 @@
                       style={{ height: '60px' }}
                       src="assets/images/play.png"
                       alt="Hinata"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </a>
                   <div className="text-- text-lg md:text-xl font-black tracking-tighter">
@@ -6219,7 +6231,7 @@
         }, [currentPage]);
 
         const renderPage = () => {
-          if (loading) {
+          if (loading && currentPage === 'lk') {
             return (
               <div className="flex justify-center py-20 accent-text animate-pulse text-2xl">
                 {t.loading}
@@ -6399,6 +6411,8 @@
                       <img
                         src="assets/images/vk.webp"
                         alt="VK"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6410,6 +6424,8 @@
                       <img
                         src="assets/images/vkrezerv.webp"
                         alt="VK"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6421,6 +6437,8 @@
                       <img
                         src="assets/images/tg.png"
                         alt="TG"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6432,6 +6450,8 @@
                       <img
                         src="assets/images/tgchat.png"
                         alt="TG Chat"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6443,6 +6463,8 @@
                       <img
                         src="assets/images/ds.png"
                         alt="Discord"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6454,6 +6476,8 @@
                       <img
                         src="assets/images/twitch.png"
                         alt="Twitch"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6465,6 +6489,8 @@
                       <img
                         src="assets/images/yt.png"
                         alt="YouTube"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
@@ -6476,6 +6502,8 @@
                       <img
                         src="assets/images/tt.png"
                         alt="TikTok"
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 md:h-9 md:w-9 social-img"
                       />
                     </a>
