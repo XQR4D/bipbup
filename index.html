@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap"
       rel="stylesheet"
@@ -157,7 +158,7 @@
       }
 
       [data-theme="dark"] .glass-card {
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.014);
       }
 
       [data-theme="dark"] .text-\[\#000000\] {
@@ -224,7 +225,6 @@
         background-image: none;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border);
         isolation: isolate;
         transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       }
@@ -259,6 +259,186 @@
         border: 1px solid rgba(0, 0, 0, 0.1);
         padding: 8px 20px;
         border-radius: 9999px;
+      }
+
+      .site-footer {
+        position: relative;
+        width: 100%;
+        margin-top: 88px;
+        background: color-mix(in srgb, var(--bg) 76%, transparent);
+        color: var(--text);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .site-footer-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+        gap: 56px;
+        width: min(100%, 1152px);
+        margin: 0 auto;
+        padding: 48px 24px 36px;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .footer-social-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .footer-monogram {
+        color: var(--text);
+        font-size: 112px;
+        font-weight: 900;
+        line-height: 0.9;
+        white-space: nowrap;
+      }
+
+      .footer-copyright {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 9px;
+      }
+
+      .footer-column-title {
+        color: var(--text-secondary);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        width: fit-content;
+        color: var(--text-secondary);
+        font-size: 11px;
+        line-height: 1.7;
+        text-align: left;
+        transition:
+          color 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .footer-link-icon {
+        display: inline-flex;
+        flex: 0 0 20px;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        color: var(--text-secondary);
+        background: var(--card-bg);
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .footer-link-icon svg {
+        width: 11px;
+        height: 11px;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-link:hover,
+      .footer-link:focus-visible {
+        color: var(--accent);
+        outline: none;
+      }
+
+      .footer-link:hover .footer-link-icon,
+      .footer-link:focus-visible .footer-link-icon {
+        border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+        color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, var(--card-bg));
+      }
+
+      .footer-link:hover .footer-link-icon svg,
+      .footer-link:focus-visible .footer-link-icon svg {
+        transform: translate(1px, -1px);
+      }
+
+      .footer-socials {
+        display: grid;
+        grid-template-columns: repeat(4, 40px);
+        gap: 8px;
+      }
+
+      .footer-socials .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+        background: var(--card-bg);
+        transition:
+          border-color 0.2s ease,
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .footer-socials .social-icon:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, var(--card-bg));
+      }
+
+      .footer-legal-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      @media (max-width: 700px) {
+        .site-footer {
+          margin-top: 56px;
+        }
+
+        .site-footer-inner {
+          grid-template-columns: minmax(0, 1fr);
+          justify-items: center;
+          gap: 30px;
+          padding: 34px 20px 28px;
+          text-align: center;
+        }
+
+        .footer-brand {
+          align-items: center;
+          gap: 14px;
+        }
+
+        .footer-social-block {
+          align-items: center;
+        }
+
+        .footer-legal-links {
+          align-items: center;
+          gap: 8px 14px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .footer-brand {
+          gap: 20px;
+        }
+
+        .footer-monogram {
+          font-size: 84px;
+        }
       }
 
       @keyframes flipOut {
@@ -363,7 +543,6 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--border);
         border-radius: 16px;
         color: var(--text-secondary);
         background: rgba(128, 128, 128, 0.08);
@@ -408,7 +587,6 @@
       .hero-knowledge-btn .hero-knowledge-arrow {
         width: 26px;
         height: 26px;
-        border: 1px solid currentColor;
         border-radius: 50%;
         font-size: 13px;
         line-height: 1;
@@ -449,7 +627,6 @@
 
       .player-stage {
         overflow: hidden;
-        border: 1px solid var(--border);
         border-radius: 2.5rem;
         background: var(--card-bg);
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
@@ -496,7 +673,6 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
         padding: 5px;
-        border: 1px solid var(--border);
         border-radius: 17px;
         background: rgba(128, 128, 128, 0.06);
       }
@@ -553,7 +729,6 @@
         align-items: center;
         gap: 18px;
         padding: 20px;
-        border: 1px solid var(--border);
         border-radius: 24px;
         background: var(--card-bg);
         transition:
@@ -666,7 +841,6 @@
 
       .lk-stage {
         overflow: hidden;
-        border: 1px solid var(--border);
         border-radius: 2.5rem;
         background: var(--card-bg);
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
@@ -684,7 +858,6 @@
         width: 112px;
         height: 112px;
         flex-shrink: 0;
-        border: 1px solid var(--border);
         border-radius: 28px;
         overflow: hidden;
         background: rgba(128, 128, 128, 0.08);
@@ -776,7 +949,6 @@
         gap: 8px;
         min-height: 32px;
         padding: 6px 12px;
-        border: 1px solid var(--border);
         border-radius: 999px;
         background: rgba(128, 128, 128, 0.08);
         font-size: 9px;
@@ -806,7 +978,6 @@
         align-items: center;
         gap: 16px;
         padding: 18px 20px;
-        border: 1px solid var(--border);
         border-radius: 24px;
         background: var(--card-bg);
         color: var(--text);
@@ -849,7 +1020,6 @@
         align-items: center;
         justify-content: center;
         border-radius: 14px;
-        border: 1px solid var(--border);
         background: rgba(128, 128, 128, 0.08);
         color: var(--text-secondary);
       }
@@ -920,7 +1090,6 @@
         isolation: isolate;
         overflow: hidden;
         padding: 24px;
-        border: 1px solid var(--border);
         border-radius: 24px;
         background: var(--card-bg);
         transition:
@@ -991,7 +1160,6 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--border);
         border-radius: 12px;
         background: rgba(128, 128, 128, 0.08);
         color: var(--text-secondary);
@@ -1070,7 +1238,6 @@
         gap: 16px;
         align-items: start;
         padding: 16px;
-        border: 1px solid var(--border);
         border-radius: 20px;
         background: rgba(128, 128, 128, 0.05);
       }
@@ -1082,7 +1249,6 @@
         align-items: center;
         justify-content: center;
         border-radius: 16px;
-        border: 1px solid var(--border);
         background: var(--card-bg);
         overflow: hidden;
       }
@@ -1122,7 +1288,6 @@
 
       .lk-mod-item {
         padding: 20px;
-        border: 1px solid var(--border);
         border-radius: 20px;
         background: var(--card-bg);
       }
@@ -1230,7 +1395,6 @@
         position: relative;
         min-height: 390px;
         isolation: isolate;
-        border: 1px solid var(--border);
         background: #111;
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
         transition:
@@ -1480,6 +1644,307 @@
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
       }
 
+      .auth-page {
+        width: 100%;
+        padding: 28px 16px 12px;
+        text-transform: uppercase;
+      }
+
+      .auth-page button {
+        text-transform: uppercase;
+      }
+
+      .auth-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+        width: min(100%, 1000px);
+        min-height: 570px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 26px;
+        background: var(--glass);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
+        animation: auth-arrive 0.55s ease both;
+      }
+
+      .auth-intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        padding: 38px;
+        color: var(--text);
+        background: var(--glass);
+      }
+
+      .auth-intro-copy {
+        max-width: 390px;
+        margin: 0;
+      }
+
+      .auth-eyebrow {
+        margin: 0 0 18px;
+        color: var(--accent);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+      }
+
+      .auth-intro h1 {
+        margin: 0;
+        font-size: clamp(26px, 3vw, 38px);
+        font-weight: 800;
+        line-height: 1.18;
+        text-wrap: balance;
+      }
+
+      .auth-intro-description {
+        max-width: 340px;
+        margin: 18px 0 0;
+        color: var(--text-secondary);
+        font-family: "Unbounded", sans-serif;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      .auth-card {
+        align-self: center;
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 42px 46px;
+        color: var(--text);
+        background: var(--glass);
+      }
+
+      .auth-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+        margin-bottom: 30px;
+        padding: 4px;
+        border-radius: 12px;
+        background: var(--card-bg);
+      }
+
+      .auth-tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 0;
+        min-height: 42px;
+        padding: 9px 8px;
+        border: 0;
+        border-radius: 9px;
+        background: transparent;
+        color: #6a746e;
+        cursor: pointer;
+        font-family: "Unbounded", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .auth-tab[aria-pressed="true"] {
+        background: var(--bg);
+        color: var(--text);
+        box-shadow: 0 2px 8px rgba(23, 54, 36, 0.1);
+      }
+
+      .auth-card-heading {
+        margin: 0;
+        color: inherit;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .auth-card-hint {
+        margin: 7px 0 22px;
+        color: var(--text-secondary);
+        font-family: "Unbounded", sans-serif;
+        font-size: 10px;
+        line-height: 1.5;
+      }
+
+      .auth-card .auth-field {
+        display: block;
+      }
+
+      .auth-field > span {
+        display: block;
+        margin: 0 0 8px 2px;
+        color: var(--text-secondary);
+        font-family: "Unbounded", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .auth-card input {
+        height: 52px !important;
+        padding: 0 15px !important;
+        border-radius: 10px !important;
+        background: var(--card-bg) !important;
+        color: var(--text) !important;
+        font-family: "Unbounded", sans-serif !important;
+        font-size: 11px !important;
+        text-transform: none !important;
+      }
+
+      .auth-card input:focus {
+        border-color: var(--accent) !important;
+        background: var(--card-bg) !important;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+      }
+
+      .auth-card input::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .auth-card .btn-primary {
+        min-height: 52px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--accent);
+        color: var(--bg);
+        font-family: "Unbounded", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
+      }
+
+      .auth-card .btn-primary:hover {
+        filter: brightness(1.12);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      }
+
+      .auth-card .auth-social-button {
+        min-height: 68px;
+        padding: 12px;
+        border-radius: 11px;
+        background: var(--card-bg);
+        color: var(--text);
+      }
+
+      .auth-card .auth-social-button:hover {
+        border-color: var(--accent);
+        background: var(--card-bg);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+      }
+
+      .auth-card .auth-social-button span {
+        color: var(--text);
+        font-family: "Unbounded", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .auth-card .auth-divider {
+        color: var(--text-secondary);
+        font-family: "Unbounded", sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        opacity: 1;
+      }
+
+      @keyframes auth-arrive {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1199px) {
+        .site-desktop-nav,
+        .site-desktop-actions {
+          display: none !important;
+        }
+
+        .site-mobile-actions {
+          display: flex !important;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .auth-page {
+          padding: 16px 12px 8px;
+        }
+
+        .auth-layout {
+          grid-template-columns: minmax(0, 1fr);
+          min-height: 0;
+          border-radius: 20px;
+        }
+
+        .auth-intro {
+          min-height: 0;
+          justify-content: flex-start;
+          gap: 18px;
+          padding: 20px;
+        }
+
+        .auth-intro-copy {
+          margin: 0;
+        }
+
+        .auth-intro h1 {
+          max-width: 100%;
+          font-size: 18px;
+          line-height: 1.45;
+        }
+
+        .auth-intro-description {
+          margin-top: 8px;
+          font-size: 10px;
+          line-height: 1.7;
+        }
+
+        .auth-card {
+          max-width: none;
+          padding: 20px;
+        }
+
+        .auth-card-heading {
+          font-size: 15px;
+          line-height: 1.5;
+        }
+
+        .auth-tabs {
+          margin-bottom: 24px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .auth-intro {
+          padding: 20px;
+        }
+
+        .auth-intro h1 {
+          font-size: 16px;
+        }
+
+        .auth-card {
+          padding: 20px 16px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .auth-layout {
+          animation: none;
+        }
+      }
+
       .pamyatka-img-container {
         width: 100%;
         aspect-ratio: 16 / 9;
@@ -1495,7 +1960,6 @@
 
       input {
         background: var(--card-bg) !important;
-        border: 1px solid var(--border) !important;
         color: var(--text) !important;
         padding: 0 24px !important;
         border-radius: 16px !important;
@@ -1519,7 +1983,6 @@
 
       textarea {
         background: var(--card-bg) !important;
-        border: 1px solid var(--border) !important;
         color: var(--text) !important;
         border-radius: 16px !important;
         outline: none !important;
@@ -1567,7 +2030,6 @@
         overflow-y: auto;
         overscroll-behavior: contain;
         padding: 14px 12px 12px;
-        border: 1px solid var(--border);
         border-radius: 26px;
         background: var(--glass);
         box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5);
@@ -1590,7 +2052,6 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--border);
         border-radius: 14px;
         color: var(--text-secondary);
         background: rgba(128, 128, 128, 0.08);
@@ -1862,6 +2323,14 @@
           contain-intrinsic-size: 220px;
         }
 
+        .knowledge-page .knowledge-server-item {
+          contain-intrinsic-size: auto 76px;
+        }
+
+        .knowledge-page .knowledge-memo-item {
+          contain-intrinsic-size: auto 300px;
+        }
+
         .home-cards-animate .glass-card {
           backdrop-filter: none;
           -webkit-backdrop-filter: none;
@@ -1989,8 +2458,8 @@
         left: 50%;
         width: 0;
         height: 2px;
-        background: var(--accent);
         border-radius: 9999px;
+        background: var(--accent);
         transform: translateX(-50%);
         transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
@@ -2020,7 +2489,6 @@
         letter-spacing: 0.05em;
         cursor: pointer;
         background: transparent;
-        border: 1px solid var(--border);
         color: var(--text);
         transition: all 0.25s ease;
         white-space: nowrap;
@@ -2054,7 +2522,6 @@
         left: 0;
         min-width: 160px;
         background: var(--glass);
-        border: 1px solid var(--border);
         border-radius: 16px;
         padding: 6px;
         display: none;
@@ -2237,7 +2704,6 @@
         max-height: 85vh;
         border-radius: 2rem 2rem 0 0;
         background: var(--glass);
-        border: 1px solid var(--border);
         border-bottom: none;
         box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.4);
         animation: notifSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -2308,7 +2774,6 @@
         border-radius: 2.5rem;
         padding: 2.5rem;
         background: var(--glass);
-        border: 1px solid var(--border);
         box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
         animation: modalSlideUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
         overflow-y: auto;
@@ -2343,7 +2808,6 @@
         font-size: 1.5rem;
         line-height: 1;
         background: var(--card-bg);
-        border: 1px solid var(--border);
         color: var(--text);
         cursor: pointer;
         transition: all 0.2s;
@@ -2468,22 +2932,17 @@
       const GTA5RP_SERVERS = [
         { n: 1, name: "Downtown", id: "803" },
         { n: 2, name: "Strawberry", id: "102" },
-        { n: 3, name: "Vinewood", id: "170" },
-        { n: 4, name: "Blackberry", id: "262" },
-        { n: 5, name: "Insquad", id: "336" },
-        { n: 6, name: "Sunrise", id: "412" },
-        { n: 7, name: "Richman", id: "530" },
-        { n: 8, name: "Eclipse", id: "600" },
-        { n: 9, name: "LaMesa", id: "651" },
-        { n: 10, name: "Burton", id: "861" },
-        { n: 11, name: "Rockford", id: "910" },
-        { n: 12, name: "Alta", id: "1013" },
-        { n: 13, name: "Redwood", id: "1468" },
-        { n: 14, name: "Grapeseed", id: "1644" },
-        { n: 15, name: "Murrieta", id: "1732" },
-        { n: 16, name: "Milton", id: "1912" },
-        { n: 17, name: "La Puerta", id: "1984" },
-        { n: 18, name: "Chiliad", id: "2133" },
+        { n: 3, name: "Blackberry", id: "262" },
+        { n: 4, name: "Insquad", id: "336" },
+        { n: 5, name: "Sunrise", id: "412" },
+        { n: 6, name: "Richman", id: "530" },
+        { n: 7, name: "Eclipse", id: "600" },
+        { n: 8, name: "Rockford", id: "910" },
+        { n: 9, name: "Redwood", id: "1468" },
+        { n: 10, name: "Murrieta", id: "1732" },
+        { n: 11, name: "La Puerta", id: "1984" },
+        { n: 12, name: "Chiliad", id: "2133" },
+        { n: 13, name: "Mirror", id: "2181" },
       ];
 
       const MAJESTIC_SERVERS = [
@@ -3340,10 +3799,7 @@
           <div className="news-section max-w-5xl mx-auto px-4 py-12">
             <div className="news-section-heading">
               <div>
-                <div className="news-section-kicker">
-                  <MobileNavIcon name="news" />
-                  {t.LastNews}
-                </div>
+                <div className="news-section-kicker">{t.LastNews}</div>
               </div>
               <p className="opacity-50 text-[10px] uppercase tracking-widest max-w-[220px] md:text-right">
                 {t.LastNewsDesc}
@@ -3506,22 +3962,81 @@
       const KnowledgeBase = () => {
         const { t } = useLang();
         const [pamyatki, setPamyatki] = useState([]);
+        const [isLoadingPamyatki, setIsLoadingPamyatki] = useState(true);
+        const [lastPamyatkaDoc, setLastPamyatkaDoc] = useState(null);
+        const [hasMorePamyatki, setHasMorePamyatki] = useState(false);
+        const [isLoadingMorePamyatki, setIsLoadingMorePamyatki] =
+          useState(false);
         const [project, setProject] = useState("gta5rp");
+        const pageSize = 12;
 
         useEffect(() => {
           const unsub = db
             .collection("pamyatki")
             .where("status", "==", "approved")
             .orderBy("createdAt", "desc")
+            .limit(pageSize + 1)
             .onSnapshot(
               (snap) => {
-                const data = snap.docs.map((doc) => doc.data());
-                setPamyatki(data);
+                const pageDocs = snap.docs.slice(0, pageSize);
+                const data = pageDocs.map((doc) => ({
+                  ...doc.data(),
+                  id: doc.id,
+                }));
+                const currentPageIds = new Set(data.map((memo) => memo.id));
+                setPamyatki((current) => [
+                  ...data,
+                  ...current.filter((memo) => !currentPageIds.has(memo.id)),
+                ]);
+                setLastPamyatkaDoc(
+                  pageDocs.length ? pageDocs[pageDocs.length - 1] : null,
+                );
+                setHasMorePamyatki(snap.docs.length > pageSize);
+                setIsLoadingPamyatki(false);
               },
-              (err) => console.error(err),
+              (err) => {
+                console.error(err);
+                setIsLoadingPamyatki(false);
+              },
             );
           return () => unsub();
         }, []);
+
+        const loadMorePamyatki = async () => {
+          if (!lastPamyatkaDoc || isLoadingMorePamyatki) return;
+          setIsLoadingMorePamyatki(true);
+
+          try {
+            const snap = await db
+              .collection("pamyatki")
+              .where("status", "==", "approved")
+              .orderBy("createdAt", "desc")
+              .startAfter(lastPamyatkaDoc)
+              .limit(pageSize + 1)
+              .get();
+            const pageDocs = snap.docs.slice(0, pageSize);
+            const data = pageDocs.map((doc) => ({
+              ...doc.data(),
+              id: doc.id,
+            }));
+
+            setPamyatki((current) => {
+              const currentIds = new Set(current.map((memo) => memo.id));
+              return [
+                ...current,
+                ...data.filter((memo) => !currentIds.has(memo.id)),
+              ];
+            });
+            if (pageDocs.length) {
+              setLastPamyatkaDoc(pageDocs[pageDocs.length - 1]);
+            }
+            setHasMorePamyatki(snap.docs.length > pageSize);
+          } catch (error) {
+            console.error("Failed to load more knowledge-base memos", error);
+          } finally {
+            setIsLoadingMorePamyatki(false);
+          }
+        };
 
         const currentServers =
           project === "gta5rp"
@@ -3576,7 +4091,7 @@
                     key={s.n}
                     href={`${forumUrl}${s.id}/`}
                     target="_blank"
-                    className="knowledge-item glass-card p-4 md:p-6 rounded-2xl text-center group"
+                    className="knowledge-item knowledge-server-item glass-card p-4 md:p-6 rounded-2xl text-center group"
                   >
                     <div className="text-[9px] md:text-[10px] opacity-20 mb-1 md:mb-2 font-bold transition">
                       #{s.n}
@@ -3599,45 +4114,60 @@
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {pamyatki.length > 0 ? (
-                  pamyatki.map((p, i) => (
-                    <div
-                      key={i}
-                      className="knowledge-item glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col"
-                    >
-                      <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">
-                        {p.title}
-                      </h4>
-
-                      <a
-                        href={p.imageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="pamyatka-img-container shadow-2xl block overflow-hidden rounded-2xl border border-white/10 hover:border-[#000000]/50 transition-all"
+                  <>
+                    {pamyatki.map((p) => (
+                      <div
+                        key={p.id}
+                        className="knowledge-item knowledge-memo-item glass-card p-5 md:p-6 rounded-3xl space-y-4 flex flex-col"
                       >
-                        <img
-                          src={p.imageUrl}
-                          alt={p.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                      </a>
+                        <h4 className="text-xs md:text-sm font-bold uppercase tracking-widest accent-text truncate">
+                          {p.title}
+                        </h4>
 
-                      {p.tableUrl && (
                         <a
-                          href={p.tableUrl}
+                          href={p.imageUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 bg-black/5 hover:bg-black/10 border border-black/10 hover:border-[#000000]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#000000]"
+                          className="pamyatka-img-container shadow-2xl block overflow-hidden rounded-2xl border border-white/10 hover:border-[#000000]/50 transition-all"
                         >
-                          {t.openTable}
-                          <span className="text-xs opacity-60">↗</span>
+                          <img
+                            src={p.imageUrl}
+                            alt={p.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          />
                         </a>
-                      )}
-                    </div>
-                  ))
+
+                        {p.tableUrl && (
+                          <a
+                            href={p.tableUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 bg-black/5 hover:bg-black/10 border border-black/10 hover:border-[#000000]/50 transition-all text-sm font-medium py-3 px-5 rounded-2xl text-[#000000]"
+                          >
+                            {t.openTable}
+                            <span className="text-xs opacity-60">↗</span>
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                    {hasMorePamyatki && (
+                      <div className="col-span-full flex justify-center">
+                        <button
+                          type="button"
+                          onClick={loadMorePamyatki}
+                          disabled={isLoadingMorePamyatki}
+                          className="btn-primary rounded-xl px-6 py-3 text-[10px] disabled:opacity-50"
+                        >
+                          {isLoadingMorePamyatki ? t.loading : t.loadMoreMemos}
+                        </button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <p className="col-span-full text-center opacity-30 text-xs uppercase py-10">
-                    {t.loadingMemos}
+                    {isLoadingPamyatki ? t.loadingMemos : t.emptyMemos}
                   </p>
                 )}
               </div>
@@ -4035,8 +4565,6 @@
         const [pass, setPass] = useState("");
         const [showPass, setShowPass] = useState(false);
         const [resetSent, setResetSent] = useState(false);
-        const recaptchaRef = useRef(null);
-
         const passwordValidations = [
           {
             label: t.passLengthreg || "Не менее 8 символов",
@@ -4123,264 +4651,294 @@
         };
 
         return (
-          <div className="max-w-md mx-auto py-6 md:py-10">
+          <div className="auth-page">
             <div id="recaptcha-container"></div>
-            <div className="glass-card p-8 md:p-10 rounded-[2.5rem] space-y-8 border-t-2">
-              <div className="flex justify-between">
-                <button
-                  onClick={() => setMode("login")}
-                  className={`nav-link btn-login flex items-center gap-2 font-bold text-[10px] transition ${mode === "login" ? "" : "opacity-20"}`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    className="lucide lucide-log-in"
-                  >
-                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                    <polyline points="10 17 15 12 10 7"></polyline>
-                    <line x1="15" y1="12" x2="3" y2="12"></line>
-                  </svg>
-                  {t.loginTab}
-                </button>
+            <div className="auth-layout">
+              <section className="auth-intro">
+                <div className="auth-intro-copy">
+                  <h1>{mode === "reset" ? t.resetTitle : t.authHeadline}</h1>
+                  <p className="auth-intro-description">
+                    {mode === "reset"
+                      ? t.authResetDescription
+                      : t.authDescription}
+                  </p>
+                </div>
+              </section>
 
-                <button
-                  onClick={() => setMode("reg")}
-                  className={`nav-link btn-login flex items-center gap-2 font-bold text-[10px] transition ${mode === "reg" ? "" : "opacity-20"}`}
+              <div className="auth-card">
+                <div
+                  className="auth-tabs"
+                  role="group"
+                  aria-label={t.titleLogin}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    className="lucide lucide-user-plus"
-                  >
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <line x1="19" y1="8" x2="19" y2="14"></line>
-                    <line x1="22" y1="11" x2="16" y2="11"></line>
-                  </svg>
-                  {t.regTab}
-                </button>
-              </div>
-
-              {mode === "reset" ? (
-                <form
-                  onSubmit={handleReset}
-                  className="space-y-4 animate-in fade-in duration-300"
-                >
-                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-center">
-                    {t.resetTitle}
-                  </h3>
-                  <input
-                    type="email"
-                    placeholder={t.emailPlaceholder}
-                    className="w-full"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">
-                    {t.sendLink}
-                  </button>
-                  {resetSent && (
-                    <p className="text-[9px] text-green-400 text-center animate-pulse">
-                      {t.checkEmail}
-                    </p>
-                  )}
                   <button
                     type="button"
                     onClick={() => setMode("login")}
-                    className="w-full text-[9px] opacity-40 uppercase"
+                    className="auth-tab"
+                    aria-pressed={mode === "login"}
                   >
-                    {t.back}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      className="lucide lucide-log-in"
+                    >
+                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                      <polyline points="10 17 15 12 10 7"></polyline>
+                      <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    {t.loginTab}
                   </button>
-                </form>
-              ) : (
-                <div className="space-y-8 animate-in fade-in duration-300">
-                  <form onSubmit={handleAuth} className="space-y-4">
-                    <input
-                      type="email"
-                      placeholder={t.emailPlaceholder}
-                      className="w-full"
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
 
-                    <div className="relative flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => setMode("reg")}
+                    className="auth-tab"
+                    aria-pressed={mode === "reg"}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      className="lucide lucide-user-plus"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <line x1="19" y1="8" x2="19" y2="14"></line>
+                      <line x1="22" y1="11" x2="16" y2="11"></line>
+                    </svg>
+                    {t.regTab}
+                  </button>
+                </div>
+
+                <h2 className="auth-card-heading">
+                  {mode === "reset"
+                    ? t.resetTitle
+                    : mode === "reg"
+                      ? t.regTab
+                      : t.loginTab}
+                </h2>
+                <p className="auth-card-hint">
+                  {mode === "reset" ? t.authResetHint : t.authCardHint}
+                </p>
+
+                {mode === "reset" ? (
+                  <form
+                    onSubmit={handleReset}
+                    className="space-y-4 animate-in fade-in duration-300"
+                  >
+                    <label className="auth-field">
+                      <span>{t.emailPlaceholder}</span>
                       <input
-                        type={showPass ? "text" : "password"}
-                        placeholder={t.passwordPlaceholder}
-                        className="w-full pr-12"
-                        onChange={(e) => setPass(e.target.value)}
+                        type="email"
+                        placeholder={t.emailPlaceholder}
+                        className="w-full"
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowPass(!showPass)}
-                        className="absolute right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-                        aria-label={
-                          showPass ? "Скрыть пароль" : "Показать пароль"
-                        }
-                      >
-                        {showPass ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                            <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                            <line x1="2" y1="2" x2="22" y2="22"></line>
-                          </svg>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        )}
-                      </button>
-                    </div>
+                    </label>
+                    <button className="btn-primary w-full py-5 rounded-2xl uppercase text-[11px]">
+                      {t.sendLink}
+                    </button>
+                    {resetSent && (
+                      <p className="text-[9px] text-green-400 text-center animate-pulse">
+                        {t.checkEmail}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setMode("login")}
+                      className="w-full text-[9px] opacity-40 uppercase"
+                    >
+                      {t.back}
+                    </button>
+                  </form>
+                ) : (
+                  <div className="space-y-8 animate-in fade-in duration-300">
+                    <form onSubmit={handleAuth} className="space-y-4">
+                      <label className="auth-field">
+                        <span>{t.emailPlaceholder}</span>
+                        <input
+                          type="email"
+                          placeholder={t.emailPlaceholder}
+                          className="w-full"
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </label>
 
-                    {mode === "reg" && (
-                      <div className="p-4 bg-black/5 dark:bg-white/5 rounded-2xl space-y-2 border border-black/10 dark:border-white/10">
-                        <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
-                          {t.safetypass}
-                        </p>
-                        <ul className="space-y-1.5">
-                          {passwordValidations.map((item, index) => (
-                            <li
-                              key={index}
-                              className={`flex items-center space-x-2 text-[10px] transition-all ${
-                                item.test
-                                  ? "text-green-500 dark:text-green-400 opacity-100 font-medium"
-                                  : "opacity-30"
-                              }`}
-                            >
+                      <div className="auth-field">
+                        <span>{t.passwordPlaceholder}</span>
+                        <div className="relative flex items-center">
+                          <input
+                            type={showPass ? "text" : "password"}
+                            placeholder={t.passwordPlaceholder}
+                            className="w-full pr-12"
+                            onChange={(e) => setPass(e.target.value)}
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPass(!showPass)}
+                            className="absolute right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                            aria-label={
+                              showPass ? "Скрыть пароль" : "Показать пароль"
+                            }
+                          >
+                            {showPass ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="12"
-                                height="12"
+                                width="18"
+                                height="18"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                aria-hidden="true"
-                                className={`transition-transform ${item.test ? "scale-100" : "scale-75"}`}
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
                               >
-                                <polyline points="20 6 9 17 4 12"></polyline>
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                <line x1="2" y1="2" x2="22" y2="22"></line>
                               </svg>
-                              <span>{item.label}</span>
-                            </li>
-                          ))}
-                        </ul>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {mode === "reg" && (
+                        <div className="p-4 bg-black/5 dark:bg-white/5 rounded-2xl space-y-2 border border-black/10 dark:border-white/10">
+                          <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
+                            {t.safetypass}
+                          </p>
+                          <ul className="space-y-1.5">
+                            {passwordValidations.map((item, index) => (
+                              <li
+                                key={index}
+                                className={`flex items-center space-x-2 text-[10px] transition-all ${
+                                  item.test
+                                    ? "text-green-500 dark:text-green-400 opacity-100 font-medium"
+                                    : "opacity-30"
+                                }`}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="3"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  aria-hidden="true"
+                                  className={`transition-transform ${item.test ? "scale-100" : "scale-75"}`}
+                                >
+                                  <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>{item.label}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
+                        {mode === "login" ? t.signIn : t.signUp}
+                      </button>
+                      {mode === "login" && (
+                        <button
+                          type="button"
+                          onClick={() => setMode("reset")}
+                          className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition"
+                        >
+                          {t.forgotPass}
+                        </button>
+                      )}
+                    </form>
+                    {mode === "login" && (
+                      <div className="grid grid-cols-2 gap-4">
+                        <button
+                          onClick={handleGoogleLogin}
+                          className="auth-social-button glass-card group flex flex-col items-center justify-center transition-all duration-300"
+                        >
+                          <svg
+                            className="w-6 h-6 mb-2 transition-all duration-500"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                              fill="#4285F4"
+                            />
+                            <path
+                              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.07-3.71 1.07-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                              fill="#34A853"
+                            />
+                            <path
+                              d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                              fill="#FBBC05"
+                            />
+                            <path
+                              d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z"
+                              fill="#EA4335"
+                            />
+                          </svg>
+                          <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">
+                            Google
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={handleGithubLogin}
+                          className="auth-social-button glass-card group flex flex-col items-center justify-center transition-all duration-300"
+                        >
+                          <svg
+                            className="w-5 h-5 mb-2 opacity-100"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                          </svg>
+                          <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">
+                            GitHub
+                          </span>
+                        </button>
                       </div>
                     )}
-
-                    <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
-                      {mode === "login" ? t.signIn : t.signUp}
-                    </button>
-                    {mode === "login" && (
-                      <button
-                        type="button"
-                        onClick={() => setMode("reset")}
-                        className="w-full text-[9px] opacity-40 uppercase hover:opacity-100 transition"
-                      >
-                        {t.forgotPass}
-                      </button>
-                    )}
-                  </form>
-                  <div className="relative py-2">
-                    <div className="absolute inset-0 flex items-center">
-                      <div></div>
-                    </div>
-                    <div className="relative flex justify-center">
-                      <span className="px-4 text-[10px] uppercase tracking-[0.3em] opacity-20 font-bold">
-                        {t.signInWith}
-                      </span>
-                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <button
-                      onClick={handleGoogleLogin}
-                      className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300"
-                    >
-                      <svg
-                        className="w-6 h-6 mb-2 transition-all duration-500"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                          fill="#4285F4"
-                        />
-                        <path
-                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.07-3.71 1.07-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                          fill="#34A853"
-                        />
-                        <path
-                          d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                          fill="#FBBC05"
-                        />
-                        <path
-                          d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z"
-                          fill="#EA4335"
-                        />
-                      </svg>
-                      <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">
-                        Google
-                      </span>
-                    </button>
-
-                    <button
-                      onClick={handleGithubLogin}
-                      className="glass-card group flex flex-col items-center justify-center py-5 rounded-2xl transition-all duration-300"
-                    >
-                      <svg
-                        className="w-5 h-5 mb-2 opacity-100"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                      </svg>
-                      <span className="text-[9px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100">
-                        GitHub
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         );
@@ -4630,7 +5188,7 @@
 
         const postComment = async () => {
           if (!currentUser) {
-            alert("Пожалуйста, войдите в аккаунт");
+            alert(t.loginPlease);
             return;
           }
           if (!newComment.trim()) return;
@@ -4674,7 +5232,7 @@
         }, []);
 
         const handlePostReaction = async (reactionKey) => {
-          if (!currentUser) return alert("Войдите, чтобы оставить реакцию");
+          if (!currentUser) return alert(t.loginToReact);
           const userId = currentUser.uid;
           const postRef = db.collection("news").doc(post.id);
           const field = `reactions_${reactionKey}`;
@@ -4696,7 +5254,7 @@
         };
 
         const handleVote = async (commentId, voteType) => {
-          if (!currentUser) return alert("Войдите, чтобы оценивать");
+          if (!currentUser) return alert(t.loginToVote);
 
           const userId = currentUser.uid;
           const commentRef = db
@@ -6672,7 +7230,7 @@
 
         const sendNotification = async () => {
           if (!isAdmin) return;
-          const text = prompt("Введите текст уведомления");
+          const text = prompt(t.notifPrompt);
           if (!text || !text.trim()) return;
 
           try {
@@ -6681,7 +7239,7 @@
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
               author: user.displayName || user.email || "Админ",
             });
-            alert("Уведомление успешно отправлено!");
+            alert(t.notifSent);
           } catch (e) {
             alert("Ошибка: " + e.message);
           }
@@ -6849,6 +7407,7 @@
           player: "ПЛЕЕРЫ",
           PC: "МОЙ ПК",
           social: "ССЫЛКИ",
+          footerSocials: "МЫ В СОЦСЕТЯХ",
           tools: "ИНСТРУМЕНТЫ",
           account: "АККАУНТ",
           login: "ВОЙТИ",
@@ -6856,7 +7415,6 @@
           deleteAction: "Удалить",
           replyAction: "Ответить",
           emailPlaceholder: "Электронная почта",
-          emailAddressPlaceholder: "Адрес электронной почты",
           passwordPlaceholder: "Пароль",
           vipSilver: "Серебро",
           vipGold: "Золото",
@@ -6905,6 +7463,8 @@
           memoSub: "Для упрощения игры в гос.структурах",
           openTable: "Открыть таблицу",
           loadingMemos: "Загрузка памяток...",
+          loadMoreMemos: "Загрузить ещё",
+          emptyMemos: "Пока нет памяток",
           playerSelect: "Выбор плеера",
           videoUnavailable: "Видео недоступно",
           ourPlayer: "НАШ ПЛЕЕР",
@@ -6944,6 +7504,13 @@
           levelResult: "До следующего уровня",
           levelPaydays: "≈ {n} payday",
           levelNote: "(при {x} опыте за payday)",
+          authHeadline: "Авторизация",
+          authDescription:
+            "Войдите, чтобы продолжить, или создайте аккаунт за минуту.",
+          authCardHint: "Введите почту и пароль или выберите быстрый вход.",
+          authResetDescription:
+            "Укажите почту, связанную с аккаунтом, и мы отправим ссылку для сброса пароля.",
+          authResetHint: "Ссылка для восстановления придёт на эту почту.",
           loginTab: "Логин",
           regTab: "Регистрация",
           resetTitle: "Восстановление доступа",
@@ -6952,14 +7519,12 @@
           checkEmail: "Проверьте почту!",
           back: "Назад",
           signIn: "Войти",
-          signInWith: "Войти с помощью",
           forgotPass: "Забыли пароль?",
           changeAvatar: "Сменить",
           passLengthreg: "Не менее 8 символов",
           passUpper: "Хотя бы одна английская заглавная буква",
           passDigit: "Хотя бы одна цифра",
           passSpec: "Спец. символ (!@#$%^&*)",
-          roleLabel: "Роль:",
           roleAdmin: "Администратор",
           roleUser: "Пользователь",
           addMemo: "Добавить памятку",
@@ -6977,7 +7542,6 @@
           adminHinataHint: "Замените ссылку Hinata-плеера",
           saveOverrides: "Сохранить ссылки",
           profileSettings: "НАСТРОЙКИ ПРОФИЛЯ",
-          changeNick: "Изменить никнейм",
           newNickPlaceholder: "Новый никнейм",
           updateName: "Обновить имя",
           changeEmail: "Сменить Email",
@@ -7048,6 +7612,7 @@
           player: "PLAYERS",
           PC: "MY PC",
           social: "LINKS",
+          footerSocials: "FOLLOW US",
           tools: "TOOLS",
           account: "ACCOUNT",
           login: "LOG IN",
@@ -7055,7 +7620,6 @@
           deleteAction: "Delete",
           replyAction: "Reply",
           emailPlaceholder: "Email",
-          emailAddressPlaceholder: "Email Address",
           passwordPlaceholder: "Password",
           vipSilver: "Silver",
           vipGold: "Gold",
@@ -7065,7 +7629,7 @@
           goHome: "Go home",
           titleHome: "Home",
           titleKnowledge: "Knowledge Base",
-          titlePlayer: "Players",
+          titlePlayer: "Videoplayer",
           titlePC: "My PC",
           titleSocial: "Links",
           titleTools: "Tools",
@@ -7073,7 +7637,7 @@
           titlePrivacy: "Privacy Policy",
           titleTerms: "Terms of Service",
           titleLogin: "Authorization",
-          titleAccount: "Personal Cabinet",
+          titleAccount: "Personal Account",
           cookieTitle: "🍪 Cookies!",
           cookieText: "We use cookies to improve the site and analytics.",
           cookieAccept: "Accept",
@@ -7086,7 +7650,7 @@
           card1Title: "Knowledge Base",
           card1Desc:
             "Full registry of legislative bases for projects: Majestic RP, GTA 5 RP + custom memos from users.",
-          card2Title: "Players without slowdowns",
+          card2Title: "Video players without lag",
           card2Desc:
             "Watch new videos without delays or freezes in various players. If blocked, we have our own Hinata player.",
           card3Title: "Quick & easy registration",
@@ -7103,6 +7667,8 @@
           memoSub: "To simplify gameplay in government structures",
           openTable: "Open table",
           loadingMemos: "Loading memos...",
+          loadMoreMemos: "Load more",
+          emptyMemos: "No memos yet",
           playerSelect: "Choose player",
           videoUnavailable: "Video unavailable",
           ourPlayer: "OUR PLAYER",
@@ -7146,18 +7712,25 @@
           levelResult: "To next level",
           levelPaydays: "≈ {n} payday",
           levelNote: "(with {x} XP per payday)",
+          authHeadline: "Sign in or create an account",
+          authDescription:
+            "Sign in to continue, or create your account in a minute.",
+          authCardHint:
+            "Enter your email and password, or choose a quick sign-in.",
+          authResetDescription:
+            "Enter the email linked to your account and we'll send a password reset link.",
+          authResetHint:
+            "The recovery link will be sent to this email address.",
           loginTab: "Login",
           regTab: "Register",
-          resetTitle: "Password Recovery",
+          resetTitle: "Account Access Recovery",
           sendLink: "Send link",
           safetypass: "Password strength",
           checkEmail: "Check your email!",
           back: "Back",
           signIn: "Sign In",
-          signInWith: "Sign in with",
           forgotPass: "Forgot password?",
           changeAvatar: "Change",
-          roleLabel: "Role:",
           roleAdmin: "Administrator",
           roleUser: "User",
           addMemo: "Add memo",
@@ -7175,7 +7748,6 @@
           adminHinataHint: "Replace the Hinata player link",
           saveOverrides: "Save links",
           profileSettings: "PROFILE SETTINGS",
-          changeNick: "Change nickname",
           newNickPlaceholder: "New nickname",
           updateName: "Update name",
           changeEmail: "Change Email",
@@ -7244,6 +7816,7 @@
           player: "プレイヤー",
           PC: "マイPC",
           social: "リンク",
+          footerSocials: "SNS",
           tools: "ツール",
           account: "アカウント",
           login: "ログイン",
@@ -7251,7 +7824,6 @@
           deleteAction: "削除",
           replyAction: "返信",
           emailPlaceholder: "メール",
-          emailAddressPlaceholder: "メールアドレス",
           passwordPlaceholder: "パスワード",
           vipSilver: "シルバー",
           vipGold: "ゴールド",
@@ -7299,10 +7871,12 @@
           memoSub: "政府機関でのゲームプレイを簡単に",
           openTable: "表を開く",
           loadingMemos: "メモを読み込み中...",
+          loadMoreMemos: "さらに読み込む",
+          emptyMemos: "メモはまだありません",
           playerSelect: "プレイヤー選択",
           videoUnavailable: "動画が利用できません",
           ourPlayer: "当社のプレイヤー",
-          videooffline: "オフライン用のローラー",
+          videooffline: "オフライン動画",
           ourProjects: "私たちのプロジェクト",
           playwithme: "私と一緒に遊ぶ",
           commercialOffers: "商業提案",
@@ -7338,18 +7912,24 @@
           levelResult: "次のレベルまで",
           levelPaydays: "≈ {n} payday",
           levelNote: "(paydayあたり {x} XP)",
+          authHeadline: "ログインまたは新規登録",
+          authDescription:
+            "ログインして続行するか、1分でアカウントを作成できます。",
+          authCardHint:
+            "メールアドレスとパスワードを入力するか、外部サービスでログインしてください。",
+          authResetDescription:
+            "アカウントに登録したメールアドレスを入力してください。再設定リンクをお送りします。",
+          authResetHint: "再設定リンクをこのメールアドレスに送信します。",
           loginTab: "ログイン",
           regTab: "登録",
-          resetTitle: "パスワードの回復",
+          resetTitle: "アカウントへのアクセスを復元",
           sendLink: "リンクを送る",
           safetypass: "パスワードの強度",
           checkEmail: "メールを確認してください！",
           back: "戻る",
           signIn: "ログイン",
-          signInWith: "でログイン",
           forgotPass: "パスワードを忘れた？",
           changeAvatar: "変更",
-          roleLabel: "役割:",
           roleAdmin: "管理者",
           roleUser: "ユーザー",
           addMemo: "メモを追加",
@@ -7367,7 +7947,6 @@
           adminHinataHint: "Hinataプレイヤーのリンクを置換",
           saveOverrides: "リンクを保存",
           profileSettings: "プロフィール設定",
-          changeNick: "ニックネームを変更",
           newNickPlaceholder: "新しいニックネーム",
           updateName: "名前を更新",
           changeEmail: "メールを変更",
@@ -7437,8 +8016,9 @@
 
         de: {
           home: "STARTSEITE",
+          footerSocials: "FOLGE UNS IN DEN SOZIALEN MEDIEN",
           knowledge: "WISSENSBASIS",
-          player: "PLAYERS",
+          player: "VIDEO-PLAYER",
           PC: "MEIN PC",
           social: "LINKS",
           tools: "WERKZEUGE",
@@ -7448,7 +8028,6 @@
           deleteAction: "Löschen",
           replyAction: "Antworten",
           emailPlaceholder: "E-Mail",
-          emailAddressPlaceholder: "E-Mail-Adresse",
           passwordPlaceholder: "Passwort",
           vipSilver: "Silber",
           vipGold: "Gold",
@@ -7480,7 +8059,7 @@
           card1Title: "Wissensbasis",
           card1Desc:
             "Vollständiges Register der gesetzlichen Grundlagen für Majestic RP, GTA 5 RP + benutzerdefinierte Memos.",
-          card2Title: "Player ohne Verlangsamungen",
+          card2Title: "PLAYER OHNE RUCKELN",
           card2Desc:
             "Videos ohne Verzögerungen und Hänger ansehen. Bei Blockierungen haben wir unseren eigenen Hinata-Player.",
           card3Title: "Schnelle & einfache Registrierung",
@@ -7490,17 +8069,19 @@
             ["PROMO", "BIPBUP"],
           ],
           legislation: "GESETZE",
-          LastNewsDesc: "Scrollen Sie, um alle Nachrichten zu sehen",
+          LastNewsDesc: "Scrollen Sie nach unten, um alle Nachrichten zu sehen",
           LastNews: "LETZTE NEUIGKEITEN",
           chooseProject: "Projekt wählen und Server anklicken",
           playerMemos: "MEMOS VON SPIELERN",
           memoSub: "Zur Vereinfachung im Staatsdienst",
           openTable: "Tabelle öffnen",
           loadingMemos: "Memos werden geladen...",
+          loadMoreMemos: "Mehr laden",
+          emptyMemos: "Noch keine Memos",
           playerSelect: "Player wählen",
           videoUnavailable: "Video nicht verfügbar",
           ourPlayer: "UNSER PLAYER",
-          videooffline: "VIDEOS DIE OFFLINE",
+          videooffline: "OFFLINE-VIDEOS",
           ourProjects: "UNSERE PROJEKTE",
           playwithme: "SPIELE MIT MIR",
           commercialOffers: "GESCHÄFTSANFRAGEN",
@@ -7540,18 +8121,25 @@
           levelResult: "Bis zum nächsten Level",
           levelPaydays: "≈ {n} Zahltage",
           levelNote: "(bei {x} EP pro Zahltag)",
+          authHeadline: "Anmelden oder Konto erstellen",
+          authDescription:
+            "Melde dich an, um fortzufahren, oder erstelle in einer Minute ein Konto.",
+          authCardHint:
+            "Gib deine E-Mail-Adresse und dein Passwort ein oder nutze die Schnell-Anmeldung.",
+          authResetDescription:
+            "Gib die E-Mail-Adresse deines Kontos ein. Wir senden dir einen Link zum Zurücksetzen.",
+          authResetHint:
+            "Der Wiederherstellungslink wird an diese E-Mail-Adresse gesendet.",
           loginTab: "Anmelden",
           regTab: "Registrieren",
-          resetTitle: "Passwort wiederherstellen",
+          resetTitle: "Kontozugang wiederherstellen",
           sendLink: "Link senden",
           safetypass: "Passwortsicherheit",
           checkEmail: "E-Mail prüfen!",
           back: "Zurück",
           signIn: "Einloggen",
-          signInWith: "Einloggen mit",
           forgotPass: "Passwort vergessen?",
           changeAvatar: "Ändern",
-          roleLabel: "Rolle:",
           roleAdmin: "Administrator",
           roleUser: "Benutzer",
           addMemo: "Memo hinzufügen",
@@ -7569,7 +8157,6 @@
           adminHinataHint: "Hinata-Player-Link ersetzen",
           saveOverrides: "Links speichern",
           profileSettings: "PROFILEINSTELLUNGEN",
-          changeNick: "Spitzname ändern",
           newNickPlaceholder: "Neuer Spitzname",
           updateName: "Namen aktualisieren",
           changeEmail: "E-Mail ändern",
@@ -7638,6 +8225,7 @@
           player: "LECTEURS",
           PC: "MON PC",
           social: "LIENS",
+          footerSocials: "SUIVEZ-NOUS",
           tools: "OUTILS",
           account: "COMPTE",
           login: "CONNEXION",
@@ -7645,7 +8233,6 @@
           deleteAction: "Supprimer",
           replyAction: "Répondre",
           emailPlaceholder: "E-mail",
-          emailAddressPlaceholder: "Adresse e-mail",
           passwordPlaceholder: "Mot de passe",
           vipSilver: "Argent",
           vipGold: "Or",
@@ -7655,7 +8242,7 @@
           goHome: "Accueil",
           titleHome: "Accueil",
           titleKnowledge: "Base de connaissance",
-          titlePlayer: "Lecteurs",
+          titlePlayer: "Lecteurs vidéo",
           titlePC: "Mon PC",
           titleSocial: "Liens",
           titleTools: "Outils",
@@ -7677,7 +8264,7 @@
           card1Title: "Base de connaissance",
           card1Desc:
             "Registre complet des bases législatives pour Majestic RP, GTA 5 RP + mémos personnalisés des utilisateurs.",
-          card2Title: "Lecteurs sans ralentissements",
+          card2Title: "Lecteurs vidéo sans ralentissement",
           card2Desc:
             "Regardez de nouvelles vidéos sans délai ni gel. En cas de blocage, nous avons notre propre lecteur Hinata.",
           card3Title: "Inscription rapide et facile",
@@ -7687,7 +8274,8 @@
             ["PROMO", "BIPBUP"],
           ],
           legislation: "LÉGISLATION",
-          LastNewsDesc: "Scroll pour voir toutes les nouvelles",
+          LastNewsDesc:
+            "Faites défiler la page pour voir toutes les actualités.",
           LastNews: "DERNIÈRES NOUVELLES DU SITE",
           chooseProject: "Choisissez un projet et cliquez sur le serveur",
           playerMemos: "MÉMOS DES JOUEURS",
@@ -7695,11 +8283,13 @@
             "Pour simplifier le jeu dans les structures gouvernementales",
           openTable: "Ouvrir le tableau",
           loadingMemos: "Chargement des mémos...",
+          loadMoreMemos: "Charger plus",
+          emptyMemos: "Aucun mémo pour le moment",
           playerSelect: "Choisir le lecteur",
           videoUnavailable: "Vidéo non disponible",
           ourPlayer: "NOTRE LECTEUR",
-          videooffline: "VIDÉO HORS LIGNE",
-          ourProjects: "NOS PROJECTS",
+          videooffline: "VIDÉOS HORS LIGNE",
+          ourProjects: "NOS PROJETS",
           playwithme: "JOUER AVEC MOI",
           commercialOffers: "OFFRES COMMERCIALES",
           gameSettings: "PARAMÈTRES DU JEU",
@@ -7738,18 +8328,25 @@
           levelResult: "Jusqu'au prochain niveau",
           levelPaydays: "≈ {n} payday",
           levelNote: "(avec {x} XP par payday)",
+          authHeadline: "Connectez-vous ou créez un compte",
+          authDescription:
+            "Connectez-vous pour continuer ou créez un compte en une minute.",
+          authCardHint:
+            "Saisissez votre e-mail et votre mot de passe, ou choisissez une connexion rapide.",
+          authResetDescription:
+            "Saisissez l'adresse e-mail associée à votre compte pour recevoir un lien de réinitialisation.",
+          authResetHint:
+            "Le lien de récupération sera envoyé à cette adresse e-mail.",
           loginTab: "Connexion",
           regTab: "Inscription",
-          resetTitle: "Récupération du mot de passe",
+          resetTitle: "Récupération de l'accès au compte",
           sendLink: "Envoyer le lien",
           safetypass: "Force du mot de passe",
           checkEmail: "Vérifiez votre e-mail !",
           back: "Retour",
           signIn: "Se connecter",
-          signInWith: "Se connecter avec",
           forgotPass: "Mot de passe oublié ?",
           changeAvatar: "Changer",
-          roleLabel: "Rôle :",
           roleAdmin: "Administrateur",
           roleUser: "Utilisateur",
           addMemo: "Ajouter un mémo",
@@ -7767,7 +8364,6 @@
           adminHinataHint: "Remplacer le lien du lecteur Hinata",
           saveOverrides: "Enregistrer les liens",
           profileSettings: "PARAMÈTRES DU PROFIL",
-          changeNick: "Changer le pseudo",
           newNickPlaceholder: "Nouveau pseudo",
           updateName: "Mettre à jour",
           changeEmail: "Changer l'e-mail",
@@ -7832,8 +8428,6 @@
           reportBug: "SIGNALER UN BUG",
         },
       };
-
-      const NAV_LABELS = TRANSLATIONS;
 
       const LangSwitcher = ({ lang, setLang }) => {
         const [open, setOpen] = React.useState(false);
@@ -8089,6 +8683,7 @@
                   await userRef.set({
                     email: u.email || "",
                     displayName: u.displayName || null,
+                    footerSocials: "SUIVEZ-NOUS",
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     isAdmin: false,
                   });
@@ -8194,7 +8789,7 @@
                   isAdmin={user && ADMINS.includes(user.uid)}
                 />
 
-                <nav className="hidden md:flex flex-1 justify-center">
+                <nav className="site-desktop-nav hidden md:flex flex-1 justify-center">
                   <NavPill
                     currentPage={currentPage}
                     navigate={navigate}
@@ -8202,7 +8797,7 @@
                   />
                 </nav>
 
-                <div className="hidden md:flex items-center gap-2 shrink-0 ml-4">
+                <div className="site-desktop-actions hidden md:flex items-center gap-2 shrink-0 ml-4">
                   <LangSwitcher lang={lang} setLang={setLang} />
                   {user ? (
                     <button
@@ -8221,7 +8816,7 @@
                   )}
                 </div>
 
-                <div className="md:hidden flex items-center gap-2 ml-auto">
+                <div className="site-mobile-actions md:hidden flex items-center gap-2 ml-auto">
                   <button
                     onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
                     className="z-[1100] relative w-11 h-11 rounded-2xl transition-all duration-300 menu-toggle-btn"
@@ -8322,145 +8917,218 @@
                 </div>
               </main>
 
-              <footer className="py-10 md:py-20 flex flex-col items-center gap-8 w-full px-8 md:px-14 ">
-                <div className="flex flex-col items-center gap-6 w-full max-w-4xl">
-                  <div className="text-[10px] opacity-40 uppercase tracking-[0.4em] text-center">
-                    © 2024–{new Date().getFullYear()} BIP BUP Media
+              <footer className="site-footer">
+                <div className="site-footer-inner">
+                  <div className="footer-brand">
+                    <span className="footer-monogram" aria-hidden="true">
+                      BM
+                    </span>
+                    <p className="footer-copyright">
+                      © 2024–{new Date().getFullYear()} BIP BUP MEDIA.
+                      <br />
+                      All rights reserved.
+                    </p>
                   </div>
 
-                  <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-8 max-w-[320px] md:max-w-none">
-                    <a
-                      href="https://vk.com/bipbupyoutube"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/vk.webp"
-                        alt="VK"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://vk.com/club233266973"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/vkrezerv.webp"
-                        alt="VK"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://t.me/bipbupyoutube"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/tg.png"
-                        alt="TG"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://t.me/+99uLwWeMDK85NTE6"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/tgchat.png"
-                        alt="TG Chat"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://discord.gg/r99jwjKVQ3"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/ds.png"
-                        alt="Discord"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://www.twitch.tv/bipbup_ya"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/twitch.png"
-                        alt="Twitch"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://www.youtube.com/c/BIPBUP/videos"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/yt.png"
-                        alt="YouTube"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
-                    <a
-                      href="https://www.tiktok.com/@bipbup_yt"
-                      target="_blank"
-                      className="social-icon group"
-                    >
-                      <img
-                        src="assets/images/tt.png"
-                        alt="TikTok"
-                        loading="lazy"
-                        decoding="async"
-                        className="h-8 w-8 md:h-9 md:w-9 social-img"
-                      />
-                    </a>
+                  <div className="footer-social-block">
+                    <h2 className="footer-column-title">{t.footerSocials}</h2>
+                    <div className="footer-socials">
+                      <a
+                        href="https://vk.com/bipbupyoutube"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="VK"
+                      >
+                        <img
+                          src="assets/images/vk.webp"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://vk.com/club233266973"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="VK резерв"
+                      >
+                        <img
+                          src="assets/images/vkrezerv.webp"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://t.me/bipbupyoutube"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="Telegram"
+                      >
+                        <img
+                          src="assets/images/tg.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://t.me/+99uLwWeMDK85NTE6"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="Telegram чат"
+                      >
+                        <img
+                          src="assets/images/tgchat.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://discord.gg/r99jwjKVQ3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="Discord"
+                      >
+                        <img
+                          src="assets/images/ds.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://www.twitch.tv/bipbup_ya"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="Twitch"
+                      >
+                        <img
+                          src="assets/images/twitch.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://www.youtube.com/c/BIPBUP/videos"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="YouTube"
+                      >
+                        <img
+                          src="assets/images/yt.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                      <a
+                        href="https://www.tiktok.com/@bipbup_yt"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        aria-label="TikTok"
+                      >
+                        <img
+                          src="assets/images/tt.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img"
+                        />
+                      </a>
+                    </div>
+                    <div className="footer-legal-links">
+                      <button
+                        className="footer-link"
+                        onClick={() => navigate("privacy")}
+                      >
+                        <span className="footer-link-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4 12 12 4M5 4h7v7" />
+                          </svg>
+                        </span>
+                        {t.privacyPolicy}
+                      </button>
+                      <button
+                        className="footer-link"
+                        onClick={() => navigate("terms")}
+                      >
+                        <span className="footer-link-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4 12 12 4M5 4h7v7" />
+                          </svg>
+                        </span>
+                        {t.terms}
+                      </button>
+                      <a
+                        href="https://xqr4d.github.io/XQR4D/"
+                        className="footer-link"
+                      >
+                        <span className="footer-link-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4 12 12 4M5 4h7v7" />
+                          </svg>
+                        </span>
+                        {t.dev}
+                      </a>
+                      <a
+                        href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound"
+                        className="footer-link"
+                      >
+                        <span className="footer-link-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4 12 12 4M5 4h7v7" />
+                          </svg>
+                        </span>
+                        {t.reportBug}
+                      </a>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 text-[10px] font-bold tracking-widest opacity-30 pt-4 w-full max-w-4xl">
-                  <button
-                    onClick={() => navigate("privacy")}
-                    className="transition hover:opacity-70"
-                  >
-                    {t.privacyPolicy}
-                  </button>
-                  <button
-                    onClick={() => navigate("terms")}
-                    className="transition hover:opacity-70"
-                  >
-                    {t.terms}
-                  </button>
-                  <a
-                    href="https://xqr4d.github.io/XQR4D/"
-                    className="transition hover:opacity-70"
-                  >
-                    {t.dev}
-                  </a>
-                  <a
-                    href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound"
-                    className="transition hover:opacity-70"
-                  >
-                    {t.reportBug}
-                  </a>
                 </div>
               </footer>
             </div>
@@ -8563,6 +9231,19 @@
         return localStorage.getItem("cookieConsent") === "accepted";
       }
 
+      let yandexMetrikaScheduled = false;
+
+      function scheduleYandexMetrika() {
+        if (yandexMetrikaScheduled) return;
+        yandexMetrikaScheduled = true;
+
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(initYandexMetrika, { timeout: 5000 });
+        } else {
+          window.setTimeout(initYandexMetrika, 1500);
+        }
+      }
+
       function showCookieBanner() {
         const banner = document.getElementById("cookie-banner");
         if (banner && !hasCookieConsent()) {
@@ -8573,7 +9254,7 @@
       function acceptCookies() {
         localStorage.setItem("cookieConsent", "accepted");
         document.getElementById("cookie-banner").classList.remove("show");
-        initYandexMetrika();
+        scheduleYandexMetrika();
       }
 
       function rejectCookies() {
@@ -8585,7 +9266,7 @@
         showCookieBanner();
 
         if (hasCookieConsent()) {
-          initYandexMetrika();
+          scheduleYandexMetrika();
         }
 
         document
