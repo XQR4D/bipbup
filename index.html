@@ -4921,7 +4921,9 @@
                             type="button"
                             onClick={() => setShowPass(!showPass)}
                             className="absolute right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-                            aria-label={showPass ? t.passwordHide : t.passwordShow}
+                            aria-label={
+                              showPass ? t.passwordHide : t.passwordShow
+                            }
                           >
                             {showPass ? (
                               <svg
@@ -5965,8 +5967,7 @@
           const np = e.target.new_password.value;
           const npc = e.target.new_password_confirm.value;
           if (np !== npc) return alert(t.passwordMismatch);
-          if (np.length < 6)
-            return alert(t.passwordMinLength);
+          if (np.length < 6) return alert(t.passwordMinLength);
           try {
             const cred = firebase.auth.EmailAuthProvider.credential(
               user.email,
@@ -5984,14 +5985,8 @@
         const deleteAccount = async (e) => {
           e.preventDefault();
           const password = e.target.del_password.value;
-          if (!password)
-            return alert(t.currentPasswordRequired);
-          if (
-            !confirm(
-              t.accountDeleteConfirm,
-            )
-          )
-            return;
+          if (!password) return alert(t.currentPasswordRequired);
+          if (!confirm(t.accountDeleteConfirm)) return;
           try {
             const credential = firebase.auth.EmailAuthProvider.credential(
               user.email,
@@ -6826,7 +6821,9 @@
                               {t[
                                 `notifCount${new Intl.PluralRules(lang)
                                   .select(notifications.length)
-                                  .replace(/^./, (letter) => letter.toUpperCase())}`
+                                  .replace(/^./, (letter) =>
+                                    letter.toUpperCase(),
+                                  )}`
                               ] || t.notifCountOther}
                             </p>
                           )}
@@ -7022,7 +7019,8 @@
           levelPaydays: "≈ {n} payday",
           levelNote: "(при {x} опыте за payday)",
           authHeadline: "С возвращением!",
-          authDescription: "Войдите, чтобы продолжить пользоваться нашим сайтом.",
+          authDescription:
+            "Войдите, чтобы продолжить пользоваться нашим сайтом.",
           authRegisterHeadline: "Вы ещё не с нами?",
           authRegisterDescription:
             "Создайте аккаунт на нашем сайте, делитесь памятками и открывайте больше возможностей сообщества.",
@@ -7128,8 +7126,7 @@
             "Документ представлен на русском языке. При расхождениях приоритет имеет русская версия.",
           legalOpen: "Открыть PDF-документ",
           legalDownload: "Скачать PDF-документ",
-          legalPreviewFallback:
-            "Предпросмотр PDF недоступен в этом браузере.",
+          legalPreviewFallback: "Предпросмотр PDF недоступен в этом браузере.",
           passwordShow: "Показать пароль",
           passwordHide: "Скрыть пароль",
           newsRequired: "Заполните заголовок и текст новости.",
@@ -7525,7 +7522,8 @@
             "当サイトでアカウントを作成し、メモを共有して、コミュニティの機能をさらに活用しましょう。",
           authCardHint:
             "メールアドレスとパスワードを入力するか、外部サービスでログインしてください。",
-          authRegisterCardHint: "アカウントを作成するため、各項目を入力してください。",
+          authRegisterCardHint:
+            "アカウントを作成するため、各項目を入力してください。",
           authResetDescription:
             "アカウントに登録したメールアドレスを入力してください。再設定リンクをお送りします。",
           authResetHint: "再設定リンクをこのメールアドレスに送信します。",
@@ -7651,7 +7649,8 @@
           passwordMismatch: "パスワードが一致しません。",
           passwordMinLength: "パスワードは6文字以上で入力してください。",
           passwordUpdated: "パスワードを変更しました！",
-          currentPasswordRequired: "確認のため現在のパスワードを入力してください。",
+          currentPasswordRequired:
+            "確認のため現在のパスワードを入力してください。",
           accountDeleteConfirm:
             "本当にアカウントを削除しますか？削除後は復元できません。",
           accountDeleted: "アカウントを削除しました。",
@@ -7773,7 +7772,8 @@
           levelPaydays: "≈ {n} Zahltage",
           levelNote: "(bei {x} EP pro Zahltag)",
           authHeadline: "Willkommen zurück!",
-          authDescription: "Melde dich an, um unsere Website weiterhin zu nutzen.",
+          authDescription:
+            "Melde dich an, um unsere Website weiterhin zu nutzen.",
           authRegisterHeadline: "Noch nicht bei uns?",
           authRegisterDescription:
             "Erstelle ein Konto auf unserer Website, teile Memos und schalte weitere Community-Funktionen frei.",
@@ -7900,9 +7900,11 @@
           emailVerificationSent:
             "Bitte öffne den Link in deiner E-Mail, um die neue Adresse zu bestätigen.",
           passwordMismatch: "Die Passwörter stimmen nicht überein.",
-          passwordMinLength: "Das Passwort muss mindestens 6 Zeichen lang sein.",
+          passwordMinLength:
+            "Das Passwort muss mindestens 6 Zeichen lang sein.",
           passwordUpdated: "Passwort geändert!",
-          currentPasswordRequired: "Bitte zur Bestätigung dein aktuelles Passwort eingeben.",
+          currentPasswordRequired:
+            "Bitte zur Bestätigung dein aktuelles Passwort eingeben.",
           accountDeleteConfirm:
             "Bist du sicher? Dein Konto wird endgültig gelöscht und kann nicht wiederhergestellt werden.",
           accountDeleted: "Konto erfolgreich gelöscht.",
@@ -8026,7 +8028,8 @@
           levelPaydays: "≈ {n} payday",
           levelNote: "(avec {x} XP par payday)",
           authHeadline: "Heureux de vous revoir !",
-          authDescription: "Connectez-vous pour continuer à utiliser notre site.",
+          authDescription:
+            "Connectez-vous pour continuer à utiliser notre site.",
           authRegisterHeadline: "Pas encore inscrit ?",
           authRegisterDescription:
             "Créez un compte sur notre site, partagez des mémos et débloquez davantage de fonctionnalités communautaires.",
@@ -8143,7 +8146,8 @@
           overridesSaved: "Liens des lecteurs enregistrés.",
           avatarUpdated: "Avatar mis à jour !",
           uploadError: "Impossible de téléverser le fichier.",
-          memoRequired: "Veuillez saisir le titre du mémo et le lien de l’image.",
+          memoRequired:
+            "Veuillez saisir le titre du mémo et le lien de l’image.",
           memoSubmitted: "Mémo envoyé pour modération !",
           memoAccepted: "Mémo accepté.",
           memoDeleteConfirm: "Supprimer définitivement ce mémo ?",
@@ -8154,7 +8158,8 @@
           emailVerificationSent:
             "Consultez votre boîte mail et suivez le lien pour vérifier la nouvelle adresse.",
           passwordMismatch: "Les mots de passe ne correspondent pas.",
-          passwordMinLength: "Le mot de passe doit contenir au moins 6 caractères.",
+          passwordMinLength:
+            "Le mot de passe doit contenir au moins 6 caractères.",
           passwordUpdated: "Mot de passe modifié !",
           currentPasswordRequired:
             "Veuillez saisir votre mot de passe actuel pour confirmer.",
