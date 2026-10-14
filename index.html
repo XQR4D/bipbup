@@ -138,6 +138,28 @@
       [data-theme="dark"] input {
         background: rgba(255, 255, 255, 0.06) !important;
         border-color: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      [data-theme="dark"] .admin-role-select {
+        color-scheme: dark;
+        color: var(--text);
+        background-color: #101a15;
+      }
+
+      [data-theme="dark"] .admin-role-select option {
+        color: #ffffff;
+        background-color: #101a15;
+      }
+
+      [data-theme="light"] .admin-role-select {
+        color-scheme: light;
+        color: var(--text);
+        background-color: var(--glass);
+      }
+
+      [data-theme="light"] .admin-role-select option {
+        color: #111111;
+        background-color: #ffffff;
         color: #ffffff !important;
       }
 
@@ -403,7 +425,123 @@
         gap: 8px;
       }
 
+      .news-action-button {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        padding: 9px 15px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.2;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .news-action-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .news-action-button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .news-action-share {
+        border-color: rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.09);
+        color: #047857;
+      }
+
+      .news-action-share:hover {
+        border-color: rgba(16, 185, 129, 0.65);
+        background: rgba(16, 185, 129, 0.16);
+        box-shadow: 0 5px 18px rgba(16, 185, 129, 0.12);
+      }
+
+      [data-theme="dark"] .news-action-share {
+        border-color: rgba(0, 255, 136, 0.4);
+        background: rgba(0, 255, 136, 0.08);
+        color: var(--accent);
+      }
+
+      [data-theme="dark"] .news-action-share:hover {
+        border-color: rgba(0, 255, 136, 0.65);
+        background: rgba(0, 255, 136, 0.15);
+        box-shadow: 0 5px 18px rgba(0, 255, 136, 0.12);
+      }
+
+      .news-action-delete {
+        border-color: rgba(239, 68, 68, 0.38);
+        background: rgba(239, 68, 68, 0.09);
+        color: #ef4444;
+      }
+
+      .news-action-delete:hover {
+        border-color: rgba(239, 68, 68, 0.65);
+        background: rgba(239, 68, 68, 0.16);
+      }
+
+      .news-action-reply,
+      .news-action-comments {
+        background: var(--card-bg);
+        color: var(--text-secondary);
+      }
+
+      .news-action-reply:hover,
+      .news-action-comments:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .news-post-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .news-detail-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        padding: 11px 17px;
+        background: var(--card-bg);
+        font-size: 13px;
+        font-weight: 700;
+        transition:
+          border-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .news-detail-back:hover {
+        transform: translateX(-2px);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
       @media (max-width: 700px) {
+        .news-action-button {
+          max-width: 100%;
+          padding: 9px 12px;
+          white-space: normal;
+          text-align: center;
+        }
+
+        .news-post-actions {
+          gap: 8px;
+        }
+
         .site-footer {
           margin-top: 56px;
         }
@@ -1067,6 +1205,101 @@
         opacity: 0.72;
       }
 
+      .lk-admin-entry {
+        position: relative;
+        width: 100%;
+        grid-column: 1 / -1;
+        min-height: 116px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px 28px;
+        overflow: hidden;
+        border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+        border-radius: 26px;
+        color: var(--text);
+        text-align: left;
+        background:
+          radial-gradient(
+            circle at 92% 8%,
+            color-mix(in srgb, var(--accent) 16%, transparent),
+            transparent 34%
+          ),
+          var(--card-bg);
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .lk-admin-entry:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        box-shadow: 0 18px 38px rgba(0, 0, 0, 0.14);
+      }
+
+      .lk-admin-entry-icon {
+        width: 54px;
+        height: 54px;
+        flex: 0 0 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 12%, var(--card-bg));
+      }
+
+      .lk-admin-entry-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .lk-admin-entry-kicker {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--accent);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .lk-admin-entry-title {
+        display: block;
+        font-size: clamp(14px, 2vw, 18px);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+
+      .lk-admin-entry-description {
+        display: block;
+        margin-top: 5px;
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .lk-admin-entry-arrow {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        font-size: 20px;
+        transition:
+          color 0.25s ease,
+          border-color 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .lk-admin-entry:hover .lk-admin-entry-arrow {
+        color: var(--accent);
+        border-color: var(--accent);
+        transform: translateX(3px);
+      }
+
       .lk-action-count {
         display: inline-flex;
         min-width: 20px;
@@ -1337,6 +1570,26 @@
         .lk-quick-btn {
           min-height: 76px;
           border-radius: 20px;
+        }
+
+        .lk-admin-entry {
+          min-height: 96px;
+          gap: 14px;
+          padding: 18px;
+          border-radius: 22px;
+        }
+
+        .lk-admin-entry-icon {
+          width: 46px;
+          height: 46px;
+          flex-basis: 46px;
+          border-radius: 15px;
+        }
+
+        .lk-admin-entry-arrow {
+          width: 34px;
+          height: 34px;
+          flex-basis: 34px;
         }
 
         .lk-card {
@@ -3859,7 +4112,7 @@
         );
       };
 
-      const NewsSlider = ({ navigate }) => {
+      const NewsSlider = () => {
         const { t } = useLang();
         const [news, setNews] = useState([]);
         const [currentIndex, setCurrentIndex] = useState(0);
@@ -3906,7 +4159,9 @@
 
             <div
               className="news-showcase rounded-3xl overflow-hidden relative cursor-pointer group"
-              onClick={() => navigate("news")}
+              onClick={() => {
+                window.location.hash = `news/${current.id}`;
+              }}
               onMouseEnter={() => setIsAutoPlaying(false)}
               onMouseLeave={() => setIsAutoPlaying(true)}
             >
@@ -4052,7 +4307,7 @@
                 </a>
               ))}
             </div>
-            <NewsSlider navigate={navigate} />
+            <NewsSlider />
           </div>
         );
       };
@@ -4069,6 +4324,8 @@
         const pageSize = 12;
 
         useEffect(() => {
+          if (!ADMINS.includes(user.uid) && !isTechSupport) return undefined;
+
           const unsub = db
             .collection("pamyatki")
             .where("status", "==", "approved")
@@ -4098,7 +4355,7 @@
               },
             );
           return () => unsub();
-        }, []);
+        }, [user?.uid, isTechSupport]);
 
         const loadMorePamyatki = async () => {
           if (!lastPamyatkaDoc || isLoadingMorePamyatki) return;
@@ -5074,6 +5331,8 @@
         const { t } = useLang();
         const [posts, setPosts] = useState([]);
         const [loading, setLoading] = useState(true);
+        const [isTechSupport, setIsTechSupport] = useState(false);
+        const [newsRoute, setNewsRoute] = useState(getNewsRoute);
         const [showCreateModal, setShowCreateModal] = useState(false);
         const [editingPost, setEditingPost] = useState(null);
         const [newPost, setNewPost] = useState({
@@ -5086,6 +5345,41 @@
           () => !!user && ADMINS.includes(user.uid),
           [user],
         );
+        const canModerate = React.useMemo(
+          () => !!user && (ADMINS.includes(user.uid) || isTechSupport),
+          [user, isTechSupport],
+        );
+
+        useEffect(() => {
+          if (!user) {
+            setIsTechSupport(false);
+            return;
+          }
+          return db
+            .collection("users")
+            .doc(user.uid)
+            .onSnapshot(
+              (doc) =>
+                setIsTechSupport(
+                  doc.exists && doc.data().role === "tech_support",
+                ),
+              (error) => console.error("Failed to load moderator role:", error),
+            );
+        }, [user?.uid]);
+
+        useEffect(() => {
+          const handleNewsHashChange = () => setNewsRoute(getNewsRoute());
+          window.addEventListener("hashchange", handleNewsHashChange);
+          return () =>
+            window.removeEventListener("hashchange", handleNewsHashChange);
+        }, []);
+
+        useEffect(() => {
+          if (loading || !newsRoute.postId) return;
+          document
+            .getElementById(`news-post-${newsRoute.postId}`)
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, [loading, newsRoute.postId, posts]);
 
         useEffect(() => {
           const unsub = db
@@ -5156,53 +5450,85 @@
           }
         };
 
-        return (
-          <div className="max-w-4xl mx-auto py-12 md:py-20 px-4 space-y-12">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-black tracking-tighter">
-                  {t.newsSiteTitle}
-                </h1>
-                <p className="opacity-60 mt-2">
-                  {t.newsSubtitle}
-                  <br />
-                  <br />
-                </p>
-                <p className="opacity-60 mt-2">
-                  {t.newsModNote}
-                  <br />
-                  {t.newsRulesNote}{" "}
-                </p>
-              </div>
+        const visiblePosts = newsRoute.postId
+          ? posts.filter((post) => post.id === newsRoute.postId)
+          : posts;
+        const selectedPostMissing =
+          !loading && newsRoute.postId && visiblePosts.length === 0;
 
-              {isAdmin && (
+        return (
+          <div className="max-w-4xl mx-auto py-12 md:py-20 px-4 space-y-8 md:space-y-12">
+            {newsRoute.postId ? (
+              <div className="flex flex-col items-start">
                 <button
-                  onClick={() => openEditor()}
-                  className="btn-primary px-8 py-4 rounded-xl text-[11px] uppercase tracking-widest"
+                  type="button"
+                  onClick={() => {
+                    window.location.hash = "news";
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="news-detail-back"
                 >
-                  +
+                  <span aria-hidden="true">←</span>
+                  {t.backToNews}
                 </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-black tracking-tighter">
+                    {t.newsSiteTitle}
+                  </h1>
+                  <p className="opacity-60 mt-2">
+                    {t.newsSubtitle}
+                    <br />
+                    <br />
+                  </p>
+                  <p className="opacity-60 mt-2">
+                    {t.newsModNote}
+                    <br />
+                    {t.newsRulesNote}{" "}
+                  </p>
+                </div>
+
+                {isAdmin && (
+                  <button
+                    onClick={() => openEditor()}
+                    className="btn-primary px-8 py-4 rounded-xl text-[11px] uppercase tracking-widest"
+                  >
+                    +
+                  </button>
+                )}
+              </div>
+            )}
 
             {loading && (
               <div className="text-center py-20">{t.newsLoading}</div>
             )}
 
-            {!loading && posts.length === 0 && (
+            {selectedPostMissing && (
+              <div className="glass-card p-10 text-center rounded-3xl">
+                <p className="text-xl opacity-70">{t.newsNotFound}</p>
+              </div>
+            )}
+
+            {!loading && !newsRoute.postId && posts.length === 0 && (
               <div className="glass-card p-20 text-center rounded-3xl">
                 <p className="text-xl opacity-60">{t.newsEmpty}</p>
               </div>
             )}
 
             <div className="space-y-12">
-              {posts.map((post) => (
+              {visiblePosts.map((post) => (
                 <NewsPostCard
                   key={post.id}
                   post={post}
                   user={user}
                   isAdmin={isAdmin}
+                  canModerate={canModerate}
                   openEditor={openEditor}
+                  targetCommentId={
+                    newsRoute.postId === post.id ? newsRoute.commentId : null
+                  }
                 />
               ))}
             </div>
@@ -5267,7 +5593,68 @@
         );
       };
 
-      const NewsPostCard = ({ post, user: propUser, isAdmin, openEditor }) => {
+      const getNewsRoute = () => {
+        const [page, postId, section, commentId] = window.location.hash
+          .slice(1)
+          .split("/");
+        return {
+          postId: page === "news" ? postId || null : null,
+          commentId:
+            page === "news" && section === "comment" ? commentId || null : null,
+        };
+      };
+
+      const createNewsLink = (postId, commentId = null) => {
+        const url = new URL(window.location.href);
+        url.hash = `news/${postId}${commentId ? `/comment/${commentId}` : ""}`;
+        return url.href;
+      };
+
+      const copyNewsLink = async (postId, commentId, t) => {
+        const link = createNewsLink(postId, commentId);
+
+        try {
+          let copied = false;
+          if (navigator.clipboard?.writeText) {
+            try {
+              await navigator.clipboard.writeText(link);
+              copied = true;
+            } catch (error) {
+              if (!document.execCommand) throw error;
+            }
+          }
+
+          if (!copied) {
+            const input = document.createElement("textarea");
+            input.value = link;
+            input.style.position = "fixed";
+            input.style.opacity = "0";
+            document.body.appendChild(input);
+            input.select();
+            try {
+              if (!document.execCommand("copy")) {
+                throw new Error("The browser could not copy the link.");
+              }
+            } finally {
+              input.remove();
+            }
+          }
+
+          alert(t.linkCopied);
+        } catch (error) {
+          console.error("Failed to copy news link:", error);
+          alert(t.copyLinkError);
+        }
+      };
+
+      const NewsPostCard = ({
+        post,
+        user: propUser,
+        isAdmin,
+        canModerate,
+        openEditor,
+        targetCommentId,
+      }) => {
         const { t } = useLang();
         const [comments, setComments] = useState([]);
         const [newComment, setNewComment] = useState("");
@@ -5277,6 +5664,26 @@
         const [postReactions, setPostReactions] = useState({});
 
         const currentUser = propUser || auth.currentUser;
+
+        useEffect(() => {
+          if (targetCommentId) setShowComments(true);
+        }, [targetCommentId]);
+
+        useEffect(() => {
+          if (
+            !targetCommentId ||
+            !showComments ||
+            !comments.some((comment) => comment.id === targetCommentId)
+          ) {
+            return;
+          }
+
+          requestAnimationFrame(() => {
+            document
+              .getElementById(`comment-${targetCommentId}`)
+              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+          });
+        }, [comments, showComments, targetCommentId]);
 
         useEffect(() => {
           const unsub = db
@@ -5343,7 +5750,11 @@
             setReplyTo(null);
           } catch (e) {
             console.error(e);
-            alert(t.commentSendError);
+            if (e.code === "permission-denied") {
+              alert(t.commentPermissionError);
+            } else {
+              alert(`${t.commentSendError} ${e.message || e.code || ""}`);
+            }
           }
         };
 
@@ -5423,6 +5834,34 @@
           });
         };
 
+        const handleDeleteComment = async (comment) => {
+          if (!canModerate || !confirm(t.commentDeleteConfirm)) return;
+
+          const commentsRef = db
+            .collection("news")
+            .doc(post.id)
+            .collection("comments");
+
+          try {
+            const replies = await commentsRef
+              .where("replyTo", "==", comment.id)
+              .get();
+
+            for (let start = 0; start < replies.docs.length; start += 500) {
+              const batch = db.batch();
+              replies.docs
+                .slice(start, start + 500)
+                .forEach((reply) => batch.delete(reply.ref));
+              await batch.commit();
+            }
+
+            await commentsRef.doc(comment.id).delete();
+          } catch (error) {
+            console.error("Failed to delete news comment:", error);
+            alert(t.commentDeleteError);
+          }
+        };
+
         const uid = currentUser?.uid;
 
         const POST_REACTIONS = [
@@ -5457,8 +5896,11 @@
         };
 
         return (
-          <div className="glass-card rounded-3xl overflow-hidden">
-            <div className="p-8 md:p-10">
+          <div
+            id={`news-post-${post.id}`}
+            className="glass-card rounded-3xl overflow-hidden scroll-mt-8"
+          >
+            <div className="p-5 sm:p-8 md:p-10">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-xs opacity-40">
@@ -5540,16 +5982,28 @@
                 })}
               </div>
 
-              <button
-                onClick={() => setShowComments(!showComments)}
-                className="mt-6 flex items-center gap-2 text-sm font-medium opacity-70 hover:opacity-100 transition-colors"
-              >
-                {t.commentsLabel} ({commentCount})
-              </button>
+              <div className="news-post-actions">
+                <button
+                  type="button"
+                  onClick={() => copyNewsLink(post.id, null, t)}
+                  className="news-action-button news-action-share"
+                >
+                  <span aria-hidden="true">↗</span>
+                  {t.shareNews}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowComments(!showComments)}
+                  className="news-action-button news-action-comments"
+                >
+                  {t.commentsLabel} ({commentCount})
+                </button>
+              </div>
             </div>
 
             {showComments && (
-              <div className="border-t border-[var(--border)] p-8 bg-[var(--card-bg)] rounded-b-3xl">
+              <div className="border-t border-[var(--border)] p-4 sm:p-6 md:p-8 bg-[var(--card-bg)] rounded-b-3xl">
                 {currentUser ? (
                   <div className="mb-8">
                     <textarea
@@ -5590,7 +6044,7 @@
 
                 <div className="space-y-8">
                   {commentTree.map((c) => (
-                    <div key={c.id}>
+                    <div key={c.id} id={`comment-${c.id}`}>
                       <div className="flex gap-4">
                         <div className="w-10 h-10 rounded-full overflow-hidden border border-[var(--border)] flex-shrink-0">
                           {c.avatar ? (
@@ -5619,7 +6073,7 @@
                           <p className="mt-1 text-sm leading-relaxed">
                             {c.text}
                           </p>
-                          <div className="mt-2 text-xs opacity-60 flex gap-4 items-center">
+                          <div className="mt-3 text-xs opacity-60">
                             <span>
                               {c.createdAt?.toDate
                                 ? c.createdAt
@@ -5629,21 +6083,47 @@
                                     )
                                 : ""}
                             </span>
+                          </div>
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
                             <button
+                              type="button"
                               onClick={() => setReplyTo(c)}
-                              className="hover:text-[var(--accent)]"
+                              className="news-action-button news-action-reply"
                             >
+                              <span aria-hidden="true">↩</span>
                               {t.replyAction}
                             </button>
+                            <button
+                              type="button"
+                              onClick={() => copyNewsLink(post.id, c.id, t)}
+                              className="news-action-button news-action-share"
+                            >
+                              <span aria-hidden="true">↗</span>
+                              {t.shareComment}
+                            </button>
+                            {canModerate && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteComment(c)}
+                                className="news-action-button news-action-delete"
+                              >
+                                <span aria-hidden="true">🗑</span>
+                                {t.deleteComment}
+                              </button>
+                            )}
                           </div>
                           <CommentVoteBar comment={c} />
                         </div>
                       </div>
 
                       {c.replies && c.replies.length > 0 && (
-                        <div className="ml-14 mt-6 space-y-6 border-l-2 border-[var(--border)] pl-6">
+                        <div className="ml-3 sm:ml-14 mt-6 space-y-6 border-l-2 border-[var(--border)] pl-3 sm:pl-6">
                           {c.replies.map((reply) => (
-                            <div key={reply.id} className="flex gap-4">
+                            <div
+                              key={reply.id}
+                              id={`comment-${reply.id}`}
+                              className="flex gap-4"
+                            >
                               <div className="w-8 h-8 rounded-full overflow-hidden border border-[var(--border)] flex-shrink-0">
                                 {reply.avatar ? (
                                   <img
@@ -5671,7 +6151,7 @@
                                 <p className="text-sm leading-relaxed">
                                   {reply.text}
                                 </p>
-                                <div className="text-xs opacity-50 mt-1">
+                                <div className="text-xs opacity-60 mt-2">
                                   {reply.createdAt?.toDate
                                     ? reply.createdAt
                                         .toDate()
@@ -5680,6 +6160,28 @@
                                             "ru-RU",
                                         )
                                     : ""}
+                                </div>
+                                <div className="mt-3 flex flex-wrap items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      copyNewsLink(post.id, reply.id, t)
+                                    }
+                                    className="news-action-button news-action-share"
+                                  >
+                                    <span aria-hidden="true">↗</span>
+                                    {t.shareComment}
+                                  </button>
+                                  {canModerate && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteComment(reply)}
+                                      className="news-action-button news-action-delete"
+                                    >
+                                      <span aria-hidden="true">🗑</span>
+                                      {t.deleteComment}
+                                    </button>
+                                  )}
                                 </div>
                                 <CommentVoteBar comment={reply} />
                               </div>
@@ -5773,6 +6275,7 @@
         const [moderationCount, setModerationCount] = useState(0);
         const [showModal, setShowModal] = useState(null);
         const [pendingPamyatki, setPendingPamyatki] = useState([]);
+        const [isTechSupport, setIsTechSupport] = useState(false);
 
         const [ytOverride, setYtOverride] = useState("");
         const [vkOverride, setVkOverride] = useState("");
@@ -5782,6 +6285,8 @@
         useEffect(() => {
           if (!user?.uid) return;
 
+          setIsAdmin(ADMINS.includes(user.uid));
+          setIsTechSupport(false);
           const userRef = db.collection("users").doc(user.uid);
 
           userRef
@@ -5789,9 +6294,8 @@
             .then((doc) => {
               if (doc.exists) {
                 const data = doc.data();
-                const adminStatus =
-                  data.isAdmin === true || ADMINS.includes(user.uid);
-                setIsAdmin(adminStatus);
+                setIsAdmin(ADMINS.includes(user.uid));
+                setIsTechSupport(data.role === "tech_support");
               }
             })
             .catch((err) => {
@@ -5802,6 +6306,12 @@
         const fileInput = useRef();
 
         useEffect(() => {
+          if (!ADMINS.includes(user.uid) && !isTechSupport) {
+            setModerationCount(0);
+            setPendingPamyatki([]);
+            return undefined;
+          }
+
           const unsub = db
             .collection("pamyatki")
             .where("status", "==", "pending")
@@ -5812,7 +6322,7 @@
               );
             });
           return () => unsub();
-        }, []);
+        }, [user.uid, isTechSupport]);
 
         useEffect(() => {
           if (ADMINS.includes(user.uid)) {
@@ -5993,7 +6503,39 @@
               password,
             );
             await user.reauthenticateWithCredential(credential);
-            await user.delete();
+
+            const profileRef = db.collection("users").doc(user.uid);
+            const profileSnapshot = await profileRef.get();
+            if (profileSnapshot.exists) await profileRef.delete();
+
+            try {
+              await user.delete();
+            } catch (deleteError) {
+              if (profileSnapshot.exists) {
+                const profile = profileSnapshot.data();
+                try {
+                  await profileRef.set({
+                    email: profile.email || user.email || "",
+                    displayName:
+                      profile.displayName || user.displayName || null,
+                    footerSocials: profile.footerSocials || "SUIVEZ-NOUS",
+                    createdAt:
+                      profile.createdAt ||
+                      firebase.firestore.FieldValue.serverTimestamp(),
+                  });
+                } catch (restoreError) {
+                  console.error(
+                    "Failed to restore account profile after deletion error:",
+                    restoreError,
+                  );
+                  throw new Error(
+                    `${deleteError.message} ${t.profileRestoreError}`,
+                  );
+                }
+              }
+              throw deleteError;
+            }
+
             alert(t.accountDeleted);
             navigate("home");
           } catch (err) {
@@ -6048,7 +6590,9 @@
                     >
                       {isAdmin || ADMINS.includes(user.uid)
                         ? t.roleAdmin
-                        : t.roleUser}
+                        : isTechSupport
+                          ? t.roleTechSupport
+                          : t.roleUser}
                     </div>
                   </div>
                 </div>
@@ -6057,6 +6601,43 @@
               <div
                 className={`lk-quick${ADMINS.includes(user.uid) ? "" : " is-user"}`}
               >
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => navigate("admin")}
+                    className="lk-admin-entry"
+                  >
+                    <span className="lk-admin-entry-icon" aria-hidden="true">
+                      <svg
+                        width="26"
+                        height="26"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    </span>
+                    <span className="lk-admin-entry-copy">
+                      <span className="lk-admin-entry-kicker">
+                        {t.adminPanel}
+                      </span>
+                      <span className="lk-admin-entry-title">
+                        {t.adminPanelHint}
+                      </span>
+                      <span className="lk-admin-entry-description">
+                        {t.adminProfileDescription}
+                      </span>
+                    </span>
+                    <span className="lk-admin-entry-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </button>
+                )}
                 <button
                   onClick={() => setShowModal("add")}
                   className="lk-quick-btn primary"
@@ -6081,7 +6662,7 @@
                     <span className="lk-quick-sub">{t.addMemoHint}</span>
                   </span>
                 </button>
-                {ADMINS.includes(user.uid) && (
+                {(isAdmin || isTechSupport) && (
                   <button
                     onClick={() => setShowModal("mod")}
                     className="lk-quick-btn"
@@ -6539,6 +7120,272 @@
         );
       };
 
+      const AdminPanel = ({ user }) => {
+        const { t } = useLang();
+        const [users, setUsers] = useState([]);
+        const [search, setSearch] = useState("");
+        const [loadError, setLoadError] = useState("");
+        const [loading, setLoading] = useState(true);
+        const isAdmin = !!user && ADMINS.includes(user.uid);
+
+        useEffect(() => {
+          if (!isAdmin) return undefined;
+          const unsubscribe = db.collection("users").onSnapshot(
+            (snapshot) => {
+              setUsers(
+                snapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() })),
+              );
+              setLoading(false);
+              setLoadError("");
+            },
+            (error) => {
+              console.error("Failed to load admin users:", error);
+              setLoadError(error.message);
+              setLoading(false);
+            },
+          );
+          return () => unsubscribe();
+        }, [isAdmin]);
+
+        const updateUserRole = async (target, role) => {
+          if (!isAdmin || ADMINS.includes(target.uid)) return;
+          if (!confirm(t.adminRoleConfirm)) return;
+          try {
+            await db
+              .collection("users")
+              .doc(target.uid)
+              .set({ role }, { merge: true });
+          } catch (error) {
+            console.error("Failed to update user role:", error);
+            alert(`${t.adminActionError} ${error.message}`);
+          }
+        };
+
+        const banUser = async (target, hours) => {
+          if (!isAdmin || ADMINS.includes(target.uid)) return;
+          const reason = prompt(t.adminBanReasonPrompt);
+          if (reason === null) return;
+          const until = firebase.firestore.Timestamp.fromDate(
+            new Date(Date.now() + hours * 60 * 60 * 1000),
+          );
+          if (!confirm(t.adminBanConfirm)) return;
+
+          try {
+            await db.collection("users").doc(target.uid).set(
+              {
+                bannedUntil: until,
+                banReason: reason.trim(),
+                banUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                banUpdatedBy: user.uid,
+              },
+              { merge: true },
+            );
+          } catch (error) {
+            console.error("Failed to ban user:", error);
+            alert(`${t.adminActionError} ${error.message}`);
+          }
+        };
+
+        const unbanUser = async (target) => {
+          if (!isAdmin || ADMINS.includes(target.uid)) return;
+          if (!confirm(t.adminUnbanConfirm)) return;
+          try {
+            await db.collection("users").doc(target.uid).update({
+              bannedUntil: firebase.firestore.FieldValue.delete(),
+              banReason: firebase.firestore.FieldValue.delete(),
+              banUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              banUpdatedBy: user.uid,
+            });
+          } catch (error) {
+            console.error("Failed to unban user:", error);
+            alert(`${t.adminActionError} ${error.message}`);
+          }
+        };
+
+        const deleteUserProfile = async (target) => {
+          if (!isAdmin || ADMINS.includes(target.uid)) return;
+          if (!confirm(t.adminDeleteProfileConfirm)) return;
+          try {
+            await db.collection("users").doc(target.uid).delete();
+          } catch (error) {
+            console.error("Failed to delete user profile:", error);
+            alert(`${t.adminActionError} ${error.message}`);
+          }
+        };
+
+        if (!isAdmin) {
+          return (
+            <div className="max-w-3xl mx-auto py-20 px-4 text-center">
+              <h1 className="text-2xl sm:text-3xl font-black">
+                {t.adminAccessDenied}
+              </h1>
+            </div>
+          );
+        }
+
+        const normalizedSearch = search.trim().toLowerCase();
+        const visibleUsers = users.filter((entry) =>
+          `${entry.displayName || ""} ${entry.email || ""} ${entry.uid}`
+            .toLowerCase()
+            .includes(normalizedSearch),
+        );
+
+        return (
+          <div className="max-w-6xl mx-auto py-8 sm:py-12 md:py-20 px-3 sm:px-4 space-y-8 sm:space-y-10">
+            <header className="text-center">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter">
+                {t.adminPanel}
+              </h1>
+              <p className="mt-3 opacity-70 max-w-3xl mx-auto">
+                {t.adminPanelDescription}
+              </p>
+            </header>
+
+            <section className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 className="text-xl sm:text-2xl font-black">
+                  {t.adminUsers}
+                </h2>
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={t.adminSearchUsers}
+                  className="sm:max-w-sm"
+                />
+              </div>
+              <p className="text-xs sm:text-sm opacity-60">
+                {t.adminUsersSource}
+              </p>
+              {loadError && (
+                <p role="alert" className="text-red-500">
+                  {t.adminActionError} {loadError}
+                </p>
+              )}
+              {loading ? (
+                <p className="opacity-60">{t.newsLoading}</p>
+              ) : visibleUsers.length === 0 ? (
+                <p className="opacity-60">{t.adminNoUsers}</p>
+              ) : (
+                <div className="space-y-4">
+                  {visibleUsers.map((entry) => {
+                    const protectedAdmin = ADMINS.includes(entry.uid);
+                    const isBanned =
+                      entry.bannedUntil?.toDate &&
+                      entry.bannedUntil.toDate() > new Date();
+                    const role = protectedAdmin
+                      ? "admin"
+                      : entry.role === "tech_support"
+                        ? "tech_support"
+                        : "user";
+
+                    return (
+                      <article
+                        key={entry.uid}
+                        className="rounded-2xl border border-[var(--border)] p-3 sm:p-4 md:p-5 flex flex-col xl:flex-row xl:items-center gap-4"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold break-words">
+                            {entry.displayName || entry.email || entry.uid}
+                          </p>
+                          <p className="text-sm opacity-60 break-all">
+                            {entry.email || entry.uid}
+                          </p>
+                          {isBanned && (
+                            <p className="mt-2 text-sm text-red-500">
+                              {t.adminBannedUntil}{" "}
+                              {entry.bannedUntil
+                                .toDate()
+                                .toLocaleString(
+                                  document.documentElement.lang || "ru-RU",
+                                )}
+                              {entry.banReason ? ` · ${entry.banReason}` : ""}
+                            </p>
+                          )}
+                        </div>
+
+                        {protectedAdmin ? (
+                          <span className="text-xs uppercase tracking-widest accent-text">
+                            {t.roleAdmin}
+                          </span>
+                        ) : (
+                          <div className="admin-user-actions flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 w-full xl:w-auto">
+                            <select
+                              aria-label={`${t.adminRole}: ${entry.email || entry.uid}`}
+                              value={role}
+                              onChange={(event) =>
+                                updateUserRole(entry, event.target.value)
+                              }
+                              className="admin-role-select w-full sm:w-auto rounded-xl border border-[var(--border)] px-3 py-2"
+                            >
+                              <option value="user">{t.roleUser}</option>
+                              <option value="tech_support">
+                                {t.roleTechSupport}
+                              </option>
+                            </select>
+                            {isBanned ? (
+                              <button
+                                type="button"
+                                onClick={() => unbanUser(entry)}
+                                className="w-full sm:w-auto px-4 py-2 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]"
+                              >
+                                {t.adminUnban}
+                              </button>
+                            ) : (
+                              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                                {[1, 24, 168, 720].map((hours) => (
+                                  <button
+                                    key={hours}
+                                    type="button"
+                                    onClick={() => banUser(entry, hours)}
+                                    className="flex-1 sm:flex-none px-3 py-2 rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500/10 text-xs whitespace-nowrap"
+                                  >
+                                    {hours < 24
+                                      ? t.adminBanHour
+                                      : hours % 24 === 0
+                                        ? t.adminBanDays.replace(
+                                            "{days}",
+                                            String(hours / 24),
+                                          )
+                                        : t.adminBanHours.replace(
+                                            "{hours}",
+                                            String(hours),
+                                          )}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => deleteUserProfile(entry)}
+                              className="w-full sm:w-auto px-4 py-2 rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500/10 text-xs"
+                            >
+                              {t.adminDeleteProfile}
+                            </button>
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            <aside className="glass-card rounded-2xl p-4 sm:p-5 text-sm opacity-80">
+              <p>{t.adminAuthManual}</p>
+              <a
+                href="https://console.firebase.google.com/project/bipbupweb/authentication/users"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-3 underline text-[var(--accent)]"
+              >
+                {t.adminOpenFirebase}
+              </a>
+            </aside>
+          </div>
+        );
+      };
+
       const routes = {
         home: { titleKey: "titleHome", component: Home },
         knowledge: { titleKey: "titleKnowledge", component: KnowledgeBase },
@@ -6547,6 +7394,7 @@
         social: { titleKey: "titleSocial", component: SocialLinks },
         tools: { titleKey: "titleTools", component: ToolsPage },
         news: { titleKey: "titleNews", component: NewsPage },
+        admin: { titleKey: "adminPanel", component: AdminPanel },
         privacy: { titleKey: "titlePrivacy", component: PrivacyPage },
         terms: { titleKey: "titleTerms", component: TermsPage },
         login: { titleKey: "titleLogin", component: Login },
@@ -7045,6 +7893,39 @@
           passSpec: "Спец. символ (!@#$%^&*)",
           roleAdmin: "Администратор",
           roleUser: "Пользователь",
+          roleTechSupport: "Техподдержка",
+          adminPanel: "Панель администратора",
+          adminPanelHint: "Управление пользователями и модерация",
+          adminProfileDescription:
+            "Роли, временные блокировки и настройки сообщества — в одном месте.",
+          adminPanelDescription:
+            "Назначение роли техподдержки и временная блокировка аккаунтов.",
+          adminAccessDenied:
+            "У вас недостаточно прав для просмотра этой страницы.",
+          adminUsers: "Пользователи",
+          adminUsersSource:
+            "Список загружается из документов Firestore users. Он не сверяется с Firebase Authentication: в нём могут остаться профили удалённых аккаунтов.",
+          adminSearchUsers: "Поиск по имени, email или UID",
+          adminNoUsers: "Пользователи не найдены.",
+          adminRole: "Роль",
+          adminRoleConfirm: "Изменить роль этого пользователя?",
+          adminBanReasonPrompt: "Укажите причину блокировки (необязательно):",
+          adminBanConfirm: "Заблокировать пользователя на выбранный срок?",
+          adminBanHour: "1 час",
+          adminBanHours: "{hours} ч.",
+          adminBanDays: "{days} дн.",
+          adminBannedUntil: "Заблокирован до",
+          adminUnban: "Снять блокировку",
+          adminUnbanConfirm: "Снять блокировку с пользователя?",
+          adminAuthManual:
+            "Удаление учётной записи, принудительная смена почты и пароля требуют Firebase Admin SDK. На бесплатном тарифе выполняйте эти действия в консоли Firebase.",
+          adminOpenFirebase: "Открыть пользователей Firebase Authentication",
+          adminActionError: "Не удалось выполнить действие:",
+          adminDeleteProfile: "Удалить профиль сайта",
+          adminDeleteProfileConfirm:
+            "Удалить только документ профиля из Firestore? Аккаунт Firebase Authentication и комментарии/памятки не удаляются. Удаляйте только после проверки, что аккаунт уже удалён.",
+          profileRestoreError:
+            "Не удалось восстановить профиль сайта; войдите позже, чтобы создать его заново.",
           addMemo: "Добавить памятку",
           addMemoHint: "Отправить в базу знаний",
           awaitingMod: "Модерация",
@@ -7096,6 +7977,8 @@
             "В случае нарушения правил ваш аккаунт может быть удален.",
           newsLoading: "Загрузка новостей...",
           newsEmpty: "Пока нет новостей",
+          newsNotFound: "Эта новость не найдена или была удалена.",
+          backToNews: "Все новости",
           editPost: "Редактировать запись",
           newPost: "Новая запись",
           postTitlePlaceholder: "Заголовок новости",
@@ -7104,7 +7987,17 @@
           publishBtn: "ОПУБЛИКОВАТЬ",
           saveBtn: "СОХРАНИТЬ",
           dateRecently: "Недавно",
+          shareNews: "Поделиться новостью",
+          shareComment: "Поделиться комментарием",
+          linkCopied: "Ссылка скопирована!",
+          copyLinkError: "Не удалось скопировать ссылку.",
           commentsLabel: "💭 Комментарии",
+          deleteComment: "Удалить комментарий",
+          commentDeleteConfirm:
+            "Удалить этот комментарий и все ответы без возможности восстановления?",
+          commentDeleteError: "Не удалось удалить комментарий.",
+          commentPermissionError:
+            "Firebase отклонил комментарий. Проверьте, что опубликованы актуальные firestore.rules и у аккаунта нет действующей блокировки.",
           loginToComment: "Войдите в аккаунт, чтобы комментировать",
           replyPlaceholder: "Ответить {name}...",
           commentPlaceholder: "Напишите комментарий...",
@@ -7294,6 +8187,38 @@
           changeAvatar: "Change",
           roleAdmin: "Administrator",
           roleUser: "User",
+          roleTechSupport: "Tech support",
+          adminPanel: "Admin panel",
+          adminPanelHint: "Manage users and moderation",
+          adminProfileDescription:
+            "Roles, temporary bans, and community settings in one place.",
+          adminPanelDescription:
+            "Assign tech support role and temporarily ban accounts.",
+          adminAccessDenied: "You do not have permission to view this page.",
+          adminUsers: "Users",
+          adminUsersSource:
+            "This list comes from Firestore users documents. It is not checked against Firebase Authentication, so profiles of deleted accounts may remain.",
+          adminSearchUsers: "Search by name, email, or UID",
+          adminNoUsers: "No users found.",
+          adminRole: "Role",
+          adminRoleConfirm: "Change this user's role?",
+          adminBanReasonPrompt: "Enter a ban reason (optional):",
+          adminBanConfirm: "Ban this user for the selected duration?",
+          adminBanHour: "1 hour",
+          adminBanHours: "{hours} hrs",
+          adminBanDays: "{days} days",
+          adminBannedUntil: "Banned until",
+          adminUnban: "Unban",
+          adminUnbanConfirm: "Remove this user's ban?",
+          adminAuthManual:
+            "Deleting an account and forcing email or password changes require the Firebase Admin SDK. On the free plan, perform these actions in the Firebase console.",
+          adminOpenFirebase: "Open Firebase Authentication users",
+          adminActionError: "Action failed:",
+          adminDeleteProfile: "Delete site profile",
+          adminDeleteProfileConfirm:
+            "Delete only this Firestore profile document? The Firebase Authentication account and comments/memos will not be deleted. Only do this after verifying the account has already been deleted.",
+          profileRestoreError:
+            "The site profile could not be restored; sign in later to create it again.",
           addMemo: "Add memo",
           addMemoHint: "Send to the knowledge base",
           awaitingMod: "Moderation",
@@ -7343,6 +8268,8 @@
           newsRulesNote: "Violating the rules may result in account deletion.",
           newsLoading: "Loading news...",
           newsEmpty: "No news yet",
+          newsNotFound: "This news post could not be found or was deleted.",
+          backToNews: "All news",
           editPost: "Edit post",
           newPost: "New post",
           postTitlePlaceholder: "Post title",
@@ -7351,7 +8278,17 @@
           publishBtn: "PUBLISH",
           saveBtn: "SAVE",
           dateRecently: "Recently",
+          shareNews: "Share news",
+          shareComment: "Share comment",
+          linkCopied: "Link copied!",
+          copyLinkError: "Could not copy the link.",
           commentsLabel: "💭 Comments",
+          deleteComment: "Delete comment",
+          commentDeleteConfirm:
+            "Permanently delete this comment and all its replies?",
+          commentDeleteError: "Could not delete the comment.",
+          commentPermissionError:
+            "Firebase rejected the comment. Check that the latest firestore.rules are published and this account is not currently banned.",
           loginToComment: "Log in to leave a comment",
           replyPlaceholder: "Reply to {name}...",
           commentPlaceholder: "Write a comment...",
@@ -7537,6 +8474,38 @@
           changeAvatar: "変更",
           roleAdmin: "管理者",
           roleUser: "ユーザー",
+          roleTechSupport: "テクニカルサポート",
+          adminPanel: "管理者パネル",
+          adminPanelHint: "ユーザー管理とモデレーション",
+          adminProfileDescription:
+            "役割、一時停止、コミュニティ設定をまとめて管理できます。",
+          adminPanelDescription:
+            "テクニカルサポートの役割を割り当て、アカウントを一時的に停止します。",
+          adminAccessDenied: "このページを表示する権限がありません。",
+          adminUsers: "ユーザー",
+          adminUsersSource:
+            "この一覧はFirestoreのusersドキュメントから取得しています。Firebase Authenticationとは照合されないため、削除済みアカウントのプロフィールが残る場合があります。",
+          adminSearchUsers: "名前、メール、UIDで検索",
+          adminNoUsers: "ユーザーが見つかりません。",
+          adminRole: "役割",
+          adminRoleConfirm: "このユーザーの役割を変更しますか？",
+          adminBanReasonPrompt: "停止理由を入力してください（任意）：",
+          adminBanConfirm: "選択した期間、このユーザーを停止しますか？",
+          adminBanHour: "1時間",
+          adminBanHours: "{hours}時間",
+          adminBanDays: "{days}日",
+          adminBannedUntil: "停止期限",
+          adminUnban: "停止を解除",
+          adminUnbanConfirm: "このユーザーの停止を解除しますか？",
+          adminAuthManual:
+            "アカウント削除とメール・パスワードの強制変更にはFirebase Admin SDKが必要です。無料プランではFirebaseコンソールで操作してください。",
+          adminOpenFirebase: "Firebase Authenticationのユーザーを開く",
+          adminActionError: "操作に失敗しました：",
+          adminDeleteProfile: "サイトプロフィールを削除",
+          adminDeleteProfileConfirm:
+            "Firestoreのプロフィールドキュメントのみを削除しますか？Firebase Authenticationのアカウントやコメント・メモは削除されません。アカウントが既に削除されていることを確認してから実行してください。",
+          profileRestoreError:
+            "サイトプロフィールを復元できませんでした。後でもう一度ログインして再作成してください。",
           addMemo: "メモを追加",
           addMemoHint: "ナレッジベースへ送信",
           awaitingMod: "モデレーション",
@@ -7591,6 +8560,8 @@
             "ルール違反はアカウント削除につながる可能性があります。",
           newsLoading: "ニュースを読み込み中...",
           newsEmpty: "まだニュースはありません",
+          newsNotFound: "このニュースは見つからないか、削除されました。",
+          backToNews: "すべてのニュース",
           editPost: "投稿を編集",
           newPost: "新しい投稿",
           postTitlePlaceholder: "投稿タイトル",
@@ -7599,7 +8570,17 @@
           publishBtn: "公開",
           saveBtn: "保存",
           dateRecently: "最近",
+          shareNews: "ニュースを共有",
+          shareComment: "コメントを共有",
+          linkCopied: "リンクをコピーしました！",
+          copyLinkError: "リンクをコピーできませんでした。",
           commentsLabel: "💭 コメント",
+          deleteComment: "コメントを削除",
+          commentDeleteConfirm:
+            "このコメントとすべての返信を完全に削除しますか？",
+          commentDeleteError: "コメントを削除できませんでした。",
+          commentPermissionError:
+            "Firebaseがコメントを拒否しました。最新のfirestore.rulesが公開済みで、アカウントが停止中でないことを確認してください。",
           loginToComment: "コメントするにはログインしてください",
           replyPlaceholder: "{name}に返信...",
           commentPlaceholder: "コメントを書く...",
@@ -7794,6 +8775,39 @@
           changeAvatar: "Ändern",
           roleAdmin: "Administrator",
           roleUser: "Benutzer",
+          roleTechSupport: "Technischer Support",
+          adminPanel: "Admin-Panel",
+          adminPanelHint: "Benutzerverwaltung und Moderation",
+          adminProfileDescription:
+            "Rollen, temporäre Sperren und Community-Einstellungen an einem Ort.",
+          adminPanelDescription:
+            "Weise die Rolle des technischen Supports zu und sperre Konten vorübergehend.",
+          adminAccessDenied:
+            "Du hast keine Berechtigung, diese Seite anzusehen.",
+          adminUsers: "Benutzer",
+          adminUsersSource:
+            "Diese Liste stammt aus Firestore-Dokumenten in users. Sie wird nicht mit Firebase Authentication abgeglichen; Profile gelöschter Konten können daher verbleiben.",
+          adminSearchUsers: "Nach Name, E-Mail oder UID suchen",
+          adminNoUsers: "Keine Benutzer gefunden.",
+          adminRole: "Rolle",
+          adminRoleConfirm: "Rolle dieses Benutzers ändern?",
+          adminBanReasonPrompt: "Sperrgrund eingeben (optional):",
+          adminBanConfirm: "Benutzer für den ausgewählten Zeitraum sperren?",
+          adminBanHour: "1 Stunde",
+          adminBanHours: "{hours} Std.",
+          adminBanDays: "{days} Tage",
+          adminBannedUntil: "Gesperrt bis",
+          adminUnban: "Sperre aufheben",
+          adminUnbanConfirm: "Sperre dieses Benutzers aufheben?",
+          adminAuthManual:
+            "Das Löschen von Firebase-Konten und erzwungene Änderungen an E-Mail oder Passwort erfordern das Firebase Admin SDK. Im kostenlosen Tarif führen Sie dies in der Firebase Console aus.",
+          adminOpenFirebase: "Firebase-Authentication-Benutzer öffnen",
+          adminActionError: "Aktion fehlgeschlagen:",
+          adminDeleteProfile: "Website-Profil löschen",
+          adminDeleteProfileConfirm:
+            "Nur dieses Firestore-Profildokument löschen? Das Firebase-Authentication-Konto sowie Kommentare und Memos bleiben bestehen. Nur löschen, wenn das Konto bereits entfernt wurde.",
+          profileRestoreError:
+            "Das Website-Profil konnte nicht wiederhergestellt werden. Melde dich später erneut an, um es neu anzulegen.",
           addMemo: "Memo hinzufügen",
           addMemoHint: "An die Wissensbasis senden",
           awaitingMod: "Moderation",
@@ -7843,6 +8857,8 @@
           newsRulesNote: "Regelverstoß kann zur Kontolöschung führen.",
           newsLoading: "Neuigkeiten werden geladen...",
           newsEmpty: "Noch keine Neuigkeiten",
+          newsNotFound: "Diese Nachricht wurde nicht gefunden oder gelöscht.",
+          backToNews: "Alle Neuigkeiten",
           editPost: "Beitrag bearbeiten",
           newPost: "Neuer Beitrag",
           postTitlePlaceholder: "Beitragstitel",
@@ -7851,7 +8867,17 @@
           publishBtn: "VERÖFFENTLICHEN",
           saveBtn: "SPEICHERN",
           dateRecently: "Kürzlich",
+          shareNews: "Neuigkeit teilen",
+          shareComment: "Kommentar teilen",
+          linkCopied: "Link kopiert!",
+          copyLinkError: "Der Link konnte nicht kopiert werden.",
           commentsLabel: "💭 Kommentare",
+          deleteComment: "Kommentar löschen",
+          commentDeleteConfirm:
+            "Diesen Kommentar und alle Antworten endgültig löschen?",
+          commentDeleteError: "Der Kommentar konnte nicht gelöscht werden.",
+          commentPermissionError:
+            "Firebase hat den Kommentar abgelehnt. Prüfe, ob die aktuellen firestore.rules veröffentlicht sind und für dieses Konto keine Sperre gilt.",
           loginToComment: "Einloggen zum Kommentieren",
           replyPlaceholder: "Antworten an {name}...",
           commentPlaceholder: "Kommentar schreiben...",
@@ -8049,6 +9075,41 @@
           changeAvatar: "Changer",
           roleAdmin: "Administrateur",
           roleUser: "Utilisateur",
+          roleTechSupport: "Assistance technique",
+          adminPanel: "Panneau d’administration",
+          adminPanelHint: "Gestion des utilisateurs et modération",
+          adminProfileDescription:
+            "Rôles, bannissements temporaires et paramètres de la communauté au même endroit.",
+          adminPanelDescription:
+            "Attribuer le rôle d’assistance technique et suspendre temporairement les comptes.",
+          adminAccessDenied:
+            "Vous n’avez pas l’autorisation d’afficher cette page.",
+          adminUsers: "Utilisateurs",
+          adminUsersSource:
+            "Cette liste provient des documents Firestore users. Elle n’est pas comparée à Firebase Authentication ; les profils de comptes supprimés peuvent donc rester.",
+          adminSearchUsers: "Rechercher par nom, e-mail ou UID",
+          adminNoUsers: "Aucun utilisateur trouvé.",
+          adminRole: "Rôle",
+          adminRoleConfirm: "Modifier le rôle de cet utilisateur ?",
+          adminBanReasonPrompt:
+            "Indiquez le motif du bannissement (facultatif) :",
+          adminBanConfirm:
+            "Bannir cet utilisateur pendant la durée sélectionnée ?",
+          adminBanHour: "1 heure",
+          adminBanHours: "{hours} h",
+          adminBanDays: "{days} jours",
+          adminBannedUntil: "Banni jusqu’au",
+          adminUnban: "Lever le bannissement",
+          adminUnbanConfirm: "Lever le bannissement de cet utilisateur ?",
+          adminAuthManual:
+            "La suppression de comptes et le changement forcé de l’e-mail ou du mot de passe nécessitent Firebase Admin SDK. Avec l’offre gratuite, effectuez ces opérations dans la console Firebase.",
+          adminOpenFirebase: "Ouvrir les utilisateurs Firebase Authentication",
+          adminActionError: "Échec de l’action :",
+          adminDeleteProfile: "Supprimer le profil du site",
+          adminDeleteProfileConfirm:
+            "Supprimer uniquement ce document de profil Firestore ? Le compte Firebase Authentication, les commentaires et les mémos ne seront pas supprimés. À faire uniquement après avoir vérifié que le compte a déjà été supprimé.",
+          profileRestoreError:
+            "Le profil du site n’a pas pu être restauré ; reconnectez-vous plus tard pour le recréer.",
           addMemo: "Ajouter un mémo",
           addMemoHint: "Envoyer à la base de connaissance",
           awaitingMod: "Modération",
@@ -8099,6 +9160,8 @@
             "Le non-respect des règles peut entraîner la suppression du compte.",
           newsLoading: "Chargement des actualités...",
           newsEmpty: "Pas encore d'actualités",
+          newsNotFound: "Cette actualité est introuvable ou a été supprimée.",
+          backToNews: "Toutes les actualités",
           editPost: "Modifier",
           newPost: "Nouveau post",
           postTitlePlaceholder: "Titre du post",
@@ -8107,7 +9170,17 @@
           publishBtn: "PUBLIER",
           saveBtn: "ENREGISTRER",
           dateRecently: "Récemment",
+          shareNews: "Partager l'actualité",
+          shareComment: "Partager le commentaire",
+          linkCopied: "Lien copié !",
+          copyLinkError: "Impossible de copier le lien.",
           commentsLabel: "💭 Commentaires",
+          deleteComment: "Supprimer le commentaire",
+          commentDeleteConfirm:
+            "Supprimer définitivement ce commentaire et toutes ses réponses ?",
+          commentDeleteError: "Impossible de supprimer le commentaire.",
+          commentPermissionError:
+            "Firebase a refusé le commentaire. Vérifiez que les dernières firestore.rules sont publiées et que ce compte n’est pas banni.",
           loginToComment: "Connectez-vous pour commenter",
           replyPlaceholder: "Répondre à {name}...",
           commentPlaceholder: "Écrire un commentaire...",
@@ -8359,7 +9432,7 @@
         }, [lang]);
 
         const getPageFromHash = () => {
-          const hash = window.location.hash.replace("#", "");
+          const hash = window.location.hash.replace("#", "").split("/")[0];
           return hash || null;
         };
 
@@ -8428,7 +9501,6 @@
                     displayName: u.displayName || null,
                     footerSocials: "SUIVEZ-NOUS",
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    isAdmin: false,
                   });
                 } else {
                   await userRef.update({
@@ -8611,7 +9683,7 @@
                             (key) =>
                               !["login", "news", "privacy", "terms"].includes(
                                 key,
-                              ),
+                              ) && key !== "admin",
                           )
                           .map((key) => {
                             const navKeyMap = {
