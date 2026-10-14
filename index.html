@@ -976,10 +976,17 @@
       }
 
       .lk-stage {
+        position: relative;
+        isolation: isolate;
         overflow: hidden;
         border-radius: 2.5rem;
+        border: 1px solid transparent;
         background: var(--card-bg);
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+        transition:
+          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
       }
 
       .lk-hero {
@@ -1109,11 +1116,15 @@
       }
 
       .lk-quick-btn {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         min-height: 92px;
         display: flex;
         align-items: center;
         gap: 16px;
         padding: 18px 20px;
+        border: 1px solid transparent;
         border-radius: 24px;
         background: var(--card-bg);
         color: var(--text);
@@ -1123,12 +1134,6 @@
           border-color 0.3s ease,
           box-shadow 0.3s ease,
           background 0.25s ease;
-      }
-
-      .lk-quick-btn:hover {
-        border-color: var(--accent);
-        transform: translateY(-4px);
-        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.16);
       }
 
       .lk-quick-btn.primary {
@@ -1141,11 +1146,6 @@
         background: rgb(0, 255, 136);
         border-color: rgb(0, 255, 136);
         color: #000;
-      }
-
-      .lk-quick-btn.danger:hover {
-        border-color: #ff5c5c;
-        background: rgba(255, 80, 80, 0.1);
       }
 
       .lk-quick-icon {
@@ -1213,17 +1213,10 @@
         gap: 20px;
         padding: 24px 28px;
         overflow: hidden;
-        border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
         border-radius: 26px;
         color: var(--text);
         text-align: left;
-        background:
-          radial-gradient(
-            circle at 92% 8%,
-            color-mix(in srgb, var(--accent) 16%, transparent),
-            transparent 34%
-          ),
-          var(--card-bg);
+        background: var(--card-bg);
         transition:
           transform 0.25s ease,
           border-color 0.25s ease,
@@ -1258,7 +1251,7 @@
         color: var(--accent);
         font-size: 9px;
         font-weight: 800;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
       }
 
@@ -1283,7 +1276,6 @@
         flex: 0 0 38px;
         display: grid;
         place-items: center;
-        border: 1px solid var(--border);
         border-radius: 50%;
         font-size: 20px;
         transition:
@@ -1316,11 +1308,19 @@
         color: #000;
       }
 
-      .lk-card {
+      .lk-stage,
+      .lk-quick-btn,
+      .lk-admin-entry,
+      .lk-card,
+      .lk-slot {
         position: relative;
         isolation: isolate;
         overflow: hidden;
+      }
+
+      .lk-card {
         padding: 24px;
+        border: 1px solid transparent;
         border-radius: 24px;
         background: var(--card-bg);
         transition:
@@ -1329,7 +1329,19 @@
           box-shadow 0.3s ease;
       }
 
-      .lk-card::before {
+      .lk-slot {
+        border: 1px solid transparent;
+        transition:
+          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .lk-stage::before,
+      .lk-quick-btn::before,
+      .lk-admin-entry::before,
+      .lk-card::before,
+      .lk-slot::before {
         content: "";
         position: absolute;
         inset: auto -20% -55% 20%;
@@ -1346,15 +1358,38 @@
         pointer-events: none;
       }
 
-      .lk-card:hover {
+      .lk-stage:hover,
+      .lk-stage:focus-within,
+      .lk-quick-btn:hover,
+      .lk-quick-btn:focus-visible,
+      .lk-admin-entry:hover,
+      .lk-admin-entry:focus-visible,
+      .lk-card:hover,
+      .lk-slot:hover {
         border-color: var(--accent);
         transform: translateY(-4px);
         box-shadow: 0 20px 35px rgba(0, 0, 0, 0.16);
       }
 
-      .lk-card:hover::before {
+      .lk-stage:hover::before,
+      .lk-stage:focus-within::before,
+      .lk-quick-btn:hover::before,
+      .lk-quick-btn:focus-visible::before,
+      .lk-admin-entry:hover::before,
+      .lk-admin-entry:focus-visible::before,
+      .lk-card:hover::before,
+      .lk-slot:hover::before {
         opacity: 0.1;
         transform: translateY(0);
+      }
+
+      .lk-quick-btn.danger:hover,
+      .lk-card.danger:hover {
+        border-color: #ff5c5c;
+      }
+
+      .lk-quick-btn.danger:hover {
+        background: rgba(255, 80, 80, 0.1);
       }
 
       .lk-card.danger {
@@ -1365,6 +1400,7 @@
         border-color: #ff5c5c;
       }
 
+      .lk-quick-btn.danger::before,
       .lk-card.danger::before {
         background: #ff5c5c;
       }
@@ -7030,7 +7066,7 @@
               )}
 
             {showModal === "mod" &&
-              ADMINS.includes(user.uid) &&
+              (ADMINS.includes(user.uid) || isTechSupport) &&
               ReactDOM.createPortal(
                 <div
                   className="modal-overlay"
