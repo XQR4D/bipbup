@@ -431,7 +431,6 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        border: 1px solid var(--border);
         border-radius: 9999px;
         padding: 9px 15px;
         font-size: 12px;
@@ -512,7 +511,6 @@
         display: inline-flex;
         align-items: center;
         gap: 9px;
-        border: 1px solid var(--border);
         border-radius: 9999px;
         padding: 11px 17px;
         background: var(--card-bg);
@@ -7236,9 +7234,6 @@
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter">
                 {t.adminPanel}
               </h1>
-              <p className="mt-3 opacity-70 max-w-3xl mx-auto">
-                {t.adminPanelDescription}
-              </p>
             </header>
 
             <section className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-5">
@@ -7263,7 +7258,7 @@
                 </p>
               )}
               {loading ? (
-                <p className="opacity-60">{t.newsLoading}</p>
+                <p className="opacity-60">{t.loadprofile}</p>
               ) : visibleUsers.length === 0 ? (
                 <p className="opacity-60">{t.adminNoUsers}</p>
               ) : (
@@ -7898,13 +7893,11 @@
           adminPanelHint: "Управление пользователями и модерация",
           adminProfileDescription:
             "Роли, временные блокировки и настройки сообщества — в одном месте.",
-          adminPanelDescription:
-            "Назначение роли техподдержки и временная блокировка аккаунтов.",
           adminAccessDenied:
             "У вас недостаточно прав для просмотра этой страницы.",
           adminUsers: "Пользователи",
           adminUsersSource:
-            "Список загружается из документов Firestore users. Он не сверяется с Firebase Authentication: в нём могут остаться профили удалённых аккаунтов.",
+            "Список загружается из документов Firestore users. Он не сверяется с Firebase Authentication. В нём могут остаться профили удалённых аккаунтов.",
           adminSearchUsers: "Поиск по имени, email или UID",
           adminNoUsers: "Пользователи не найдены.",
           adminRole: "Роль",
@@ -7918,7 +7911,7 @@
           adminUnban: "Снять блокировку",
           adminUnbanConfirm: "Снять блокировку с пользователя?",
           adminAuthManual:
-            "Удаление учётной записи, принудительная смена почты и пароля требуют Firebase Admin SDK. На бесплатном тарифе выполняйте эти действия в консоли Firebase.",
+            "Полное удаление учётных записей, принудительная смена почты и пароля требуют Firebase Admin SDK. Обратитесь к администратору сайта или используйте Firebase Console.",
           adminOpenFirebase: "Открыть пользователей Firebase Authentication",
           adminActionError: "Не удалось выполнить действие:",
           adminDeleteProfile: "Удалить профиль сайта",
@@ -7976,6 +7969,7 @@
           newsRulesNote:
             "В случае нарушения правил ваш аккаунт может быть удален.",
           newsLoading: "Загрузка новостей...",
+          loadprofile: "Загрузка профилей...",
           newsEmpty: "Пока нет новостей",
           newsNotFound: "Эта новость не найдена или была удалена.",
           backToNews: "Все новости",
@@ -8130,6 +8124,7 @@
           gameSettings: "GAME SETTINGS",
           pcConfig: "PC CONFIGURATION",
           myGraphics: "MY GRAPHICS",
+          loadprofile: " Loading profiles...",
           passLengthreg: "At least 8 characters",
           passUpper: "At least one English uppercase letter",
           passDigit: "At least one digit",
@@ -8192,12 +8187,10 @@
           adminPanelHint: "Manage users and moderation",
           adminProfileDescription:
             "Roles, temporary bans, and community settings in one place.",
-          adminPanelDescription:
-            "Assign tech support role and temporarily ban accounts.",
           adminAccessDenied: "You do not have permission to view this page.",
           adminUsers: "Users",
           adminUsersSource:
-            "This list comes from Firestore users documents. It is not checked against Firebase Authentication, so profiles of deleted accounts may remain.",
+            "The list is loaded from Firestore users documents. It is not cross-checked with Firebase Authentication. Profiles of deleted accounts may remain.",
           adminSearchUsers: "Search by name, email, or UID",
           adminNoUsers: "No users found.",
           adminRole: "Role",
@@ -8211,7 +8204,7 @@
           adminUnban: "Unban",
           adminUnbanConfirm: "Remove this user's ban?",
           adminAuthManual:
-            "Deleting an account and forcing email or password changes require the Firebase Admin SDK. On the free plan, perform these actions in the Firebase console.",
+            "Full account deletion, forced email and password changes require Firebase Admin SDK. Contact the site administrator or use Firebase Console.",
           adminOpenFirebase: "Open Firebase Authentication users",
           adminActionError: "Action failed:",
           adminDeleteProfile: "Delete site profile",
@@ -8370,6 +8363,7 @@
           notFound: "ページが見つかりません",
           goHome: "ホームへ",
           titleHome: "ホーム",
+          loadprofile: "読み込み中...",
           titleKnowledge: "ナレッジベース",
           titlePlayer: "プレイヤー",
           titlePC: "マイPC",
@@ -8479,12 +8473,10 @@
           adminPanelHint: "ユーザー管理とモデレーション",
           adminProfileDescription:
             "役割、一時停止、コミュニティ設定をまとめて管理できます。",
-          adminPanelDescription:
-            "テクニカルサポートの役割を割り当て、アカウントを一時的に停止します。",
           adminAccessDenied: "このページを表示する権限がありません。",
           adminUsers: "ユーザー",
           adminUsersSource:
-            "この一覧はFirestoreのusersドキュメントから取得しています。Firebase Authenticationとは照合されないため、削除済みアカウントのプロフィールが残る場合があります。",
+            "リストはFirestoreのusersドキュメントから読み込まれます。Firebase Authenticationとは照合されません。削除されたアカウントのプロフィールが残っている場合があります。",
           adminSearchUsers: "名前、メール、UIDで検索",
           adminNoUsers: "ユーザーが見つかりません。",
           adminRole: "役割",
@@ -8498,7 +8490,7 @@
           adminUnban: "停止を解除",
           adminUnbanConfirm: "このユーザーの停止を解除しますか？",
           adminAuthManual:
-            "アカウント削除とメール・パスワードの強制変更にはFirebase Admin SDKが必要です。無料プランではFirebaseコンソールで操作してください。",
+            "アカウントの完全削除、メールやパスワードの強制変更にはFirebase Admin SDKが必要です。サイト管理者に連絡するか、Firebase Consoleを使用してください。",
           adminOpenFirebase: "Firebase Authenticationのユーザーを開く",
           adminActionError: "操作に失敗しました：",
           adminDeleteProfile: "サイトプロフィールを削除",
@@ -8661,6 +8653,7 @@
           vipGold: "Gold",
           vipPlatinum: "Platin",
           loading: "Laden...",
+          loadprofile: "Profile werden geladen...",
           notFound: "Seite nicht gefunden",
           goHome: "Zur Startseite",
           titleHome: "Startseite",
@@ -8780,13 +8773,11 @@
           adminPanelHint: "Benutzerverwaltung und Moderation",
           adminProfileDescription:
             "Rollen, temporäre Sperren und Community-Einstellungen an einem Ort.",
-          adminPanelDescription:
-            "Weise die Rolle des technischen Supports zu und sperre Konten vorübergehend.",
           adminAccessDenied:
             "Du hast keine Berechtigung, diese Seite anzusehen.",
           adminUsers: "Benutzer",
           adminUsersSource:
-            "Diese Liste stammt aus Firestore-Dokumenten in users. Sie wird nicht mit Firebase Authentication abgeglichen; Profile gelöschter Konten können daher verbleiben.",
+            "Die Liste wird aus den Firestore-Benutzerdokumenten geladen. Sie wird nicht mit Firebase Authentication abgeglichen. Es kann vorkommen, dass Profile von gelöschten Konten noch vorhanden sind.",
           adminSearchUsers: "Nach Name, E-Mail oder UID suchen",
           adminNoUsers: "Keine Benutzer gefunden.",
           adminRole: "Rolle",
@@ -8800,7 +8791,7 @@
           adminUnban: "Sperre aufheben",
           adminUnbanConfirm: "Sperre dieses Benutzers aufheben?",
           adminAuthManual:
-            "Das Löschen von Firebase-Konten und erzwungene Änderungen an E-Mail oder Passwort erfordern das Firebase Admin SDK. Im kostenlosen Tarif führen Sie dies in der Firebase Console aus.",
+            "Für das vollständige Löschen von Konten oder das Erzwingen von E-Mail- und Passwortänderungen ist das Firebase Admin SDK erforderlich. Bitte kontaktiere den Website-Administrator oder verwende die Firebase-Konsole.",
           adminOpenFirebase: "Firebase-Authentication-Benutzer öffnen",
           adminActionError: "Aktion fehlgeschlagen:",
           adminDeleteProfile: "Website-Profil löschen",
@@ -8943,6 +8934,7 @@
         fr: {
           home: "ACCUEIL",
           knowledge: "BASE DE CONNAISSANCE",
+          loadprofile: "Chargement des profils...",
           player: "LECTEURS",
           PC: "MON PC",
           social: "LIENS",
@@ -9080,13 +9072,11 @@
           adminPanelHint: "Gestion des utilisateurs et modération",
           adminProfileDescription:
             "Rôles, bannissements temporaires et paramètres de la communauté au même endroit.",
-          adminPanelDescription:
-            "Attribuer le rôle d’assistance technique et suspendre temporairement les comptes.",
           adminAccessDenied:
             "Vous n’avez pas l’autorisation d’afficher cette page.",
           adminUsers: "Utilisateurs",
           adminUsersSource:
-            "Cette liste provient des documents Firestore users. Elle n’est pas comparée à Firebase Authentication ; les profils de comptes supprimés peuvent donc rester.",
+            "La liste est chargée à partir des documents d’utilisateurs Firestore. Elle n’est pas synchronisée avec Firebase Authentication. Il se peut que des profils d’utilisateurs supprimés soient encore présents.",
           adminSearchUsers: "Rechercher par nom, e-mail ou UID",
           adminNoUsers: "Aucun utilisateur trouvé.",
           adminRole: "Rôle",
@@ -9102,7 +9092,7 @@
           adminUnban: "Lever le bannissement",
           adminUnbanConfirm: "Lever le bannissement de cet utilisateur ?",
           adminAuthManual:
-            "La suppression de comptes et le changement forcé de l’e-mail ou du mot de passe nécessitent Firebase Admin SDK. Avec l’offre gratuite, effectuez ces opérations dans la console Firebase.",
+            "Pour supprimer complètement les comptes ou forcer les changements d’e-mail et de mot de passe, le SDK Admin Firebase est requis. Veuillez contacter l’administrateur du site ou utiliser la console Firebase.",
           adminOpenFirebase: "Ouvrir les utilisateurs Firebase Authentication",
           adminActionError: "Échec de l’action :",
           adminDeleteProfile: "Supprimer le profil du site",
