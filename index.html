@@ -9,8 +9,8 @@
     />
     <meta name="yandex-verification" content="6d28322ca114d8df" />
     <title>BIPBUP</title>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="assets/images/bipbup.svg" />
+    <link rel="icon" type="image/x-icon" href="assets/images/bipbup.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" />
@@ -4358,8 +4358,6 @@
         const pageSize = 12;
 
         useEffect(() => {
-          if (!ADMINS.includes(user.uid) && !isTechSupport) return undefined;
-
           const unsub = db
             .collection("pamyatki")
             .where("status", "==", "approved")
@@ -4389,7 +4387,7 @@
               },
             );
           return () => unsub();
-        }, [user?.uid, isTechSupport]);
+        }, []);
 
         const loadMorePamyatki = async () => {
           if (!lastPamyatkaDoc || isLoadingMorePamyatki) return;
