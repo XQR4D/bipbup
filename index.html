@@ -3114,21 +3114,54 @@
       }
 
       .social-img {
-        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        filter: brightness(0.85);
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        filter: none;
       }
 
-      [data-theme="light"] .social-img {
-        filter: brightness(0.3) contrast(1.2);
+      .social-img-for-dark {
+        display: none;
       }
 
-      [data-theme="dark"] .social-img {
-        filter: brightness(0.95);
+      [data-theme="dark"] .social-img-for-light {
+        display: none;
+      }
+
+      [data-theme="dark"] .social-img-for-dark {
+        display: block;
       }
 
       .social-icon:hover .social-img {
         transform: scale(1.15) translateY(-2px);
-        filter: brightness(1.1) !important;
+        filter: none !important;
+      }
+
+      .nick-result {
+        color: var(--text);
+        font-size: clamp(1.25rem, 7vw, 3rem);
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        line-height: 1.15;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .nick-nation-btn {
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      [data-theme="dark"] .nick-nation-btn {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .nick-nation-btn:hover {
+        background: rgba(0, 0, 0, 0.08);
+      }
+
+      [data-theme="dark"] .nick-nation-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
       }
 
       @media (max-width: 640px) {
@@ -3141,6 +3174,83 @@
           size: A4;
           margin: 18mm 16mm;
         }
+      }
+
+      .mobile-lang-wrap {
+        width: 100%;
+      }
+
+      .mobile-lang-wrap .lang-switcher {
+        position: relative;
+        width: 100%;
+      }
+
+      .mobile-lang-wrap .lang-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 13px 16px;
+        border-radius: 14px;
+        font-size: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .mobile-lang-wrap .lang-dropdown {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        margin-top: 8px;
+        box-shadow: none;
+        background: rgba(128, 128, 128, 0.06);
+        animation: none;
+      }
+
+      [data-theme="dark"] .mobile-lang-wrap .lang-dropdown {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .mobile-lang-wrap .lang-option {
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+
+      [data-theme="light"]
+        .links-page
+        img:not([src*="qrcodecomm"]):not([src*="gta5rp"]):not(
+          [src*="ruonline"]
+        ):not([src*="hinatatransp"]) {
+        filter: brightness(0);
+      }
+      .qr-for-light,
+      .qr-for-dark {
+        display: block;
+      }
+
+      [data-theme="dark"] .qr-for-light {
+        display: none;
+      }
+
+      .qr-for-dark {
+        display: none;
+      }
+
+      [data-theme="dark"] .qr-for-dark {
+        display: block;
+      }
+      .icon-for-light,
+      .icon-for-dark {
+        display: block;
+      }
+
+      .icon-for-dark {
+        display: none;
+      }
+
+      [data-theme="dark"] .icon-for-light {
+        display: none;
+      }
+
+      [data-theme="dark"] .icon-for-dark {
+        display: block;
       }
     </style>
   </head>
@@ -3660,7 +3770,7 @@
                 <button
                   key={n.id}
                   onClick={() => setNation(n.id)}
-                  className={`text-[11px] uppercase font-bold py-3 rounded-lg transition-all ${nation === n.id ? "bg-[#000000] text-white shadow-[0_0_15px_#000000]" : "bg-white/5 hover:bg-white/10"}`}
+                  className={`text-[11px] uppercase font-bold py-3 rounded-lg transition-all ${nation === n.id ? "bg-[#000000] text-white shadow-[0_0_15px_#000000]" : "nick-nation-btn"}`}
                 >
                   {n.t}
                 </button>
@@ -3670,7 +3780,7 @@
               onClick={copyToClipboard}
               className="cursor-pointer group py-8"
             >
-              <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-[#000000] tracking-wider min-h-[60px] group-hover:scale-110 transition-transform">
+              <div className="nick-result min-h-[60px] w-full group-hover:scale-110 transition-transform">
                 {result || "..."}
               </div>
               <p className="text-[10px] opacity-0 group-hover:opacity-50 mt-2 uppercase tracking-widest">
@@ -4458,7 +4568,7 @@
         const { t } = useLang();
         return (
           <div className="max-w-4xl mx-auto py-12 md:py-20 animate-in fade-in duration-700">
-            <div className="glass-card p-8 md:p-12 rounded-3xl space-y-12">
+            <div className="glass-card links-page p-8 md:p-12 rounded-3xl space-y-12">
               <div className="text-center">
                 <h2 className="text-2xl md:text-3xl font-black tracking-tighter">
                   {t.ourProjects}
@@ -4467,11 +4577,19 @@
                 <a href="https://xqr4d.github.io/Hinata/" target="_blank">
                   <img
                     style={{ height: "70px" }}
-                    src="assets/images/hinatatransp.png"
+                    src="assets/images/darkicon/hinatatransp-dark.png"
                     alt="Hinata"
                     loading="lazy"
                     decoding="async"
-                    className="mx-auto rounded-2xl"
+                    className="mx-auto rounded-2xl icon-for-light"
+                  />
+                  <img
+                    style={{ height: "70px" }}
+                    src="assets/images/lighticon/hinatatransp-light.png"
+                    alt="Hinata"
+                    loading="lazy"
+                    decoding="async"
+                    className="mx-auto rounded-2xl icon-for-dark"
                   />
                 </a>
                 <a href="https://xqr4d.github.io/Pomodoro/" target="_blank">
@@ -4502,7 +4620,7 @@
                 <a href="https://russia.online/bipbup" target="_blank">
                   <img
                     style={{ height: "70px" }}
-                    src="assets/images/ruonline.svg"
+                    src="assets/images/projectlogo/ruonline.svg"
                     alt="Russia Online"
                     loading="lazy"
                     decoding="async"
@@ -4512,7 +4630,7 @@
                 <a href="https://gta5rp.com/ref/bipbup" target="_blank">
                   <img
                     style={{ height: "70px" }}
-                    src="assets/images/gta5rp.png"
+                    src="assets/images/projectlogo/gta5rp.png"
                     alt="GTA 5 RP"
                     loading="lazy"
                     decoding="async"
@@ -4538,11 +4656,19 @@
                 <a href="https://t.me/bipbupmanager" target="_blank">
                   <img
                     style={{ height: "300px" }}
-                    src="assets/images/qrcodecomm.png"
+                    src="assets/images/darkicon/qrcodecomm-dark.png"
                     alt="QR-код для коммерческих предложений"
                     loading="lazy"
                     decoding="async"
-                    className="mx-auto rounded-2xl"
+                    className="mx-auto rounded-2xl qr-for-light"
+                  />
+                  <img
+                    style={{ height: "300px" }}
+                    src="assets/images/lighticon/qrcodecomm-light.png"
+                    alt="QR-код для коммерческих предложений"
+                    loading="lazy"
+                    decoding="async"
+                    className="mx-auto rounded-2xl qr-for-dark"
                   />
                 </a>
               </div>
@@ -4562,7 +4688,7 @@
                 </h3>
                 <p>
                   <img
-                    style={{ height: "300px" }}
+                    style={{ width: "100%", maxWidth: "640px", height: "auto" }}
                     src="assets/images/settings.png"
                     alt="Settings"
                     loading="lazy"
@@ -4773,13 +4899,24 @@
                         <img
                           src={
                             p === "youtube"
-                              ? "assets/images/yt.png"
+                              ? "assets/images/darkicon/yt-dark.png"
                               : p === "vk"
-                                ? "assets/images/vk.webp"
-                                : "assets/images/hinatatransp.png"
+                                ? "assets/images/darkicon/vk-dark.png"
+                                : "assets/images/darkicon/hinatatransp-dark.png"
                           }
                           alt=""
-                          className="player-option-icon"
+                          className="player-option-icon icon-for-light"
+                        />
+                        <img
+                          src={
+                            p === "youtube"
+                              ? "assets/images/lighticon/yt-light.png"
+                              : p === "vk"
+                                ? "assets/images/lighticon/vk-light.webp"
+                                : "assets/images/lighticon/hinatatransp-light.png"
+                          }
+                          alt=""
+                          className="player-option-icon icon-for-dark"
                         />
                       </span>
                       {playerLabels[p]}
@@ -4797,10 +4934,18 @@
               >
                 <div className="player-companion-logo">
                   <img
-                    src="assets/images/tg.png"
+                    src="assets/images/darkicon/tg-dark.png"
                     alt="Telegram канал"
                     loading="lazy"
                     decoding="async"
+                    className="icon-for-light"
+                  />
+                  <img
+                    src="assets/images/lighticon/tg-light.png"
+                    alt="Telegram канал"
+                    loading="lazy"
+                    decoding="async"
+                    className="icon-for-dark"
                   />
                 </div>
                 <div>
@@ -4818,10 +4963,18 @@
               >
                 <div className="player-companion-logo">
                   <img
-                    src="assets/images/hinatatransp.png"
+                    src="assets/images/darkicon/hinatatransp-dark.png"
                     alt="Hinata"
                     loading="lazy"
                     decoding="async"
+                    className="icon-for-light"
+                  />
+                  <img
+                    src="assets/images/lighticon/hinatatransp-light.png"
+                    alt="Hinata"
+                    loading="lazy"
+                    decoding="async"
+                    className="icon-for-dark"
                   />
                 </div>
                 <div>
@@ -6869,7 +7022,7 @@
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-xl text-[11px] uppercase tracking-widest font-bold bg-red-600"
+                    className="w-full py-4 rounded-xl text-[11px] uppercase tracking-widest font-bold bg-red-600 text-white"
                   >
                     {t.deleteBtn}
                   </button>
@@ -9245,9 +9398,9 @@
 
       const ProjectIcon = ({ name }) => {
         const projectImages = {
-          gta5rp: "assets/images/gta5rp.png",
-          russiaonline: "assets/images/ruonline.svg",
-          majestic: "assets/images/majestic.png",
+          gta5rp: "assets/images/projectlogo/gta5rp.png",
+          russiaonline: "assets/images/projectlogo/ruonline.svg",
+          majestic: "assets/images/projectlogo/majestic.png",
         };
 
         if (projectImages[name]) {
@@ -9625,7 +9778,7 @@
                             );
                           })}
                       </nav>
-                      <div className="mt-4 flex justify-center">
+                      <div className="mt-4 mobile-lang-wrap">
                         <LangSwitcher lang={lang} setLang={setLang} />
                       </div>
                     </div>
@@ -9673,11 +9826,18 @@
                         aria-label="VK"
                       >
                         <img
-                          src="assets/images/vk.webp"
+                          src="assets/images/darkicon/vk-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/vk-light.webp"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9688,11 +9848,18 @@
                         aria-label="VK резерв"
                       >
                         <img
-                          src="assets/images/vkrezerv.webp"
+                          src="assets/images/darkicon/vkrezerv-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/vkrezerv-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9703,11 +9870,18 @@
                         aria-label="Telegram"
                       >
                         <img
-                          src="assets/images/tg.png"
+                          src="assets/images/darkicon/tg-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/tg-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9718,11 +9892,18 @@
                         aria-label="Telegram чат"
                       >
                         <img
-                          src="assets/images/tgchat.png"
+                          src="assets/images/darkicon/tgchat-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/tgchat-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9733,11 +9914,18 @@
                         aria-label="Discord"
                       >
                         <img
-                          src="assets/images/ds.png"
+                          src="assets/images/darkicon/ds-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/ds-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9748,11 +9936,18 @@
                         aria-label="Twitch"
                       >
                         <img
-                          src="assets/images/twitch.png"
+                          src="assets/images/darkicon/twitch-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/twitch-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9763,11 +9958,18 @@
                         aria-label="YouTube"
                       >
                         <img
-                          src="assets/images/yt.png"
+                          src="assets/images/darkicon/yt-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/yt-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                       <a
@@ -9778,11 +9980,18 @@
                         aria-label="TikTok"
                       >
                         <img
-                          src="assets/images/tt.png"
+                          src="assets/images/darkicon/tt-dark.png"
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          className="h-6 w-6 social-img"
+                          className="h-6 w-6 social-img social-img-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/tt-light.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="h-6 w-6 social-img social-img-for-dark"
                         />
                       </a>
                     </div>
