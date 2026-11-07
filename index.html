@@ -3252,6 +3252,759 @@
       [data-theme="dark"] .icon-for-dark {
         display: block;
       }
+      .lk-role.is-tech {
+        border-color: color-mix(in srgb, #3b9eff 45%, var(--border));
+        background: color-mix(in srgb, #3b9eff 14%, transparent);
+        color: #3b9eff;
+      }
+
+      .tk-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+
+      .tk-modal {
+        width: min(100%, 640px);
+        max-height: calc(100dvh - 32px);
+        overflow-y: auto;
+        padding: 20px;
+        border-radius: 24px;
+        background: var(--glass);
+        color: var(--text);
+        border: 1px solid var(--border);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      }
+
+      .tk-modal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .tk-tabs,
+      .tk-filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tk-filters {
+        margin-bottom: 16px;
+      }
+
+      .tk-tab,
+      .tk-filter {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+        color: var(--text-secondary);
+        font:
+          700 10px/1 "Unbounded",
+          sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .tk-tab.active,
+      .tk-filter.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .tk-tab.active,
+      [data-theme="dark"] .tk-filter.active {
+        color: #000000;
+      }
+
+      .tk-close {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .tk-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .tk-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .tk-field-inline {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tk-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      .tk-input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+        color: var(--text);
+        font:
+          500 13px/1.4 "Unbounded",
+          sans-serif;
+        outline: none;
+      }
+
+      .tk-input:focus {
+        border-color: var(--accent);
+      }
+
+      .tk-input[readonly] {
+        opacity: 0.7;
+      }
+
+      .tk-textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      .tk-select {
+        width: auto;
+        min-width: 160px;
+      }
+
+      .tk-file {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px dashed var(--border);
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+
+      .tk-file:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .tk-choice {
+        display: flex;
+        gap: 8px;
+      }
+
+      .tk-choice-btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+        color: var(--text);
+        font:
+          700 11px/1 "Unbounded",
+          sans-serif;
+        cursor: pointer;
+      }
+
+      .tk-choice-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .tk-choice-btn.active {
+        color: #000000;
+      }
+
+      .tk-error {
+        margin: 0;
+        font-size: 11px;
+        color: #ff5c5c;
+      }
+
+      .tk-notice {
+        margin: 0 0 12px;
+        font-size: 11px;
+        color: var(--accent);
+      }
+
+      .tk-submit,
+      .tk-send,
+      .tk-action {
+        padding: 12px 18px;
+        border-radius: 14px;
+        font:
+          700 10px/1 "Unbounded",
+          sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .tk-submit:disabled,
+      .tk-send:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .tk-form .tk-submit {
+        width: 100%;
+      }
+
+      .tk-action {
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+        color: var(--text);
+      }
+
+      .tk-send {
+        border: none;
+        background: var(--accent);
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .tk-send {
+        color: #000000;
+      }
+
+      .tk-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 24px;
+        max-height: 70vh;
+        overflow-y: auto;
+        min-width: 0;
+      }
+
+      .tk-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px;
+        text-align: left;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.05);
+        color: var(--text);
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+        min-width: 0;
+      }
+
+      .tk-item:hover,
+      .tk-item.active {
+        border-color: var(--accent);
+      }
+
+      .tk-item-nick {
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tk-item-text {
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+      }
+
+      .tk-item-date {
+        font-size: 9px;
+        color: var(--text-secondary);
+        letter-spacing: 0.06em;
+      }
+
+      .tk-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tk-badge {
+        padding: 5px 9px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      .tk-badge.status-in_progress,
+      .tk-badge.info {
+        border-color: #3b9eff;
+        color: #3b9eff;
+      }
+
+      .tk-badge.status-solved {
+        border-color: #00c46a;
+        color: #00c46a;
+      }
+
+      .tk-badge.status-unsolved,
+      .tk-badge.warn {
+        border-color: #ff9f1c;
+        color: #ff9f1c;
+      }
+
+      .tk-badge.status-unsolved {
+        border-color: #ff5c5c;
+        color: #ff5c5c;
+      }
+
+      .tk-split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .tk-split:not(.tk-split-support).has-selected .tk-list {
+        display: none;
+      }
+
+      .tk-split:not(.tk-split-support):not(.has-selected) .tk-detail {
+        display: none;
+      }
+
+      .tk-detail {
+        min-width: 0;
+        padding: 18px;
+        border-radius: 24px;
+        min-height: 300px;
+      }
+
+      .tk-detail-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .tk-back {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--accent);
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+        color: var(--accent);
+        font:
+          700 10px/1 "Unbounded",
+          sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .tk-back:hover {
+        background: color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+
+      .tk-detail-nick {
+        font-size: 15px;
+        font-weight: 900;
+        word-break: break-word;
+      }
+
+      .tk-detail-meta {
+        font-size: 10px;
+        color: var(--text-secondary);
+        word-break: break-all;
+      }
+
+      .tk-detail-text {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .tk-screenshot-link {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .tk-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+      }
+
+      .tk-controls-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .tk-assigned {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+
+      .tk-thread {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .tk-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 45vh;
+        overflow-y: auto;
+        padding: 4px;
+      }
+
+      .tk-msg {
+        align-self: flex-start;
+        max-width: 85%;
+        padding: 10px 12px;
+        border-radius: 16px 16px 16px 4px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.08);
+      }
+
+      .tk-msg.is-support {
+        border-color: color-mix(in srgb, #3b9eff 45%, var(--border));
+      }
+
+      .tk-msg.mine {
+        align-self: flex-end;
+        border-radius: 16px 16px 4px 16px;
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+      }
+
+      .tk-msg-meta {
+        margin-bottom: 4px;
+        font-size: 9px;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+      }
+
+      .tk-msg-text {
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .tk-reply {
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+      }
+
+      .tk-reply .tk-input {
+        flex: 1;
+      }
+
+      .tk-closed-notice,
+      .tk-empty {
+        margin: 0;
+        padding: 24px 8px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-align: center;
+      }
+
+      .tk-page-msg {
+        padding: 60px 16px;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      @media (min-width: 900px) {
+        .tk-split-support {
+          grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+          gap: 16px;
+        }
+      }
+
+      @media (max-width: 899px) {
+        .tk-split-support.has-selected .tk-list {
+          display: none;
+        }
+
+        .tk-split-support:not(.has-selected) .tk-detail {
+          display: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .tk-overlay {
+          padding: 0;
+          align-items: flex-end;
+        }
+
+        .tk-modal {
+          width: 100%;
+          max-height: 92dvh;
+          border-radius: 24px 24px 0 0;
+          padding: 16px;
+        }
+
+        .tk-msg {
+          max-width: 92%;
+        }
+
+        .tk-detail {
+          padding: 14px;
+        }
+
+        .tk-select {
+          min-width: 0;
+          width: 100%;
+        }
+      }
+
+      .tk-controls {
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+      }
+
+      [data-theme="dark"] .tk-controls {
+        background: rgba(0, 0, 0, 0.35);
+      }
+
+      .tk-danger {
+        border-color: #ff5c5c;
+        background: rgba(255, 92, 92, 0.12);
+        color: #ff5c5c;
+      }
+
+      .tk-select option {
+        background: #ffffff;
+        color: #000000;
+      }
+
+      [data-theme="dark"] .tk-select {
+        color-scheme: dark;
+      }
+
+      [data-theme="dark"] .tk-select option {
+        background: #101a15;
+        color: #ffffff;
+      }
+
+      .tk-modal-head {
+        position: sticky;
+        top: -16px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: -4px -4px 16px;
+        padding: 4px;
+        background: var(--glass);
+      }
+
+      .tk-tabs {
+        flex: 1 1 auto;
+        min-width: 0;
+        flex-wrap: nowrap;
+      }
+
+      .tk-tab {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .tk-close {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: static;
+        margin: 0;
+      }
+
+      .tk-close svg {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .recent-accounts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0 0 28px;
+      }
+
+      .recent-title {
+        margin: 0;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      .recent-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 8px;
+      }
+
+      .recent-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: rgba(128, 128, 128, 0.06);
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .recent-card:hover,
+      .recent-card.active {
+        border-color: var(--accent);
+      }
+
+      .recent-card.active {
+        background: color-mix(in srgb, var(--accent) 10%, transparent);
+      }
+
+      .recent-pick {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: none;
+        background: none;
+        color: var(--text);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .recent-avatar {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      [data-theme="dark"] .recent-avatar {
+        color: #000000;
+      }
+
+      .recent-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .recent-meta {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .recent-name {
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .recent-email {
+        font-size: 10px;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .recent-remove {
+        flex: 0 0 28px;
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+      }
+
+      .recent-remove:hover {
+        color: #ff5c5c;
+        border-color: #ff5c5c;
+      }
+
+      .recent-hint {
+        margin: 0;
+        font-size: 10px;
+        color: var(--text-secondary);
+      }
     </style>
   </head>
   <body>
@@ -4989,8 +5742,69 @@
         );
       };
 
+      const AUTH_TEXT = {
+        ru: {
+          recentTitle: "Недавние аккаунты",
+          removeAccount: "Убрать из списка",
+          pickHint: "Выберите аккаунт и введите пароль",
+        },
+        en: {
+          recentTitle: "Recent accounts",
+          removeAccount: "Remove from list",
+          pickHint: "Pick an account and enter your password",
+        },
+      };
+
+      const RECENT_COOKIE = "bipbup_recent_accounts";
+      const MAX_RECENT_ACCOUNTS = 3;
+
+      const readRecentAccounts = () => {
+        try {
+          const entry = document.cookie
+            .split("; ")
+            .find((c) => c.startsWith(RECENT_COOKIE + "="));
+          if (!entry) return [];
+          const parsed = JSON.parse(
+            decodeURIComponent(entry.slice(RECENT_COOKIE.length + 1)),
+          );
+          return Array.isArray(parsed)
+            ? parsed.slice(0, MAX_RECENT_ACCOUNTS)
+            : [];
+        } catch (err) {
+          return [];
+        }
+      };
+
+      const writeRecentAccounts = (list) => {
+        const value = encodeURIComponent(
+          JSON.stringify(list.slice(0, MAX_RECENT_ACCOUNTS)),
+        );
+        const secure = location.protocol === "https:" ? "; Secure" : "";
+        document.cookie = `${RECENT_COOKIE}=${value}; Max-Age=${60 * 60 * 24 * 60}; Path=/; SameSite=Lax${secure}`;
+      };
+
+      const rememberAccount = (u) => {
+        if (!u?.email) return;
+        const entry = {
+          uid: u.uid,
+          email: u.email,
+          name: u.displayName || u.email.split("@")[0],
+          photo: u.photoURL || "",
+        };
+        const rest = readRecentAccounts().filter(
+          (a) => a.uid !== u.uid && a.email !== u.email,
+        );
+        writeRecentAccounts([entry, ...rest]);
+      };
+
+      const forgetAccount = (uid) => {
+        writeRecentAccounts(readRecentAccounts().filter((a) => a.uid !== uid));
+      };
+
       const Login = ({ navigate }) => {
-        const { t } = useLang();
+        const { t, lang } = useLang();
+        const ax = AUTH_TEXT[lang] || AUTH_TEXT.en;
+        const [recent, setRecent] = useState(readRecentAccounts);
         const [mode, setMode] = useState("login");
         const [email, setEmail] = useState("");
         const [pass, setPass] = useState("");
@@ -5049,7 +5863,12 @@
               ? auth.signInWithEmailAndPassword(email, pass)
               : auth.createUserWithEmailAndPassword(email, pass);
 
-          promise.then(() => navigate("lk")).catch((e) => alert(e.message));
+          promise
+            .then((cred) => {
+              rememberAccount(cred.user);
+              navigate("lk");
+            })
+            .catch((e) => alert(e.message));
         };
 
         const handleGoogleLogin = async () => {
@@ -5058,7 +5877,10 @@
           const provider = new firebase.auth.GoogleAuthProvider();
           auth
             .signInWithPopup(provider)
-            .then(() => navigate("lk"))
+            .then((cred) => {
+              rememberAccount(cred.user);
+              navigate("lk");
+            })
             .catch((e) => alert(e.message));
         };
 
@@ -5068,7 +5890,10 @@
           const provider = new firebase.auth.GithubAuthProvider();
           auth
             .signInWithPopup(provider)
-            .then(() => navigate("lk"))
+            .then((cred) => {
+              rememberAccount(cred.user);
+              navigate("lk");
+            })
             .catch((e) => alert(e.message));
         };
 
@@ -5083,21 +5908,27 @@
             .catch((e) => alert(e.message));
         };
 
+        const authArtName = {
+          login: "wave",
+          register: "add-user",
+          reset: "lock",
+        }[authArtMode];
+
         return (
           <div className="auth-page">
             <div id="recaptcha-container"></div>
             <div className="auth-layout">
               <section className="auth-intro">
                 <img
-                  className="auth-intro-art auth-intro-art-dark"
-                  src={`assets/images/auth-${authArtMode}-static.png`}
+                  className="auth-intro-art icon-for-light"
+                  src={`assets/images/darkicon/${authArtName}-dark.png`}
                   alt=""
                   aria-hidden="true"
                   decoding="async"
                 />
                 <img
-                  className="auth-intro-art auth-intro-art-light"
-                  src={`assets/images/auth-${authArtMode}-light.png`}
+                  className="auth-intro-art icon-for-dark"
+                  src={`assets/images/lighticon/${authArtName}-light.png`}
                   alt=""
                   aria-hidden="true"
                   decoding="async"
@@ -5195,6 +6026,66 @@
                       : t.authCardHint}
                 </p>
 
+                {mode === "login" && recent.length > 0 && (
+                  <div className="recent-accounts">
+                    <p className="recent-title">{ax.recentTitle}</p>
+                    <div className="recent-list">
+                      {recent.map((a) => (
+                        <div
+                          key={a.uid}
+                          className={`recent-card${email === a.email ? " active" : ""}`}
+                        >
+                          <button
+                            type="button"
+                            className="recent-pick"
+                            onClick={() => {
+                              setEmail(a.email);
+                              setPass("");
+                            }}
+                          >
+                            <span className="recent-avatar">
+                              {a.photo ? (
+                                <img src={a.photo} alt="" />
+                              ) : (
+                                (a.name[0] || "?").toUpperCase()
+                              )}
+                            </span>
+                            <span className="recent-meta">
+                              <span className="recent-name">{a.name}</span>
+                              <span className="recent-email">{a.email}</span>
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            className="recent-remove"
+                            aria-label={ax.removeAccount}
+                            title={ax.removeAccount}
+                            onClick={() => {
+                              forgetAccount(a.uid);
+                              setRecent(readRecentAccounts());
+                            }}
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              aria-hidden="true"
+                            >
+                              <path d="M18 6 6 18" />
+                              <path d="m6 6 12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="recent-hint">{ax.pickHint}</p>
+                  </div>
+                )}
+
                 {mode === "reset" ? (
                   <form
                     onSubmit={handleReset}
@@ -5206,6 +6097,7 @@
                         type="email"
                         placeholder="alex@example.com"
                         className="w-full"
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                       />
@@ -5235,6 +6127,7 @@
                           type="email"
                           placeholder="alex@example.com"
                           className="w-full"
+                          value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
                         />
@@ -5247,6 +6140,7 @@
                             type={showPass ? "text" : "password"}
                             placeholder="Example123!"
                             className="w-full pr-12"
+                            value={pass}
                             onChange={(e) => setPass(e.target.value)}
                             required
                           />
@@ -6662,7 +7556,7 @@
                     <h2 className="lk-name">{displayName}</h2>
                     <p className="lk-email">{user.email}</p>
                     <div
-                      className={`lk-role${isAdmin || ADMINS.includes(user.uid) ? " is-admin" : ""}`}
+                      className={`lk-role${isAdmin || ADMINS.includes(user.uid) ? " is-admin" : isTechSupport ? " is-tech" : ""}`}
                     >
                       {isAdmin || ADMINS.includes(user.uid)
                         ? t.roleAdmin
@@ -6771,6 +7665,7 @@
                     </span>
                   </button>
                 )}
+                <TicketsEntryButton user={user} navigate={navigate} />
                 <button
                   onClick={() => auth.signOut().then(() => navigate("home"))}
                   className="lk-quick-btn danger"
@@ -6823,7 +7718,16 @@
                   <div className="lk-slots">
                     <div className="lk-slot">
                       <div className="lk-slot-index">
-                        <img src="assets/images/yt.png" alt="" />
+                        <img
+                          src="assets/images/darkicon/yt-dark.png"
+                          alt=""
+                          className="icon-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/yt-light.png"
+                          alt=""
+                          className="icon-for-dark"
+                        />
                       </div>
                       <div>
                         <div className="lk-slot-title">YouTube</div>
@@ -6838,7 +7742,16 @@
                     </div>
                     <div className="lk-slot">
                       <div className="lk-slot-index">
-                        <img src="assets/images/vk.webp" alt="" />
+                        <img
+                          src="assets/images/darkicon/vk-dark.png"
+                          alt=""
+                          className="icon-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/vk-light.webp"
+                          alt=""
+                          className="icon-for-dark"
+                        />
                       </div>
                       <div>
                         <div className="lk-slot-title">VK Video</div>
@@ -6853,7 +7766,16 @@
                     </div>
                     <div className="lk-slot">
                       <div className="lk-slot-index">
-                        <img src="assets/images/hinatatransp.png" alt="" />
+                        <img
+                          src="assets/images/darkicon/hinatatransp-dark.png"
+                          alt=""
+                          className="icon-for-light"
+                        />
+                        <img
+                          src="assets/images/lighticon/hinatatransp-light.png"
+                          alt=""
+                          className="icon-for-dark"
+                        />
                       </div>
                       <div>
                         <div className="lk-slot-title">Hinata</div>
@@ -7459,6 +8381,892 @@
         );
       };
 
+      const TICKET_TEXT = {
+        ru: {
+          footerLabel: "Поддержка",
+          pageTitle: "Тикеты",
+          tabNew: "Новый тикет",
+          tabMine: "Мои тикеты",
+          nickname: "Никнейм",
+          email: "Почта",
+          issue: "Суть обращения",
+          issuePh: "Опишите проблему как можно подробнее",
+          screenshot: "Скриншот проблемы (необязательно)",
+          screenshotPick: "Прикрепить изображение",
+          screenshotReady: "Изображение прикреплено",
+          blocking: "Мешает ли эта проблема работе сайта?",
+          yes: "Да",
+          no: "Нет",
+          submit: "Отправить тикет",
+          sending: "Отправка...",
+          sent: "Тикет отправлен. Ответ появится во вкладке «Мои тикеты».",
+          errText: "Опишите проблему.",
+          errBlocking: "Выберите, мешает ли проблема работе сайта.",
+          errSend: "Не удалось отправить. Попробуйте ещё раз.",
+          loginNeeded: "Войдите в аккаунт, чтобы отправить тикет.",
+          noTickets: "Тикетов пока нет.",
+          back: "Назад",
+          closeTicket: "Закрыть тикет",
+          reopen: "Открыть снова",
+          accept: "Принять тикет",
+          acceptedBy: "Принял",
+          unassigned: "Не принят",
+          status: "Статус",
+          stNew: "Новый",
+          stProgress: "В работе",
+          stSolved: "Решён",
+          stUnsolved: "Не решён",
+          awaitingUser: "Ждём ответа пользователя",
+          awaitingSupport: "Ждём ответа поддержки",
+          yourTurn: "Поддержка ответила — ваш ход",
+          closedBadge: "Закрыт",
+          blockingYes: "Мешает работе",
+          blockingNo: "Не мешает работе",
+          replyPh: "Написать сообщение...",
+          send: "Отправить",
+          closedNotice: "Тикет закрыт. Ответы недоступны.",
+          support: "Поддержка",
+          filterAll: "Все",
+          filterNew: "Новые",
+          filterProgress: "В работе",
+          filterSolved: "Решённые",
+          filterUnsolved: "Не решённые",
+          filterAwaiting: "Ждут ответа",
+          noAccess: "Раздел доступен только технической поддержке.",
+          openScreenshot: "Открыть скриншот",
+          openTickets: "Тикеты",
+          openTicketsHint: "Обращения пользователей",
+          authorYou: "Вы",
+        },
+        en: {
+          footerLabel: "Support",
+          pageTitle: "Tickets",
+          tabNew: "New ticket",
+          tabMine: "My tickets",
+          nickname: "Nickname",
+          email: "Email",
+          issue: "Describe the issue",
+          issuePh: "Describe the problem in as much detail as you can",
+          screenshot: "Screenshot (optional)",
+          screenshotPick: "Attach image",
+          screenshotReady: "Image attached",
+          blocking: "Does this problem stop the site from working?",
+          yes: "Yes",
+          no: "No",
+          submit: "Send ticket",
+          sending: "Sending...",
+          sent: "Ticket sent. Replies will appear under My tickets.",
+          errText: "Describe the problem.",
+          errBlocking: "Choose whether the problem blocks the site.",
+          errSend: "Could not send. Please try again.",
+          loginNeeded: "Log in to send a ticket.",
+          noTickets: "No tickets yet.",
+          back: "Back",
+          closeTicket: "Close ticket",
+          reopen: "Reopen",
+          accept: "Accept ticket",
+          acceptedBy: "Accepted by",
+          unassigned: "Not accepted",
+          status: "Status",
+          stNew: "New",
+          stProgress: "In progress",
+          stSolved: "Solved",
+          stUnsolved: "Not solved",
+          awaitingUser: "Waiting for the user",
+          awaitingSupport: "Waiting for support",
+          yourTurn: "Support replied — your turn",
+          closedBadge: "Closed",
+          blockingYes: "Blocks the site",
+          blockingNo: "Does not block",
+          replyPh: "Write a message...",
+          send: "Send",
+          closedNotice: "Ticket is closed. Replies are unavailable.",
+          support: "Support",
+          filterAll: "All",
+          filterNew: "New",
+          filterProgress: "In progress",
+          filterSolved: "Solved",
+          filterUnsolved: "Not solved",
+          filterAwaiting: "Awaiting reply",
+          noAccess: "This section is available to technical support only.",
+          openScreenshot: "Open screenshot",
+          openTickets: "Tickets",
+          openTicketsHint: "User requests",
+          authorYou: "You",
+        },
+      };
+      TICKET_TEXT.ja = TICKET_TEXT.en;
+      TICKET_TEXT.de = TICKET_TEXT.en;
+      TICKET_TEXT.fr = TICKET_TEXT.en;
+
+      const tkText = (lang) => TICKET_TEXT[lang] || TICKET_TEXT.en;
+      const ticketNick = (u) =>
+        u?.displayName || u?.email?.split("@")[0] || "User";
+      const ticketFmtDate = (ts, lang) => {
+        if (!ts) return "";
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        const locale =
+          lang === "ru"
+            ? "ru-RU"
+            : lang === "ja"
+              ? "ja-JP"
+              : lang === "de"
+                ? "de-DE"
+                : lang === "fr"
+                  ? "fr-FR"
+                  : "en-US";
+        return d.toLocaleString(locale, {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      };
+      const ticketUpload = async (file) => {
+        const fd = new FormData();
+        fd.append("image", file);
+        const res = await fetch(
+          "https://api.imgbb.com/1/upload?key=fac7e04a7bdbc05013b7483b33eae743",
+          { method: "POST", body: fd },
+        );
+        const data = await res.json();
+        return data.data.url;
+      };
+      const ticketStatusLabel = (tx, status) =>
+        status === "in_progress"
+          ? tx.stProgress
+          : status === "solved"
+            ? tx.stSolved
+            : status === "unsolved"
+              ? tx.stUnsolved
+              : tx.stNew;
+
+      const useSupportRole = (user) => {
+        const [role, setRole] = React.useState({
+          loaded: false,
+          isSupport: false,
+        });
+        React.useEffect(() => {
+          if (!user?.uid) {
+            setRole({ loaded: true, isSupport: false });
+            return undefined;
+          }
+          if (ADMINS.includes(user.uid)) {
+            setRole({ loaded: true, isSupport: true });
+            return undefined;
+          }
+          let cancelled = false;
+          db.collection("users")
+            .doc(user.uid)
+            .get()
+            .then((doc) => {
+              if (cancelled) return;
+              setRole({
+                loaded: true,
+                isSupport: doc.exists && doc.data().role === "tech_support",
+              });
+            })
+            .catch(() => {
+              if (!cancelled) setRole({ loaded: true, isSupport: false });
+            });
+          return () => {
+            cancelled = true;
+          };
+        }, [user?.uid]);
+        return role;
+      };
+
+      const TicketForm = ({ user, tx, lang, onSent }) => {
+        const [text, setText] = React.useState("");
+        const [blocking, setBlocking] = React.useState(null);
+        const [file, setFile] = React.useState(null);
+        const [busy, setBusy] = React.useState(false);
+        const [err, setErr] = React.useState("");
+
+        const submit = async (e) => {
+          e.preventDefault();
+          if (!text.trim()) return setErr(tx.errText);
+          if (blocking === null) return setErr(tx.errBlocking);
+          setBusy(true);
+          setErr("");
+          try {
+            let screenshotUrl = "";
+            if (file) screenshotUrl = await ticketUpload(file);
+            await db.collection("tickets").add({
+              uid: user.uid,
+              nickname: ticketNick(user),
+              email: user.email || "",
+              text: text.trim(),
+              screenshotUrl,
+              blocking,
+              status: "new",
+              closed: false,
+              awaitingUser: false,
+              assignedTo: null,
+              assignedName: "",
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+            setText("");
+            setBlocking(null);
+            setFile(null);
+            onSent();
+          } catch (ex) {
+            console.error(ex);
+            setErr(tx.errSend);
+          } finally {
+            setBusy(false);
+          }
+        };
+
+        return (
+          <form onSubmit={submit} className="tk-form">
+            <label className="tk-field">
+              <span className="tk-label">{tx.nickname}</span>
+              <input className="tk-input" value={ticketNick(user)} readOnly />
+            </label>
+            <label className="tk-field">
+              <span className="tk-label">{tx.email}</span>
+              <input className="tk-input" value={user.email || ""} readOnly />
+            </label>
+            <label className="tk-field">
+              <span className="tk-label">{tx.issue}</span>
+              <textarea
+                className="tk-input tk-textarea"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={tx.issuePh}
+                rows={5}
+              />
+            </label>
+            <div className="tk-field">
+              <span className="tk-label">{tx.screenshot}</span>
+              <label className="tk-file">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => setFile(e.target.files[0] || null)}
+                />
+                <span>{file ? tx.screenshotReady : tx.screenshotPick}</span>
+              </label>
+            </div>
+            <div className="tk-field">
+              <span className="tk-label">{tx.blocking}</span>
+              <div className="tk-choice">
+                <button
+                  type="button"
+                  onClick={() => setBlocking(true)}
+                  className={`tk-choice-btn${blocking === true ? " active" : ""}`}
+                >
+                  {tx.yes}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBlocking(false)}
+                  className={`tk-choice-btn${blocking === false ? " active" : ""}`}
+                >
+                  {tx.no}
+                </button>
+              </div>
+            </div>
+            {err && <p className="tk-error">{err}</p>}
+            <button
+              type="submit"
+              disabled={busy}
+              className="btn-primary tk-submit"
+            >
+              {busy ? tx.sending : tx.submit}
+            </button>
+          </form>
+        );
+      };
+
+      const TicketThread = ({ ticket, user, isSupport, tx, lang }) => {
+        const [messages, setMessages] = React.useState([]);
+        const [text, setText] = React.useState("");
+        const [sending, setSending] = React.useState(false);
+        const listRef = React.useRef(null);
+
+        React.useEffect(() => {
+          const unsub = db
+            .collection("tickets")
+            .doc(ticket.id)
+            .collection("messages")
+            .orderBy("createdAt", "asc")
+            .onSnapshot(
+              (snap) =>
+                setMessages(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              (err) => console.error(err),
+            );
+          return () => unsub();
+        }, [ticket.id]);
+
+        React.useEffect(() => {
+          if (listRef.current)
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+        }, [messages.length]);
+
+        const send = async (e) => {
+          e.preventDefault();
+          const value = text.trim();
+          if (!value || ticket.closed) return;
+          setSending(true);
+          try {
+            const ref = db.collection("tickets").doc(ticket.id);
+            await ref.collection("messages").add({
+              authorId: user.uid,
+              authorRole: isSupport ? "support" : "user",
+              authorName: isSupport ? tx.support : ticketNick(user),
+              text: value,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+            await ref.update({
+              awaitingUser: isSupport,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+            setText("");
+          } catch (err) {
+            console.error(err);
+            alert(tx.errSend);
+          } finally {
+            setSending(false);
+          }
+        };
+
+        return (
+          <div className="tk-thread">
+            <div className="tk-messages" ref={listRef}>
+              {messages.map((m) => {
+                const mine = m.authorId === user.uid;
+                return (
+                  <div
+                    key={m.id}
+                    className={`tk-msg${mine ? " mine" : ""}${m.authorRole === "support" ? " is-support" : ""}`}
+                  >
+                    <div className="tk-msg-meta">
+                      {m.authorRole === "support"
+                        ? tx.support
+                        : mine
+                          ? tx.authorYou
+                          : m.authorName}
+                      {" · "}
+                      {ticketFmtDate(m.createdAt, lang)}
+                    </div>
+                    <div className="tk-msg-text">{m.text}</div>
+                  </div>
+                );
+              })}
+            </div>
+            {ticket.closed ? (
+              <p className="tk-closed-notice">{tx.closedNotice}</p>
+            ) : (
+              <form onSubmit={send} className="tk-reply">
+                <textarea
+                  className="tk-input tk-textarea"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder={tx.replyPh}
+                  rows={2}
+                />
+                <button
+                  type="submit"
+                  disabled={sending || !text.trim()}
+                  className="btn-primary tk-send"
+                >
+                  {tx.send}
+                </button>
+              </form>
+            )}
+          </div>
+        );
+      };
+
+      const TicketBadges = ({ ticket, tx, viewer }) => (
+        <div className="tk-badges">
+          <span className={`tk-badge status-${ticket.status || "new"}`}>
+            {ticketStatusLabel(tx, ticket.status)}
+          </span>
+          {ticket.closed && <span className="tk-badge">{tx.closedBadge}</span>}
+          <span className={`tk-badge${ticket.blocking ? " warn" : ""}`}>
+            {ticket.blocking ? tx.blockingYes : tx.blockingNo}
+          </span>
+          {!ticket.closed && viewer === "support" && ticket.awaitingUser && (
+            <span className="tk-badge info">{tx.awaitingUser}</span>
+          )}
+          {!ticket.closed && viewer !== "support" && ticket.awaitingUser && (
+            <span className="tk-badge info">{tx.yourTurn}</span>
+          )}
+          {!ticket.closed && viewer !== "support" && !ticket.awaitingUser && (
+            <span className="tk-badge">{tx.awaitingSupport}</span>
+          )}
+        </div>
+      );
+
+      const TicketDetailBody = ({
+        ticket,
+        user,
+        tx,
+        lang,
+        isSupport,
+        onBack,
+      }) => (
+        <div className="tk-detail-inner">
+          <button type="button" className="tk-back" onClick={onBack}>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+            <span>{tx.back}</span>
+          </button>
+          <div className="tk-detail-head">
+            <div>
+              <div className="tk-detail-nick">{ticket.nickname}</div>
+              <div className="tk-detail-meta">
+                {ticket.email} · {ticketFmtDate(ticket.createdAt, lang)}
+              </div>
+            </div>
+          </div>
+          <TicketBadges
+            ticket={ticket}
+            tx={tx}
+            viewer={isSupport ? "support" : "user"}
+          />
+          {isSupport && <SupportControls ticket={ticket} user={user} tx={tx} />}
+          <p className="tk-detail-text">{ticket.text}</p>
+          {ticket.screenshotUrl && (
+            <a
+              href={ticket.screenshotUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tk-screenshot-link"
+            >
+              {tx.openScreenshot}
+            </a>
+          )}
+          <TicketThread
+            ticket={ticket}
+            user={user}
+            isSupport={isSupport}
+            tx={tx}
+            lang={lang}
+          />
+        </div>
+      );
+
+      const SupportControls = ({ ticket, user, tx }) => {
+        const update = (data) =>
+          db
+            .collection("tickets")
+            .doc(ticket.id)
+            .update({
+              ...data,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            .catch((err) => {
+              console.error(err);
+              alert(tx.errSend);
+            });
+
+        const accept = () =>
+          update({
+            status: ticket.status === "new" ? "in_progress" : ticket.status,
+            assignedTo: user.uid,
+            assignedName: ticketNick(user),
+          });
+
+        return (
+          <div className="tk-controls">
+            <div className="tk-controls-row">
+              {ticket.assignedTo ? (
+                <span className="tk-assigned">
+                  {tx.acceptedBy}: {ticket.assignedName}
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={accept}
+                  className="btn-primary tk-submit"
+                >
+                  {tx.accept}
+                </button>
+              )}
+            </div>
+            <div className="tk-controls-row">
+              <label className="tk-field tk-field-inline">
+                <span className="tk-label">{tx.status}</span>
+                <select
+                  className="tk-input tk-select"
+                  value={ticket.status === "new" ? "" : ticket.status}
+                  onChange={(e) => update({ status: e.target.value })}
+                >
+                  {ticket.status === "new" && (
+                    <option value="" disabled>
+                      {tx.stNew}
+                    </option>
+                  )}
+                  <option value="in_progress">{tx.stProgress}</option>
+                  <option value="solved">{tx.stSolved}</option>
+                  <option value="unsolved">{tx.stUnsolved}</option>
+                </select>
+              </label>
+              <button
+                type="button"
+                onClick={() => update({ closed: !ticket.closed })}
+                className={`tk-action${ticket.closed ? "" : " tk-danger"}`}
+              >
+                {ticket.closed ? tx.reopen : tx.closeTicket}
+              </button>
+            </div>
+          </div>
+        );
+      };
+
+      const MyTickets = ({ user, tx, lang }) => {
+        const [tickets, setTickets] = React.useState([]);
+        const [selectedId, setSelectedId] = React.useState(null);
+
+        React.useEffect(() => {
+          const unsub = db
+            .collection("tickets")
+            .where("uid", "==", user.uid)
+            .onSnapshot(
+              (snap) => {
+                const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+                list.sort((a, b) => {
+                  const ta = a.createdAt?.toMillis?.() || Date.now();
+                  const tb = b.createdAt?.toMillis?.() || Date.now();
+                  return tb - ta;
+                });
+                setTickets(list);
+              },
+              (err) => console.error(err),
+            );
+          return () => unsub();
+        }, [user.uid]);
+
+        const selected = tickets.find((t) => t.id === selectedId) || null;
+
+        if (!tickets.length) return <p className="tk-empty">{tx.noTickets}</p>;
+
+        return (
+          <div className={`tk-split${selected ? " has-selected" : ""}`}>
+            <div className="tk-list">
+              {tickets.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setSelectedId(t.id)}
+                  className={`tk-item${selectedId === t.id ? " active" : ""}`}
+                >
+                  <div className="tk-item-text">{t.text}</div>
+                  <TicketBadges ticket={t} tx={tx} viewer="user" />
+                  <div className="tk-item-date">
+                    {ticketFmtDate(t.createdAt, lang)}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="tk-detail">
+              {selected && (
+                <TicketDetailBody
+                  ticket={selected}
+                  user={user}
+                  tx={tx}
+                  lang={lang}
+                  isSupport={false}
+                  onBack={() => setSelectedId(null)}
+                />
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      const TicketModal = ({ user, tx, lang, onClose }) => {
+        const [tab, setTab] = React.useState("new");
+        const [notice, setNotice] = React.useState("");
+
+        React.useEffect(() => {
+          const onKey = (e) => {
+            if (e.key === "Escape") onClose();
+          };
+          document.addEventListener("keydown", onKey);
+          return () => document.removeEventListener("keydown", onKey);
+        }, [onClose]);
+
+        return (
+          <div
+            className="tk-overlay"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) onClose();
+            }}
+          >
+            <div className="tk-modal" role="dialog" aria-modal="true">
+              <div className="tk-modal-head">
+                <div className="tk-tabs">
+                  <button
+                    type="button"
+                    onClick={() => setTab("new")}
+                    className={`tk-tab${tab === "new" ? " active" : ""}`}
+                  >
+                    {tx.tabNew}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab("mine")}
+                    className={`tk-tab${tab === "mine" ? " active" : ""}`}
+                  >
+                    {tx.tabMine}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="tk-close"
+                  onClick={onClose}
+                  aria-label={tx.closeTicket}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+              {notice && <p className="tk-notice">{notice}</p>}
+              {tab === "new" ? (
+                <TicketForm
+                  user={user}
+                  tx={tx}
+                  lang={lang}
+                  onSent={() => {
+                    setNotice(tx.sent);
+                    setTab("mine");
+                  }}
+                />
+              ) : (
+                <MyTickets user={user} tx={tx} lang={lang} />
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      const SupportFooterLink = ({ user, navigate }) => {
+        const { lang } = useLang();
+        const tx = tkText(lang);
+        const role = useSupportRole(user);
+        const [open, setOpen] = React.useState(false);
+
+        const onClick = () => {
+          if (!user) {
+            navigate("login");
+            return;
+          }
+          if (role.loaded && role.isSupport) {
+            navigate("tickets");
+            return;
+          }
+          setOpen(true);
+        };
+
+        return (
+          <>
+            <button type="button" className="footer-link" onClick={onClick}>
+              <span className="footer-link-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4 12 12 4M5 4h7v7" />
+                </svg>
+              </span>
+              {tx.footerLabel}
+            </button>
+            {open &&
+              ReactDOM.createPortal(
+                <TicketModal
+                  user={user}
+                  tx={tx}
+                  lang={lang}
+                  onClose={() => setOpen(false)}
+                />,
+                document.body,
+              )}
+          </>
+        );
+      };
+
+      const TicketsEntryButton = ({ user, navigate }) => {
+        const { lang } = useLang();
+        const tx = tkText(lang);
+        const role = useSupportRole(user);
+        if (!role.loaded || !role.isSupport) return null;
+        return (
+          <button onClick={() => navigate("tickets")} className="lk-quick-btn">
+            <span className="lk-quick-icon" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 5h16v11H8l-4 4Z" />
+                <path d="M8 9h8M8 12h5" />
+              </svg>
+            </span>
+            <span className="lk-quick-copy">
+              <span className="lk-quick-title">{tx.openTickets}</span>
+              <span className="lk-quick-sub">{tx.openTicketsHint}</span>
+            </span>
+          </button>
+        );
+      };
+
+      const TicketsPage = ({ user, navigate }) => {
+        const { lang } = useLang();
+        const tx = tkText(lang);
+        const role = useSupportRole(user);
+        const [tickets, setTickets] = React.useState([]);
+        const [filter, setFilter] = React.useState("all");
+        const [selectedId, setSelectedId] = React.useState(null);
+
+        React.useEffect(() => {
+          if (!role.loaded || !role.isSupport) return undefined;
+          const unsub = db
+            .collection("tickets")
+            .orderBy("createdAt", "desc")
+            .onSnapshot(
+              (snap) =>
+                setTickets(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              (err) => console.error(err),
+            );
+          return () => unsub();
+        }, [role.loaded, role.isSupport]);
+
+        if (!user) {
+          return (
+            <div className="tk-page-msg">
+              <p>{tx.loginNeeded}</p>
+              <button
+                className="btn-primary tk-submit"
+                onClick={() => navigate("login")}
+              >
+                Login
+              </button>
+            </div>
+          );
+        }
+        if (!role.loaded) return <div className="tk-page-msg">…</div>;
+        if (!role.isSupport)
+          return (
+            <div className="tk-page-msg">
+              <p>{tx.noAccess}</p>
+            </div>
+          );
+
+        const filters = {
+          all: () => true,
+          new: (t) => t.status === "new",
+          in_progress: (t) => t.status === "in_progress",
+          solved: (t) => t.status === "solved",
+          unsolved: (t) => t.status === "unsolved",
+          awaiting: (t) => t.awaitingUser && !t.closed,
+        };
+        const filterLabels = {
+          all: tx.filterAll,
+          new: tx.filterNew,
+          in_progress: tx.filterProgress,
+          solved: tx.filterSolved,
+          unsolved: tx.filterUnsolved,
+          awaiting: tx.filterAwaiting,
+        };
+        const visible = tickets.filter(filters[filter]);
+        const selected = tickets.find((t) => t.id === selectedId) || null;
+
+        return (
+          <div className="max-w-6xl mx-auto py-8 md:py-12 animate-in fade-in duration-500">
+            <div className="tk-filters">
+              {Object.keys(filters).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setFilter(key)}
+                  className={`tk-filter${filter === key ? " active" : ""}`}
+                >
+                  {filterLabels[key]}
+                </button>
+              ))}
+            </div>
+            <div
+              className={`tk-split tk-split-support${selected ? " has-selected" : ""}`}
+            >
+              <div className="tk-list glass-card">
+                {visible.length === 0 && (
+                  <p className="tk-empty">{tx.noTickets}</p>
+                )}
+                {visible.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setSelectedId(t.id)}
+                    className={`tk-item${selectedId === t.id ? " active" : ""}`}
+                  >
+                    <div className="tk-item-nick">{t.nickname}</div>
+                    <div className="tk-item-text">{t.text}</div>
+                    <TicketBadges ticket={t} tx={tx} viewer="support" />
+                    <div className="tk-item-date">
+                      {ticketFmtDate(t.createdAt, lang)}
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="tk-detail glass-card">
+                {selected ? (
+                  <TicketDetailBody
+                    ticket={selected}
+                    user={user}
+                    tx={tx}
+                    lang={lang}
+                    isSupport={true}
+                    onBack={() => setSelectedId(null)}
+                  />
+                ) : (
+                  <p className="tk-empty">{tx.noTickets}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
       const routes = {
         home: { titleKey: "titleHome", component: Home },
         knowledge: { titleKey: "titleKnowledge", component: KnowledgeBase },
@@ -7471,6 +9279,7 @@
         privacy: { titleKey: "titlePrivacy", component: PrivacyPage },
         terms: { titleKey: "titleTerms", component: TermsPage },
         login: { titleKey: "titleLogin", component: Login },
+        tickets: { titleKey: "titleTickets", component: TicketsPage },
         lk: { titleKey: "titleAccount", component: Profile },
       };
 
@@ -9458,6 +11267,10 @@
         );
       };
 
+      Object.keys(TRANSLATIONS).forEach((l) => {
+        TRANSLATIONS[l].titleTickets = tkText(l).pageTitle;
+      });
+
       const App = () => {
         const [currentPage, setCurrentPage] = useState("home");
         const [user, setUser] = useState(null);
@@ -9744,9 +11557,13 @@
                         {Object.keys(routes)
                           .filter(
                             (key) =>
-                              !["login", "news", "privacy", "terms"].includes(
-                                key,
-                              ) && key !== "admin",
+                              ![
+                                "login",
+                                "news",
+                                "privacy",
+                                "terms",
+                                "tickets",
+                              ].includes(key) && key !== "admin",
                           )
                           .map((key) => {
                             const navKeyMap = {
@@ -10032,24 +11849,7 @@
                         </span>
                         {t.terms}
                       </button>
-                      <a
-                        href="mailto:bipbupmedia@protonmail.com?subject=BugHuntFound"
-                        className="footer-link"
-                      >
-                        <span className="footer-link-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M4 12 12 4M5 4h7v7" />
-                          </svg>
-                        </span>
-                        {t.reportBug}
-                      </a>
+                      <SupportFooterLink user={user} navigate={navigate} />
                     </div>
                   </div>
                 </div>
