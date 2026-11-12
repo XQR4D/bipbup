@@ -3844,7 +3844,6 @@
         gap: 8px;
         margin: -4px -4px 16px;
         padding: 4px;
-        background: var(--glass);
       }
 
       .tk-tabs {
@@ -3874,6 +3873,136 @@
       .tk-close svg {
         display: block;
         flex-shrink: 0;
+      }
+
+      .tk-shot {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .tk-shot-preview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 280px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+      }
+
+      .tk-shot-preview img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain;
+      }
+
+      .tk-attached {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        min-width: 0;
+        border-radius: 14px;
+        border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+        background: rgba(128, 128, 128, 0.05);
+      }
+
+      .tk-attached-thumb {
+        width: 64px;
+        height: 64px;
+        flex-shrink: 0;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+
+      .tk-attached-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .tk-attached-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .tk-attached-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tk-attached-btn {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-secondary);
+        font: 700 9px/1 "Unbounded", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .tk-attached-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .tk-reply .tk-reply-input {
+        flex: 1;
+        min-width: 0;
+        height: 44px;
+        min-height: 44px;
+        max-height: 160px;
+        padding: 11px 14px;
+        resize: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        scrollbar-width: none;
+        box-sizing: border-box;
+        line-height: 1.4;
+      }
+
+      .tk-reply .tk-reply-input::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tk-reply .tk-send {
+        flex-shrink: 0;
+        height: 44px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      @keyframes tk-notice-life {
+        0% { opacity: 0; transform: translateY(-4px); }
+        6% { opacity: 1; transform: none; }
+        85% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+
+      .tk-notice {
+        animation: tk-notice-life 4s ease forwards;
+      }
+
+      @media (max-width: 400px) {
+        .tk-tab {
+          padding: 9px 10px;
+        }
       }
 
       .recent-accounts {
@@ -8404,6 +8533,8 @@
           screenshot: "Скриншот проблемы (необязательно)",
           screenshotPick: "Прикрепить изображение",
           screenshotReady: "Изображение прикреплено",
+          screenshotChange: "Заменить",
+          screenshotRemove: "Удалить",
           blocking: "Мешает ли эта проблема работе сайта?",
           yes: "Да",
           no: "Нет",
@@ -8428,7 +8559,7 @@
           stUnsolved: "Не решён",
           awaitingUser: "Ждём ответа пользователя",
           awaitingSupport: "Ждём ответа поддержки",
-          yourTurn: "Поддержка ответила — ваш ход",
+          yourTurn: "Требуется ваш ответ",
           closedBadge: "Закрыт",
           blockingYes: "Мешает работе",
           blockingNo: "Не мешает работе",
@@ -8460,6 +8591,8 @@
           screenshot: "Screenshot (optional)",
           screenshotPick: "Attach image",
           screenshotReady: "Image attached",
+          screenshotChange: "Replace",
+          screenshotRemove: "Remove",
           blocking: "Does this problem stop the site from working?",
           yes: "Yes",
           no: "No",
@@ -8484,7 +8617,7 @@
           stUnsolved: "Not solved",
           awaitingUser: "Waiting for the user",
           awaitingSupport: "Waiting for support",
-          yourTurn: "Support replied — your turn",
+          yourTurn: "Your reply is needed",
           closedBadge: "Closed",
           blockingYes: "Blocks the site",
           blockingNo: "Does not block",
@@ -8517,6 +8650,8 @@
         screenshot: "スクリーンショット（任意）",
         screenshotPick: "画像を添付",
         screenshotReady: "画像を添付済み",
+        screenshotChange: "差し替え",
+        screenshotRemove: "削除",
         blocking: "この問題でサイトが使えなくなっていますか？",
         yes: "はい",
         no: "いいえ",
@@ -8541,7 +8676,7 @@
         stUnsolved: "未解決",
         awaitingUser: "ユーザーの返信待ち",
         awaitingSupport: "サポートの返信待ち",
-        yourTurn: "サポートから返信があります",
+        yourTurn: "ご返信をお願いします",
         closedBadge: "終了",
         blockingYes: "サイトが使えない",
         blockingNo: "影響なし",
@@ -8573,6 +8708,8 @@
         screenshot: "Screenshot (optional)",
         screenshotPick: "Bild anhängen",
         screenshotReady: "Bild angehängt",
+        screenshotChange: "Ersetzen",
+        screenshotRemove: "Entfernen",
         blocking: "Verhindert dieses Problem die Nutzung der Website?",
         yes: "Ja",
         no: "Nein",
@@ -8597,7 +8734,7 @@
         stUnsolved: "Nicht gelöst",
         awaitingUser: "Warten auf Antwort des Nutzers",
         awaitingSupport: "Warten auf Antwort des Supports",
-        yourTurn: "Support hat geantwortet – du bist dran",
+        yourTurn: "Ihre Antwort ist erforderlich",
         closedBadge: "Geschlossen",
         blockingYes: "Blockiert die Website",
         blockingNo: "Blockiert nicht",
@@ -8630,6 +8767,8 @@
         screenshot: "Capture d'écran (facultatif)",
         screenshotPick: "Joindre une image",
         screenshotReady: "Image jointe",
+        screenshotChange: "Remplacer",
+        screenshotRemove: "Supprimer",
         blocking: "Ce problème empêche-t-il le site de fonctionner ?",
         yes: "Oui",
         no: "Non",
@@ -8654,7 +8793,7 @@
         stUnsolved: "Non résolu",
         awaitingUser: "En attente de l'utilisateur",
         awaitingSupport: "En attente du support",
-        yourTurn: "Le support a répondu — à vous",
+        yourTurn: "Votre réponse est requise",
         closedBadge: "Fermé",
         blockingYes: "Bloque le site",
         blockingNo: "Ne bloque pas",
@@ -8759,6 +8898,17 @@
         const [file, setFile] = React.useState(null);
         const [busy, setBusy] = React.useState(false);
         const [err, setErr] = React.useState("");
+        const [previewUrl, setPreviewUrl] = React.useState("");
+
+        React.useEffect(() => {
+          if (!file) {
+            setPreviewUrl("");
+            return undefined;
+          }
+          const url = URL.createObjectURL(file);
+          setPreviewUrl(url);
+          return () => URL.revokeObjectURL(url);
+        }, [file]);
 
         const submit = async (e) => {
           e.preventDefault();
@@ -8818,15 +8968,42 @@
             </label>
             <div className="tk-field">
               <span className="tk-label">{tx.screenshot}</span>
-              <label className="tk-file">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => setFile(e.target.files[0] || null)}
-                />
-                <span>{file ? tx.screenshotReady : tx.screenshotPick}</span>
-              </label>
+              {previewUrl ? (
+                <div className="tk-attached">
+                  <img className="tk-attached-thumb" src={previewUrl} alt="" />
+                  <div className="tk-attached-info">
+                    <span className="tk-attached-label">{tx.screenshotReady}</span>
+                    <div className="tk-attached-actions">
+                      <label className="tk-attached-btn">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => setFile(e.target.files[0] || null)}
+                        />
+                        {tx.screenshotChange}
+                      </label>
+                      <button
+                        type="button"
+                        className="tk-attached-btn"
+                        onClick={() => setFile(null)}
+                      >
+                        {tx.screenshotRemove}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <label className="tk-file">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files[0] || null)}
+                  />
+                  <span>{tx.screenshotPick}</span>
+                </label>
+              )}
             </div>
             <div className="tk-field">
               <span className="tk-label">{tx.blocking}</span>
@@ -8864,6 +9041,16 @@
         const [text, setText] = React.useState("");
         const [sending, setSending] = React.useState(false);
         const listRef = React.useRef(null);
+        const replyRef = React.useRef(null);
+
+        React.useLayoutEffect(() => {
+          const el = replyRef.current;
+          if (!el) return;
+          el.style.height = "auto";
+          const h = Math.min(Math.max(el.scrollHeight, 44), 160);
+          el.style.height = h + "px";
+          el.style.overflowY = el.scrollHeight > 160 ? "auto" : "hidden";
+        }, [text]);
 
         React.useEffect(() => {
           const unsub = db
@@ -8940,11 +9127,12 @@
             ) : (
               <form onSubmit={send} className="tk-reply">
                 <textarea
-                  className="tk-input tk-textarea"
+                  ref={replyRef}
+                  className="tk-input tk-reply-input"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder={tx.replyPh}
-                  rows={2}
+                  rows={1}
                 />
                 <button
                   type="submit"
@@ -8989,6 +9177,7 @@
         onBack,
       }) => (
         <div className="tk-detail-inner">
+          {onBack && (
           <button type="button" className="tk-back" onClick={onBack}>
             <svg
               width="14"
@@ -9006,6 +9195,7 @@
             </svg>
             <span>{tx.back}</span>
           </button>
+          )}
           <div className="tk-detail-head">
             <div>
               <div className="tk-detail-nick">{ticket.nickname}</div>
@@ -9022,14 +9212,25 @@
           {isSupport && <SupportControls ticket={ticket} user={user} tx={tx} />}
           <p className="tk-detail-text">{ticket.text}</p>
           {ticket.screenshotUrl && (
-            <a
-              href={ticket.screenshotUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tk-screenshot-link"
-            >
-              {tx.openScreenshot}
-            </a>
+            <div className="tk-shot">
+              <a
+                href={ticket.screenshotUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tk-shot-preview"
+                aria-label={tx.openScreenshot}
+              >
+                <img src={ticket.screenshotUrl} alt="" loading="lazy" decoding="async" />
+              </a>
+              <a
+                href={ticket.screenshotUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tk-screenshot-link"
+              >
+                {tx.openScreenshot}
+              </a>
+            </div>
           )}
           <TicketThread
             ticket={ticket}
@@ -9109,9 +9310,8 @@
         );
       };
 
-      const MyTickets = ({ user, tx, lang }) => {
+      const MyTickets = ({ user, tx, lang, selectedId, setSelectedId }) => {
         const [tickets, setTickets] = React.useState([]);
-        const [selectedId, setSelectedId] = React.useState(null);
 
         React.useEffect(() => {
           const unsub = db
@@ -9162,7 +9362,6 @@
                   tx={tx}
                   lang={lang}
                   isSupport={false}
-                  onBack={() => setSelectedId(null)}
                 />
               )}
             </div>
@@ -9173,6 +9372,13 @@
       const TicketModal = ({ user, tx, lang, onClose }) => {
         const [tab, setTab] = React.useState("new");
         const [notice, setNotice] = React.useState("");
+        const [selectedId, setSelectedId] = React.useState(null);
+
+        React.useEffect(() => {
+          if (!notice) return undefined;
+          const timer = setTimeout(() => setNotice(""), 4000);
+          return () => clearTimeout(timer);
+        }, [notice]);
 
         React.useEffect(() => {
           const onKey = (e) => {
@@ -9207,6 +9413,30 @@
                     {tx.tabMine}
                   </button>
                 </div>
+                {tab === "mine" && selectedId && (
+                  <button
+                    type="button"
+                    className="tk-close"
+                    onClick={() => setSelectedId(null)}
+                    aria-label={tx.back}
+                    title={tx.back}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M19 12H5" />
+                      <path d="m12 19-7-7 7-7" />
+                    </svg>
+                  </button>
+                )}
                 <button
                   type="button"
                   className="tk-close"
@@ -9240,7 +9470,13 @@
                   }}
                 />
               ) : (
-                <MyTickets user={user} tx={tx} lang={lang} />
+                <MyTickets
+                  user={user}
+                  tx={tx}
+                  lang={lang}
+                  selectedId={selectedId}
+                  setSelectedId={setSelectedId}
+                />
               )}
             </div>
           </div>
