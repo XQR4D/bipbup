@@ -5909,10 +5909,19 @@
             .catch((e) => alert(e.message));
         };
 
-        const authArtName = {
-          login: "wave",
-          register: "add-user",
-          reset: "lock",
+        const authArtSrc = {
+          login: {
+            light: "assets/images/darkicon/wave-dark.png",
+            dark: "assets/images/lighticon/wave-light.png",
+          },
+          register: {
+            light: "assets/images/darkicon/add-user-dark.png",
+            dark: "assets/images/lighticon/add-user-light.png",
+          },
+          reset: {
+            light: "assets/images/darkicon/lock-dark.png",
+            dark: "assets/images/lighticon/lock-light.png",
+          },
         }[authArtMode];
 
         return (
@@ -5922,14 +5931,14 @@
               <section className="auth-intro">
                 <img
                   className="auth-intro-art icon-for-light"
-                  src={`assets/images/darkicon/${authArtName}-dark.png`}
+                  src={authArtSrc.light}
                   alt=""
                   aria-hidden="true"
                   decoding="async"
                 />
                 <img
                   className="auth-intro-art icon-for-dark"
-                  src={`assets/images/lighticon/${authArtName}-light.png`}
+                  src={authArtSrc.dark}
                   alt=""
                   aria-hidden="true"
                   decoding="async"
