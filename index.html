@@ -3539,6 +3539,7 @@
         font-size: 12px;
         color: var(--text-secondary);
         display: -webkit-box;
+        line-clamp: 2;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
@@ -3947,7 +3948,9 @@
         border: 1px solid var(--border);
         background: transparent;
         color: var(--text-secondary);
-        font: 700 9px/1 "Unbounded", sans-serif;
+        font:
+          700 9px/1 "Unbounded",
+          sans-serif;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         cursor: pointer;
@@ -3989,10 +3992,20 @@
       }
 
       @keyframes tk-notice-life {
-        0% { opacity: 0; transform: translateY(-4px); }
-        6% { opacity: 1; transform: none; }
-        85% { opacity: 1; }
-        100% { opacity: 0; }
+        0% {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        6% {
+          opacity: 1;
+          transform: none;
+        }
+        85% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
       }
 
       .tk-notice {
@@ -4139,14 +4152,7 @@
   </head>
   <body>
     <canvas id="background-canvas"></canvas>
-    <noscript
-      ><div>
-        <img
-          src="https://mc.yandex.ru/watch/99936739"
-          style="position: absolute; left: -9999px"
-          alt=""
-        /></div
-    ></noscript>
+
     <div id="cookie-banner">
       <div>
         <h3 class="cookiez" id="cookie-title"></h3>
@@ -5877,11 +5883,23 @@
           recentTitle: "Недавние аккаунты",
           removeAccount: "Убрать из списка",
           pickHint: "Выберите аккаунт и введите пароль",
+          agreePrefix: "Я ознакомился и согласен с",
+          agreePrivacy: "Политикой обработки персональных данных",
+          agreeAnd: "и",
+          agreeTerms: "Пользовательским соглашением",
+          consentRequired:
+            "Чтобы продолжить, подтвердите согласие с Политикой и Пользовательским соглашением.",
         },
         en: {
           recentTitle: "Recent accounts",
           removeAccount: "Remove from list",
           pickHint: "Pick an account and enter your password",
+          agreePrefix: "I have read and agree to the",
+          agreePrivacy: "Personal Data Processing Policy",
+          agreeAnd: "and",
+          agreeTerms: "Terms of Use",
+          consentRequired:
+            "Please confirm that you agree to the Policy and Terms of Use to continue.",
         },
       };
 
@@ -5927,6 +5945,24 @@
         writeRecentAccounts([entry, ...rest]);
       };
 
+      const CONSENT_VERSION = { policy: "2026-11-13", terms: "2026-11-13" };
+      const saveConsent = (u) => {
+        if (!u?.uid) return Promise.resolve();
+        return db
+          .collection("users")
+          .doc(u.uid)
+          .set(
+            {
+              consent: {
+                ...CONSENT_VERSION,
+                acceptedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              },
+            },
+            { merge: true },
+          )
+          .catch((err) => console.error("Не удалось сохранить согласие:", err));
+      };
+
       const forgetAccount = (uid) => {
         writeRecentAccounts(readRecentAccounts().filter((a) => a.uid !== uid));
       };
@@ -5940,6 +5976,7 @@
         const [pass, setPass] = useState("");
         const [showPass, setShowPass] = useState(false);
         const [resetSent, setResetSent] = useState(false);
+        const [agreed, setAgreed] = useState(false);
         const authArtMode =
           mode === "reg" ? "register" : mode === "reset" ? "reset" : "login";
         const passwordValidations = [
@@ -5985,6 +6022,10 @@
 
         const handleAuth = async (e) => {
           e.preventDefault();
+          if (mode === "reg" && !agreed) {
+            alert(ax.consentRequired);
+            return;
+          }
           const token = await verifyCaptcha();
           if (!token) return;
 
@@ -5996,12 +6037,17 @@
           promise
             .then((cred) => {
               rememberAccount(cred.user);
+              if (mode === "reg") saveConsent(cred.user);
               navigate("lk");
             })
             .catch((e) => alert(e.message));
         };
 
         const handleGoogleLogin = async () => {
+          if (!agreed) {
+            alert(ax.consentRequired);
+            return;
+          }
           const token = await verifyCaptcha();
           if (!token) return;
           const provider = new firebase.auth.GoogleAuthProvider();
@@ -6009,12 +6055,17 @@
             .signInWithPopup(provider)
             .then((cred) => {
               rememberAccount(cred.user);
+              if (cred.additionalUserInfo?.isNewUser) saveConsent(cred.user);
               navigate("lk");
             })
             .catch((e) => alert(e.message));
         };
 
         const handleGithubLogin = async () => {
+          if (!agreed) {
+            alert(ax.consentRequired);
+            return;
+          }
           const token = await verifyCaptcha();
           if (!token) return;
           const provider = new firebase.auth.GithubAuthProvider();
@@ -6022,6 +6073,7 @@
             .signInWithPopup(provider)
             .then((cred) => {
               rememberAccount(cred.user);
+              if (cred.additionalUserInfo?.isNewUser) saveConsent(cred.user);
               navigate("lk");
             })
             .catch((e) => alert(e.message));
@@ -6365,6 +6417,43 @@
                         </div>
                       )}
 
+                      {(mode === "reg" || mode === "login") && (
+                        <label className="flex items-start gap-3 cursor-pointer normal-case tracking-normal font-normal text-left text-[12px] leading-snug">
+                          <input
+                            type="checkbox"
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                            className="mt-[2px] h-4 w-4 flex-shrink-0"
+                            style={{ accentColor: "var(--accent)" }}
+                          />
+                          <span className="opacity-80">
+                            {ax.agreePrefix}{" "}
+                            <a
+                              href="#"
+                              className="underline underline-offset-2"
+                              style={{ color: "inherit" }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("privacy");
+                              }}
+                            >
+                              {ax.agreePrivacy}
+                            </a>{" "}
+                            {ax.agreeAnd}{" "}
+                            <a
+                              href="#"
+                              className="underline underline-offset-2"
+                              style={{ color: "inherit" }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("terms");
+                              }}
+                            >
+                              {ax.agreeTerms}
+                            </a>
+                          </span>
+                        </label>
+                      )}
                       <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
                         {mode === "login" ? t.signIn : t.signUp}
                       </button>
@@ -7517,7 +7606,6 @@
             await db.collection("pamyatki").add({
               uid: user.uid,
               displayName: user.displayName || user.email?.split("@")[0] || "",
-              email: user.email,
               title: title,
               imageUrl: imageUrl,
               tableUrl: tableUrl,
@@ -7565,14 +7653,11 @@
         const changeEmail = async (e) => {
           e.preventDefault();
           const newEmail = e.target.new_email.value.trim().toLowerCase();
-          const password = e.target.current_password_email.value;
-          if (!newEmail || !password) return alert(t.fieldsRequired);
+          const password = e.target.current_password_email?.value || "";
+          if (!newEmail || (hasPasswordProvider(user) && !password))
+            return alert(t.fieldsRequired);
           try {
-            const credential = firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              password,
-            );
-            await user.reauthenticateWithCredential(credential);
+            await reauthUser(user, password);
             await user.verifyBeforeUpdateEmail(newEmail);
             alert(t.emailVerificationSent);
           } catch (e) {
@@ -7582,18 +7667,20 @@
 
         const changePassword = async (e) => {
           e.preventDefault();
-          const cur = e.target.current_password.value;
+          const cur = e.target.current_password?.value || "";
           const np = e.target.new_password.value;
           const npc = e.target.new_password_confirm.value;
           if (np !== npc) return alert(t.passwordMismatch);
           if (np.length < 6) return alert(t.passwordMinLength);
           try {
-            const cred = firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              cur,
-            );
-            await user.reauthenticateWithCredential(cred);
-            await user.updatePassword(np);
+            await reauthUser(user, cur);
+            if (hasPasswordProvider(user)) {
+              await user.updatePassword(np);
+            } else {
+              await user.linkWithCredential(
+                firebase.auth.EmailAuthProvider.credential(user.email, np),
+              );
+            }
             alert(t.passwordUpdated);
             e.target.reset();
           } catch (e) {
@@ -7603,15 +7690,12 @@
 
         const deleteAccount = async (e) => {
           e.preventDefault();
-          const password = e.target.del_password.value;
-          if (!password) return alert(t.currentPasswordRequired);
+          const password = e.target.del_password?.value || "";
+          if (!password && hasPasswordProvider(user))
+            return alert(t.currentPasswordRequired);
           if (!confirm(t.accountDeleteConfirm)) return;
           try {
-            const credential = firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              password,
-            );
-            await user.reauthenticateWithCredential(credential);
+            await reauthUser(user, password);
 
             const profileRef = db.collection("users").doc(user.uid);
             const profileSnapshot = await profileRef.get();
@@ -7989,15 +8073,17 @@
                   {t.securityTitle}
                 </h3>
                 <form onSubmit={changePassword} className="lk-sec-block">
-                  <div className="lk-field">
-                    <label className="lk-field-label">{t.changePass}</label>
-                    <input
-                      name="current_password"
-                      type="password"
-                      placeholder={t.currentPassPlaceholder}
-                      required
-                    />
-                  </div>
+                  {hasPasswordProvider(user) && (
+                    <div className="lk-field">
+                      <label className="lk-field-label">{t.changePass}</label>
+                      <input
+                        name="current_password"
+                        type="password"
+                        placeholder={t.currentPassPlaceholder}
+                        required
+                      />
+                    </div>
+                  )}
                   <div className="lk-field">
                     <input
                       name="new_password"
@@ -8028,17 +8114,19 @@
                       required
                     />
                   </div>
-                  <div className="lk-field">
-                    <label className="lk-field-label">
-                      {t.currentPassPlaceholder}
-                    </label>
-                    <input
-                      name="current_password_email"
-                      type="password"
-                      placeholder={t.currentPassPlaceholder}
-                      required
-                    />
-                  </div>
+                  {hasPasswordProvider(user) && (
+                    <div className="lk-field">
+                      <label className="lk-field-label">
+                        {t.currentPassPlaceholder}
+                      </label>
+                      <input
+                        name="current_password_email"
+                        type="password"
+                        placeholder={t.currentPassPlaceholder}
+                        required
+                      />
+                    </div>
+                  )}
                   <button className="btn-primary w-full py-4 rounded-xl text-[11px] uppercase tracking-widest">
                     {t.changeEmailBtn}
                   </button>
@@ -8069,18 +8157,20 @@
                 </h3>
                 <p className="lk-hint">{t.deleteDesc}</p>
                 <form onSubmit={deleteAccount}>
-                  <div className="lk-field">
-                    <label className="lk-field-label">
-                      {t.currentPassPlaceholder}
-                    </label>
-                    <input
-                      name="del_password"
-                      type="password"
-                      placeholder={t.currentPassPlaceholder}
-                      required
-                      className="border-red-500/30 focus:border-red-500"
-                    />
-                  </div>
+                  {hasPasswordProvider(user) && (
+                    <div className="lk-field">
+                      <label className="lk-field-label">
+                        {t.currentPassPlaceholder}
+                      </label>
+                      <input
+                        name="del_password"
+                        type="password"
+                        placeholder={t.currentPassPlaceholder}
+                        required
+                        className="border-red-500/30 focus:border-red-500"
+                      />
+                    </div>
+                  )}
                   <button
                     type="submit"
                     className="w-full py-4 rounded-xl text-[11px] uppercase tracking-widest font-bold bg-red-600 text-white"
@@ -8210,7 +8300,7 @@
                                   {p.title}
                                 </h4>
                                 <p className="text-[9px] opacity-30 mt-1 uppercase">
-                                  {t.moderationBy} {p.email}
+                                  {t.moderationBy} {p.displayName}
                                 </p>
                               </div>
                             </div>
@@ -8838,6 +8928,37 @@
           minute: "2-digit",
         });
       };
+      const toMillis = (v) =>
+        v?.toMillis ? v.toMillis() : v ? new Date(v).getTime() : null;
+
+      const ticketHasUnreadReply = (t) => {
+        const reply = toMillis(t.lastSupportReplyAt);
+        if (reply === null) return false;
+        const seen = toMillis(t.userSeenAt);
+        return seen === null || reply > seen;
+      };
+
+      const hasPasswordProvider = (user) =>
+        !!user?.providerData?.some((p) => p?.providerId === "password");
+
+      const oauthProviderFor = (user) => {
+        const id = user?.providerData?.find(
+          (p) => p && p.providerId !== "password",
+        )?.providerId;
+        return id === "google.com"
+          ? new firebase.auth.GoogleAuthProvider()
+          : new firebase.auth.GithubAuthProvider();
+      };
+
+      const reauthUser = (user, password) => {
+        if (hasPasswordProvider(user)) {
+          return user.reauthenticateWithCredential(
+            firebase.auth.EmailAuthProvider.credential(user.email, password),
+          );
+        }
+        return user.reauthenticateWithPopup(oauthProviderFor(user));
+      };
+
       const ticketUpload = async (file) => {
         const fd = new FormData();
         fd.append("image", file);
@@ -8895,20 +9016,25 @@
       const TicketForm = ({ user, tx, lang, onSent }) => {
         const [text, setText] = React.useState("");
         const [blocking, setBlocking] = React.useState(null);
-        const [file, setFile] = React.useState(null);
+        const [files, setFiles] = React.useState([]);
+        const [dragOver, setDragOver] = React.useState(false);
         const [busy, setBusy] = React.useState(false);
         const [err, setErr] = React.useState("");
-        const [previewUrl, setPreviewUrl] = React.useState("");
+        const [previews, setPreviews] = React.useState([]);
 
         React.useEffect(() => {
-          if (!file) {
-            setPreviewUrl("");
-            return undefined;
-          }
-          const url = URL.createObjectURL(file);
-          setPreviewUrl(url);
-          return () => URL.revokeObjectURL(url);
-        }, [file]);
+          const urls = files.map((f) => URL.createObjectURL(f));
+          setPreviews(urls);
+          return () => urls.forEach((u) => URL.revokeObjectURL(u));
+        }, [files]);
+
+        const addFiles = (list) => {
+          const images = Array.from(list || []).filter((f) =>
+            f.type.startsWith("image/"),
+          );
+          if (images.length)
+            setFiles((prev) => [...prev, ...images].slice(0, 10));
+        };
 
         const submit = async (e) => {
           e.preventDefault();
@@ -8917,14 +9043,16 @@
           setBusy(true);
           setErr("");
           try {
-            let screenshotUrl = "";
-            if (file) screenshotUrl = await ticketUpload(file);
+            const screenshotUrls = files.length
+              ? await Promise.all(files.map((f) => ticketUpload(f)))
+              : [];
             await db.collection("tickets").add({
               uid: user.uid,
               nickname: ticketNick(user),
               email: user.email || "",
               text: text.trim(),
-              screenshotUrl,
+              screenshotUrl: screenshotUrls[0] || "",
+              screenshotUrls,
               blocking,
               status: "new",
               closed: false,
@@ -8936,7 +9064,7 @@
             });
             setText("");
             setBlocking(null);
-            setFile(null);
+            setFiles([]);
             onSent();
           } catch (ex) {
             console.error(ex);
@@ -8968,41 +9096,60 @@
             </label>
             <div className="tk-field">
               <span className="tk-label">{tx.screenshot}</span>
-              {previewUrl ? (
-                <div className="tk-attached">
-                  <img className="tk-attached-thumb" src={previewUrl} alt="" />
-                  <div className="tk-attached-info">
-                    <span className="tk-attached-label">{tx.screenshotReady}</span>
-                    <div className="tk-attached-actions">
-                      <label className="tk-attached-btn">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => setFile(e.target.files[0] || null)}
-                        />
-                        {tx.screenshotChange}
-                      </label>
-                      <button
-                        type="button"
-                        className="tk-attached-btn"
-                        onClick={() => setFile(null)}
-                      >
-                        {tx.screenshotRemove}
-                      </button>
+              <label
+                className="tk-file"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragOver(false);
+                  addFiles(e.dataTransfer.files);
+                }}
+                style={
+                  dragOver
+                    ? { borderStyle: "dashed", borderColor: "var(--accent)" }
+                    : undefined
+                }
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => {
+                    addFiles(e.target.files);
+                    e.target.value = "";
+                  }}
+                />
+                <span>{tx.screenshotPick}</span>
+              </label>
+              {previews.length > 0 && (
+                <div style={{ display: "grid", gap: "8px", marginTop: "8px" }}>
+                  {previews.map((src, i) => (
+                    <div className="tk-attached" key={src}>
+                      <img className="tk-attached-thumb" src={src} alt="" />
+                      <div className="tk-attached-info">
+                        <span className="tk-attached-label">
+                          {tx.screenshotReady}
+                        </span>
+                        <div className="tk-attached-actions">
+                          <button
+                            type="button"
+                            className="tk-attached-btn"
+                            onClick={() =>
+                              setFiles((prev) => prev.filter((_, j) => j !== i))
+                            }
+                          >
+                            {tx.screenshotRemove}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ) : (
-                <label className="tk-file">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => setFile(e.target.files[0] || null)}
-                  />
-                  <span>{tx.screenshotPick}</span>
-                </label>
               )}
             </div>
             <div className="tk-field">
@@ -9052,6 +9199,19 @@
           el.style.overflowY = el.scrollHeight > 160 ? "auto" : "hidden";
         }, [text]);
 
+        const replyKey = toMillis(ticket.lastSupportReplyAt);
+        React.useEffect(() => {
+          if (isSupport || replyKey === null) return;
+          const seen = toMillis(ticket.userSeenAt);
+          if (seen !== null && seen >= replyKey) return;
+          db.collection("tickets")
+            .doc(ticket.id)
+            .update({
+              userSeenAt: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            .catch((err) => console.error(err));
+        }, [ticket.id, replyKey]);
+
         React.useEffect(() => {
           const unsub = db
             .collection("tickets")
@@ -9087,6 +9247,12 @@
             });
             await ref.update({
               awaitingUser: isSupport,
+              ...(isSupport
+                ? {
+                    lastSupportReplyAt:
+                      firebase.firestore.FieldValue.serverTimestamp(),
+                  }
+                : {}),
               updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
             setText("");
@@ -9178,23 +9344,23 @@
       }) => (
         <div className="tk-detail-inner">
           {onBack && (
-          <button type="button" className="tk-back" onClick={onBack}>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M19 12H5" />
-              <path d="m12 19-7-7 7-7" />
-            </svg>
-            <span>{tx.back}</span>
-          </button>
+            <button type="button" className="tk-back" onClick={onBack}>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M19 12H5" />
+                <path d="m12 19-7-7 7-7" />
+              </svg>
+              <span>{tx.back}</span>
+            </button>
           )}
           <div className="tk-detail-head">
             <div>
@@ -9211,19 +9377,24 @@
           />
           {isSupport && <SupportControls ticket={ticket} user={user} tx={tx} />}
           <p className="tk-detail-text">{ticket.text}</p>
-          {ticket.screenshotUrl && (
-            <div className="tk-shot">
+          {(ticket.screenshotUrls?.length
+            ? ticket.screenshotUrls
+            : ticket.screenshotUrl
+              ? [ticket.screenshotUrl]
+              : []
+          ).map((url, i) => (
+            <div className="tk-shot" key={url + i}>
               <a
-                href={ticket.screenshotUrl}
+                href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="tk-shot-preview"
                 aria-label={tx.openScreenshot}
               >
-                <img src={ticket.screenshotUrl} alt="" loading="lazy" decoding="async" />
+                <img src={url} alt="" loading="lazy" decoding="async" />
               </a>
               <a
-                href={ticket.screenshotUrl}
+                href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="tk-screenshot-link"
@@ -9231,7 +9402,7 @@
                 {tx.openScreenshot}
               </a>
             </div>
-          )}
+          ))}
           <TicketThread
             ticket={ticket}
             user={user}
@@ -9372,7 +9543,19 @@
       const TicketModal = ({ user, tx, lang, onClose }) => {
         const [tab, setTab] = React.useState("new");
         const [notice, setNotice] = React.useState("");
-        const [selectedId, setSelectedId] = React.useState(null);
+        const [selectedId, setSelectedId] = React.useState(() => {
+          const id = window.pendingTicketId || null;
+          window.pendingTicketId = null;
+          return id;
+        });
+        React.useEffect(() => {
+          const h = (e) => {
+            setTab("mine");
+            setSelectedId(e.detail);
+          };
+          window.addEventListener("bipbup-open-ticket", h);
+          return () => window.removeEventListener("bipbup-open-ticket", h);
+        }, []);
 
         React.useEffect(() => {
           if (!notice) return undefined;
@@ -9487,7 +9670,12 @@
         const { lang } = useLang();
         const tx = tkText(lang);
         const role = useSupportRole(user);
-        const [open, setOpen] = React.useState(false);
+        const [open, setOpen] = React.useState(() => !!window.pendingTicketId);
+        React.useEffect(() => {
+          const h = () => setOpen(true);
+          window.addEventListener("bipbup-open-ticket", h);
+          return () => window.removeEventListener("bipbup-open-ticket", h);
+        }, []);
 
         const onClick = () => {
           if (!user) {
@@ -9806,6 +9994,30 @@
         const [lastReadTimestamp, setLastReadTimestamp] = useState(null);
         const isAdmin = user && ADMINS.includes(user.uid);
         const panelRef = useRef(null);
+        const [myTickets, setMyTickets] = useState([]);
+
+        useEffect(() => {
+          if (!user) return undefined;
+          const unsub = db
+            .collection("tickets")
+            .where("uid", "==", user.uid)
+            .onSnapshot(
+              (snap) =>
+                setMyTickets(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+              (err) => console.error("Ticket replies error:", err),
+            );
+          return () => unsub();
+        }, [user]);
+
+        const ticketReplies = myTickets.filter(ticketHasUnreadReply);
+
+        const openTicketReply = (id) => {
+          window.pendingTicketId = id;
+          setShowNotif(false);
+          window.dispatchEvent(
+            new CustomEvent("bipbup-open-ticket", { detail: id }),
+          );
+        };
 
         useEffect(() => {
           if (!user) return;
@@ -9865,7 +10077,7 @@
           }
         };
 
-        const unreadCount = React.useMemo(() => {
+        const unreadNotifCount = React.useMemo(() => {
           if (!lastReadTimestamp) return notifications.length;
 
           return notifications.filter((n) => {
@@ -9879,6 +10091,8 @@
             return notificationTime > lastReadTime;
           }).length;
         }, [notifications, lastReadTimestamp]);
+
+        const unreadCount = unreadNotifCount + ticketReplies.length;
 
         const sendNotification = async () => {
           if (!isAdmin) return;
@@ -9994,7 +10208,8 @@
                     </div>
 
                     <div className="notif-body">
-                      {notifications.length === 0 ? (
+                      {notifications.length === 0 &&
+                      ticketReplies.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-16 gap-4">
                           <span className="text-4xl opacity-30">🔕</span>
                           <p className="text-[11px] uppercase tracking-widest opacity-40 text-center">
@@ -10003,6 +10218,36 @@
                         </div>
                       ) : (
                         <div className="space-y-3">
+                          {ticketReplies.map((tr) => (
+                            <div
+                              key={"tr-" + tr.id}
+                              className="p-4 rounded-2xl"
+                              style={{
+                                background: "var(--card-bg)",
+                                border: "1px solid var(--accent)",
+                              }}
+                            >
+                              <div className="flex items-start gap-3">
+                                <span className="text-base mt-0.5 flex-shrink-0">
+                                  💬
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-bold">
+                                    {t.ticketReplyTitle}
+                                  </p>
+                                  <p className="text-xs opacity-60 mt-1 truncate">
+                                    {(tr.text || "").slice(0, 80)}
+                                  </p>
+                                  <button
+                                    onClick={() => openTicketReply(tr.id)}
+                                    className="btn-primary text-[11px] px-4 py-2 rounded-xl mt-3"
+                                  >
+                                    {t.ticketReplyOpen}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                           {notifications.map((n, idx) => (
                             <div
                               key={n.id}
@@ -10091,12 +10336,12 @@
           titleAccount: "Личный кабинет",
           cookieTitle: "🍪 Cookies!",
           cookieText:
-            "Мы используем файлы cookie для улучшения работы сайта и аналитики.",
+            "Мы используем необходимые файлы cookie для входа в аккаунт. С вашего согласия также подключаем Яндекс.Метрику для статистики посещений.",
           cookieAccept: "Принять",
           cookieReject: "Отклонить",
           privacyLink: "политикой конфиденциальности",
           termsLink: "условиями пользования",
-          cookieMid: "Продолжая использовать сайт вы соглашаетесь с",
+          cookieMid: "Продолжая использовать сайт, вы соглашаетесь с",
           cookieAnd: "и",
           heroBtnKnowledge: "Перейти к памяткам",
           card1Title: "База знаний",
@@ -10300,6 +10545,8 @@
           loginToVote: "Войдите, чтобы оценивать",
           loginPlease: "Пожалуйста, войдите в аккаунт",
           notifTitle: "Уведомления",
+          ticketReplyTitle: "Новый ответ в тикете",
+          ticketReplyOpen: "Открыть",
           notifEmpty: "Уведомлений пока нет",
           notifSend: "Отправить уведомление",
           notifPrompt: "Введите текст уведомления",
@@ -10382,12 +10629,13 @@
           titleLogin: "Authorization",
           titleAccount: "Personal Account",
           cookieTitle: "🍪 Cookies!",
-          cookieText: "We use cookies to improve the site and analytics.",
+          cookieText:
+            "We use essential cookies for sign-in. With your consent we also enable Yandex.Metrika analytics.",
           cookieAccept: "Accept",
           cookieReject: "Reject",
           privacyLink: "privacy policy",
           termsLink: "terms of service",
-          cookieMid: "By continuing to use the site you agree to our",
+          cookieMid: "By continuing to use the site, you agree to our",
           cookieAnd: "and",
           heroBtnKnowledge: "Go to memos",
           card1Title: "Knowledge Base",
@@ -10589,6 +10837,8 @@
           loginToVote: "Log in to vote",
           loginPlease: "Please log in",
           notifTitle: "Notifications",
+          ticketReplyTitle: "New reply to your ticket",
+          ticketReplyOpen: "Open",
           notifEmpty: "No notifications yet",
           notifSend: "Send notification",
           notifPrompt: "Enter notification text",
@@ -10672,7 +10922,8 @@
           titleLogin: "認証",
           titleAccount: "マイページ",
           cookieTitle: "🍪 Cookie!",
-          cookieText: "サイトの改善と分析のためにCookieを使用しています。",
+          cookieText:
+            "ログインには必須のCookieを使用します。同意いただいた場合、Yandex.Metrikaでサイトの利用状況を分析します。",
           cookieAccept: "承認",
           cookieReject: "拒否",
           privacyLink: "プライバシーポリシー",
@@ -10879,6 +11130,8 @@
           loginToVote: "評価するにはログイン",
           loginPlease: "ログインしてください",
           notifTitle: "通知",
+          ticketReplyTitle: "チケットに新しい返信があります",
+          ticketReplyOpen: "開く",
           notifEmpty: "まだ通知はありません",
           notifSend: "通知を送信",
           notifPrompt: "通知テキストを入力",
@@ -10965,7 +11218,7 @@
           titleAccount: "Persönlicher Bereich",
           cookieTitle: "🍪 Cookies!",
           cookieText:
-            "Wir verwenden Cookies zur Verbesserung der Website und für Analysen.",
+            "Wir verwenden essenzielle Cookies für die Anmeldung. Mit Ihrer Zustimmung aktivieren wir zusätzlich die Analyse mit Yandex.Metrika.",
           cookieAccept: "Akzeptieren",
           cookieReject: "Ablehnen",
           privacyLink: "Datenschutzrichtlinie",
@@ -11174,6 +11427,8 @@
           loginToVote: "Einloggen zum Bewerten",
           loginPlease: "Bitte einloggen",
           notifTitle: "Benachrichtigungen",
+          ticketReplyTitle: "Neue Antwort auf dein Ticket",
+          ticketReplyOpen: "Öffnen",
           notifEmpty: "Noch keine Benachrichtigungen",
           notifSend: "Benachrichtigung senden",
           notifPrompt: "Benachrichtigungstext eingeben",
@@ -11256,18 +11511,18 @@
           titleTools: "Outils",
           titleNews: "Actualités",
           titlePrivacy: "Politique de confidentialité",
-          titleTerms: "Conditions d'utilisation",
+          titleTerms: "Conditions d’utilisation",
           titleLogin: "Connexion",
           titleAccount: "Espace personnel",
-          cookieTitle: "🍪 Cookies !",
+          cookieTitle: "🍪 Cookies\u202f!",
           cookieText:
-            "Nous utilisons des cookies pour améliorer le site et les analyses.",
+            "Nous utilisons des cookies essentiels pour la connexion. Avec votre accord, nous activons aussi l’analyse Yandex.Metrika.",
           cookieAccept: "Accepter",
           cookieReject: "Refuser",
           privacyLink: "politique de confidentialité",
-          termsLink: "conditions d'utilisation",
+          termsLink: "conditions d’utilisation",
           cookieMid: "En continuant à utiliser le site, vous acceptez notre",
-          cookieAnd: "et",
+          cookieAnd: "et nos",
           heroBtnKnowledge: "Accéder aux mémos",
           card1Title: "Base de connaissance",
           card1Desc:
@@ -11475,6 +11730,8 @@
           loginToVote: "Connectez-vous pour voter",
           loginPlease: "Veuillez vous connecter",
           notifTitle: "Notifications",
+          ticketReplyTitle: "Nouvelle réponse à votre ticket",
+          ticketReplyOpen: "Ouvrir",
           notifEmpty: "Pas encore de notifications",
           notifSend: "Envoyer une notification",
           notifPrompt: "Entrez le texte de la notification",
@@ -12366,6 +12623,11 @@
         return localStorage.getItem("cookieConsent") === "accepted";
       }
 
+      function hasCookieChoice() {
+        const value = localStorage.getItem("cookieConsent");
+        return value === "accepted" || value === "rejected";
+      }
+
       let yandexMetrikaScheduled = false;
 
       function scheduleYandexMetrika() {
@@ -12381,7 +12643,7 @@
 
       function showCookieBanner() {
         const banner = document.getElementById("cookie-banner");
-        if (banner && !hasCookieConsent()) {
+        if (banner && !hasCookieChoice()) {
           setTimeout(() => banner.classList.add("show"), 800);
         }
       }
