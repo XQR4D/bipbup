@@ -3991,6 +3991,141 @@
         justify-content: center;
       }
 
+      .tk-reply-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .tk-pending {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tk-pending-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 6px 8px 6px 6px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(128, 128, 128, 0.06);
+        font-size: 11px;
+      }
+
+      .tk-pending-thumb {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .tk-pending-name {
+        min-width: 0;
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .tk-pending-x {
+        flex-shrink: 0;
+        padding: 0 4px;
+        border: none;
+        background: none;
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .tk-pending-x:hover {
+        color: var(--accent);
+      }
+
+      .tk-attach-btn {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+      }
+
+      .tk-attach-btn:hover:not(:disabled) {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .tk-attach-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
+      .tk-msg-files {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 6px;
+      }
+
+      .tk-msg-img {
+        display: block;
+        max-width: 240px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+
+      .tk-msg-img img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain;
+        background: rgba(128, 128, 128, 0.06);
+      }
+
+      .tk-msg-file {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        max-width: 100%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 12px;
+        text-decoration: none;
+      }
+
+      .tk-msg-file:hover {
+        border-color: var(--accent);
+      }
+
+      .tk-msg-file-name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .tk-msg-file-size {
+        flex-shrink: 0;
+        font-size: 10px;
+        color: var(--text-secondary);
+      }
+
       @keyframes tk-notice-life {
         0% {
           opacity: 0;
@@ -8904,6 +9039,52 @@
         authorYou: "Vous",
       };
 
+      const TICKET_ATTACH_MAX_BYTES = 5 * 1024 * 1024;
+      const TICKET_ATTACH_MAX_FILES = 5;
+
+      const TICKET_ATTACH_TEXT = {
+        ru: {
+          attach: "Прикрепить изображение (до 5 МБ) или вставить из буфера",
+          attachNotImage: "Можно прикреплять только изображения.",
+          attachTooBig: "Изображение больше 5 МБ и не прикреплено.",
+          attachLimit: "К одному сообщению можно прикрепить не больше 5 изображений.",
+          attachFailed: "Не удалось загрузить изображение. Попробуйте ещё раз.",
+          remove: "Удалить",
+        },
+        en: {
+          attach: "Attach an image (up to 5 MB) or paste it from the clipboard",
+          attachNotImage: "Only image files can be attached.",
+          attachTooBig: "The image is larger than 5 MB and was not attached.",
+          attachLimit: "You can attach up to 5 images to one message.",
+          attachFailed: "Could not upload the image. Please try again.",
+          remove: "Remove",
+        },
+        ja: {
+          attach: "画像を添付（5MBまで）またはクリップボードから貼り付け",
+          attachNotImage: "添付できるのは画像ファイルのみです。",
+          attachTooBig: "画像が5MBを超えているため添付されませんでした。",
+          attachLimit: "1つのメッセージに添付できるのは5枚までです。",
+          attachFailed: "画像をアップロードできませんでした。もう一度お試しください。",
+          remove: "削除",
+        },
+        de: {
+          attach: "Bild anhängen (bis 5 MB) oder aus der Zwischenablage einfügen",
+          attachNotImage: "Es können nur Bilddateien angehängt werden.",
+          attachTooBig: "Das Bild ist größer als 5 MB und wurde nicht angehängt.",
+          attachLimit: "Pro Nachricht können höchstens 5 Bilder angehängt werden.",
+          attachFailed: "Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+          remove: "Entfernen",
+        },
+        fr: {
+          attach: "Joindre une image (5 Mo max) ou la coller depuis le presse-papiers",
+          attachNotImage: "Seules les images peuvent être jointes.",
+          attachTooBig: "L'image dépasse 5 Mo et n'a pas été jointe.",
+          attachLimit: "Vous pouvez joindre jusqu'à 5 images par message.",
+          attachFailed: "Impossible d'envoyer l'image. Réessayez.",
+          remove: "Supprimer",
+        },
+      };
+
       const tkText = (lang) => TICKET_TEXT[lang] || TICKET_TEXT.en;
       const ticketNick = (u) =>
         u?.displayName || u?.email?.split("@")[0] || "User";
@@ -8968,6 +9149,34 @@
         );
         const data = await res.json();
         return data.data.url;
+      };
+      const ticketUploadFile = async (file) => {
+        const fd = new FormData();
+        fd.append("image", file);
+        const res = await fetch(
+          "https://api.imgbb.com/1/upload?key=fac7e04a7bdbc05013b7483b33eae743",
+          { method: "POST", body: fd },
+        );
+        const data = await res.json();
+        if (!data.success) throw new Error("imgbb upload failed");
+        return {
+          url: data.data.url,
+          name: file.name || "image",
+          type: file.type || "image/png",
+          size: file.size,
+        };
+      };
+      const fmtAttachSize = (bytes) =>
+        bytes >= 1024 * 1024
+          ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
+          : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+      // Clipboard files can come without a name (e.g. a bare screenshot); give them one.
+      const namedClipboardFile = (f) => {
+        if (f.name) return f;
+        const ext = (f.type.split("/")[1] || "bin").replace("jpeg", "jpg");
+        return new File([f], `clipboard-${Date.now()}.${ext}`, {
+          type: f.type,
+        });
       };
       const ticketStatusLabel = (tx, status) =>
         status === "in_progress"
@@ -9184,11 +9393,17 @@
       };
 
       const TicketThread = ({ ticket, user, isSupport, tx, lang }) => {
+        const ax = TICKET_ATTACH_TEXT[lang] || TICKET_ATTACH_TEXT.en;
         const [messages, setMessages] = React.useState([]);
         const [text, setText] = React.useState("");
+        const [files, setFiles] = React.useState([]);
+        const [previews, setPreviews] = React.useState([]);
+        const [attachErr, setAttachErr] = React.useState("");
+        const [dragOver, setDragOver] = React.useState(false);
         const [sending, setSending] = React.useState(false);
         const listRef = React.useRef(null);
         const replyRef = React.useRef(null);
+        const fileRef = React.useRef(null);
 
         React.useLayoutEffect(() => {
           const el = replyRef.current;
@@ -9198,6 +9413,14 @@
           el.style.height = h + "px";
           el.style.overflowY = el.scrollHeight > 160 ? "auto" : "hidden";
         }, [text]);
+
+        React.useEffect(() => {
+          const urls = files.map((f) =>
+            f.type.startsWith("image/") ? URL.createObjectURL(f) : "",
+          );
+          setPreviews(urls);
+          return () => urls.forEach((u) => u && URL.revokeObjectURL(u));
+        }, [files]);
 
         const replyKey = toMillis(ticket.lastSupportReplyAt);
         React.useEffect(() => {
@@ -9231,18 +9454,57 @@
             listRef.current.scrollTop = listRef.current.scrollHeight;
         }, [messages.length]);
 
+        const addFiles = (list) => {
+          const picked = Array.from(list || []).filter(Boolean);
+          if (!picked.length) return;
+          const images = picked.filter((f) => f.type.startsWith("image/"));
+          const fitting = images.filter((f) => f.size <= TICKET_ATTACH_MAX_BYTES);
+          const room = Math.max(TICKET_ATTACH_MAX_FILES - files.length, 0);
+          const accepted = fitting.slice(0, room);
+          if (accepted.length) setFiles([...files, ...accepted]);
+          if (images.length < picked.length) setAttachErr(ax.attachNotImage);
+          else if (fitting.length < images.length) setAttachErr(ax.attachTooBig);
+          else if (accepted.length < fitting.length) setAttachErr(ax.attachLimit);
+          else setAttachErr("");
+        };
+
+        const removeFile = (i) => {
+          setFiles(files.filter((_, j) => j !== i));
+          setAttachErr("");
+        };
+
+        // Images copied to the clipboard (Ctrl+V / Cmd+V) arrive as file items.
+        const onPaste = (e) => {
+          const cd = e.clipboardData;
+          if (!cd) return;
+          const pasted = Array.from(cd.items || [])
+            .filter((it) => it.kind === "file")
+            .map((it) => it.getAsFile())
+            .filter(Boolean)
+            .map(namedClipboardFile);
+          if (!pasted.length) return;
+          // If the clipboard also holds text, let the browser paste it as usual.
+          if (!cd.getData("text")) e.preventDefault();
+          addFiles(pasted);
+        };
+
         const send = async (e) => {
           e.preventDefault();
           const value = text.trim();
-          if (!value || ticket.closed) return;
+          if ((!value && !files.length) || ticket.closed || sending) return;
           setSending(true);
+          setAttachErr("");
           try {
+            const attachments = await Promise.all(
+              files.map((f) => ticketUploadFile(f)),
+            );
             const ref = db.collection("tickets").doc(ticket.id);
             await ref.collection("messages").add({
               authorId: user.uid,
               authorRole: isSupport ? "support" : "user",
               authorName: isSupport ? tx.support : ticketNick(user),
               text: value,
+              attachments,
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
             await ref.update({
@@ -9256,9 +9518,10 @@
               updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
             setText("");
+            setFiles([]);
           } catch (err) {
             console.error(err);
-            alert(tx.errSend);
+            setAttachErr(files.length ? ax.attachFailed : tx.errSend);
           } finally {
             setSending(false);
           }
@@ -9283,7 +9546,42 @@
                       {" · "}
                       {ticketFmtDate(m.createdAt, lang)}
                     </div>
-                    <div className="tk-msg-text">{m.text}</div>
+                    {m.text && <div className="tk-msg-text">{m.text}</div>}
+                    {m.attachments?.length > 0 && (
+                      <div className="tk-msg-files">
+                        {m.attachments.map((a, i) =>
+                          a.type?.startsWith("image/") ? (
+                            <a
+                              key={a.path || i}
+                              href={a.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="tk-msg-img"
+                            >
+                              <img
+                                src={a.url}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </a>
+                          ) : (
+                            <a
+                              key={a.path || i}
+                              href={a.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="tk-msg-file"
+                            >
+                              <span className="tk-msg-file-name">{a.name}</span>
+                              <span className="tk-msg-file-size">
+                                {fmtAttachSize(a.size || 0)}
+                              </span>
+                            </a>
+                          ),
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -9291,22 +9589,101 @@
             {ticket.closed ? (
               <p className="tk-closed-notice">{tx.closedNotice}</p>
             ) : (
-              <form onSubmit={send} className="tk-reply">
-                <textarea
-                  ref={replyRef}
-                  className="tk-input tk-reply-input"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder={tx.replyPh}
-                  rows={1}
-                />
-                <button
-                  type="submit"
-                  disabled={sending || !text.trim()}
-                  className="btn-primary tk-send"
-                >
-                  {tx.send}
-                </button>
+              <form
+                onSubmit={send}
+                className="tk-reply-form"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragOver(false);
+                  addFiles(e.dataTransfer.files);
+                }}
+                style={
+                  dragOver
+                    ? { outline: "1px dashed var(--accent)", outlineOffset: "4px", borderRadius: "14px" }
+                    : undefined
+                }
+              >
+                {files.length > 0 && (
+                  <div className="tk-pending">
+                    {files.map((f, i) => (
+                      <div className="tk-pending-item" key={`${i}-${f.name}`}>
+                        {previews[i] && (
+                          <img className="tk-pending-thumb" src={previews[i]} alt="" />
+                        )}
+                        <span className="tk-pending-name">{f.name}</span>
+                        <span className="tk-msg-file-size">
+                          {fmtAttachSize(f.size)}
+                        </span>
+                        <button
+                          type="button"
+                          className="tk-pending-x"
+                          aria-label={ax.remove}
+                          title={ax.remove}
+                          onClick={() => removeFile(i)}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {attachErr && <p className="tk-error">{attachErr}</p>}
+                <div className="tk-reply">
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      addFiles(e.target.files);
+                      e.target.value = "";
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="tk-attach-btn"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={sending}
+                    aria-label={ax.attach}
+                    title={ax.attach}
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                    </svg>
+                  </button>
+                  <textarea
+                    ref={replyRef}
+                    className="tk-input tk-reply-input"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    onPaste={onPaste}
+                    placeholder={tx.replyPh}
+                    rows={1}
+                  />
+                  <button
+                    type="submit"
+                    disabled={sending || (!text.trim() && !files.length)}
+                    className="btn-primary tk-send"
+                  >
+                    {sending ? tx.sending : tx.send}
+                  </button>
+                </div>
               </form>
             )}
           </div>
